@@ -50,20 +50,49 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
         EarthQuakes earthQuakesValue = earthQuakesQuakesValues.get(position);
         Log.i("EarthQuakes value index", "" + position);
 
-        //Find the TextView with view  ID magnitude
-        TextView magnitude = listView.findViewById(R.id.magnitude);
-        //Display  the magnitude of the current earthquake in the TextView
-        magnitude.setText(earthQuakesValue.getMagnitude());
+        //Here I get the values from EarthQuakes model getter
+        //from EarthQuakes getter method get the value of magnitude
+        String magnitude = earthQuakesValue.getMagnitude();
 
+        //Here the distance and location is separated by reges index 0 in Km distance
+        // and index 1 is the location
+        String[] value = earthQuakesValue.getCityname().split(",");
+        String distance = value[0];
+        String cityName = value[1];
+
+        //As the time we get from jason in milliseconds (Unix time format)
+        // so I converted it into date and time with Date type object
+        long unixTime = Long.valueOf(earthQuakesValue.getDate());
+        //Date parameters get the unix time
+        Date dateObjet = new Date(unixTime);
+        //Date converted into human readable format
+        String date = formateDate(dateObjet);
+        //Time converted into human readable format
+        String time = formateTime(dateObjet);
+        
+        
+        //Find the TextView with view  ID magnitude
+        TextView magnitudeView = listView.findViewById(R.id.magnitude);
+        //Display  the magnitude of the current earthquake in the TextView
+        magnitudeView.setText(magnitude);
+
+        //Find the Textview with view ID for distance
+        TextView distanceView = listView.findViewById(R.id.distance);
+        distanceView.setText(distance);
+        
         //Find the TextView with view ID cityName or Location on earh
-        TextView cityName = listView.findViewById(R.id.cityName);
+        TextView cityNameView = listView.findViewById(R.id.cityName);
         //Display the city name in the TextView
-        cityName.setText(earthQuakesValue.getCityname());
+        cityNameView.setText(cityName);
 
         //Find the TextView  with view ID date
-        TextView date = listView.findViewById(R.id.date);
+        TextView dateView = listView.findViewById(R.id.date);
         //Display the date in the TextView
-        date.setText(earthQuakesValue.getDate());
+        dateView.setText(date);
+
+        //Find the TextView  with view ID for time 
+        TextView timeView = listView.findViewById(R.id.time);
+        timeView.setText(time);
 
 
         //Return the list item that is now showing the appropriate data
@@ -72,7 +101,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
 
     /**
      * @param dateObject Take a Date type object
-     * @return return the date in human readable format e.g "Mar 3, 1984"
+     * @return return the date in human readable format e.g "Nov 11, 2017"
      */
     private String formateDate(Date dateObject) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM DD, yyyy");
