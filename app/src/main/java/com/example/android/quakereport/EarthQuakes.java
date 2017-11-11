@@ -5,13 +5,13 @@ package com.example.android.quakereport;
  */
 
 public class EarthQuakes {
-    private String itemId;
+
     private String magnitude;
     private String cityname;
     private String date;
 
-    public EarthQuakes(String itemId, String magnitude, String cityname, String date) {
-        this.itemId = itemId;
+    public EarthQuakes(String magnitude, String cityname, String date) {
+
         this.magnitude = magnitude;
         this.cityname = cityname;
         this.date = date;
@@ -29,7 +29,5 @@ public class EarthQuakes {
         return date;
     }
 
-    public String getItemId() {
-        return itemId;
-    }
+
 }

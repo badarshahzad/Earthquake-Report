@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -66,5 +68,23 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
 
         //Return the list item that is now showing the appropriate data
         return listView;
+    }
+
+    /**
+     * @param dateObject Take a Date type object
+     * @return return the date in human readable format e.g "Mar 3, 1984"
+     */
+    private String formateDate(Date dateObject) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM DD, yyyy");
+        return dateFormat.format(dateObject);
+    }
+
+    /**
+     * @param timeObjet Take a Date type object
+     * @return return the time in human readable format e.g "04:00 pm"
+     */
+    private String formateTime(Date timeObjet) {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        return timeFormat.format(timeObjet);
     }
 }

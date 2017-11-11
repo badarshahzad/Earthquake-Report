@@ -46,9 +46,9 @@ public class DataProvider {
         addProduct("CityNameMagnitude", "6.3", "Karachi", "04-04-2015");
     }*/
 
-    public static void addProduct(String itemId, String magnitude, String cityName, String date) {
+    public static void addProduct(String magnitude, String cityName, String date) {
 
-        EarthQuakes value = new EarthQuakes(itemId, magnitude, cityName, date);
+        EarthQuakes value = new EarthQuakes(magnitude, cityName, date);
         productList.add(value);
     }
 
