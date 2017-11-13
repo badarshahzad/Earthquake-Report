@@ -11,18 +11,6 @@ public class DataProvider {
 
     public static List<EarthQuakes> productList = new ArrayList<>();
 
-    static {
-        /*addProduct("4.5", "San Francisco", "04-04-2015");
-        addProduct("4.5", "San Francisco", "04-04-2015");
-        addProduct("4.5", "San Francisco", "04-04-2015");
-        addProduct("4.5", "San Francisco", "04-04-2015");
-        addProduct("4.5", "San Francisco", "04-04-2015");
-        addProduct("4.5", "San Francisco", "04-04-2015");
-        addProduct("4.5", "San Francisco", "04-04-2015");
-        addProduct("4.5", "San Francisco", "04-04-2015");
-        addProduct("4.5", "San Francisco", "04-04-2015");*/
-    }
-
     public static void addProduct(String magnitude, String cityName, String date) {
 
         EarthQuakes value = new EarthQuakes(magnitude, cityName, date);
