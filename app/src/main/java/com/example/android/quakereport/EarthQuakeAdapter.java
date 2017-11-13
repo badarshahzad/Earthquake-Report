@@ -1,8 +1,10 @@
 package com.example.android.quakereport;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,9 +58,10 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
 
         //Here the distance and location is separated by reges index 0 in Km distance
         // and index 1 is the location
-        String[] value = earthQuakesValue.getCityname().split(",");
-        String distance = value[0];
-        String cityName = value[1];
+        String[] parseValue = earthQuakesValue.getCityname().split("(?<=of)");
+
+        String distance = parseValue[0];
+        String cityName = parseValue[1];
 
         //As the time we get from jason in milliseconds (Unix time format)
         // so I converted it into date and time with Date type object
@@ -69,8 +72,8 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
         String date = formateDate(dateObjet);
         //Time converted into human readable format
         String time = formateTime(dateObjet);
-        
-        
+
+
         //Find the TextView with view  ID magnitude
         TextView magnitudeView = listView.findViewById(R.id.magnitude);
         //Display  the magnitude of the current earthquake in the TextView
@@ -79,7 +82,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
         //Find the Textview with view ID for distance
         TextView distanceView = listView.findViewById(R.id.distance);
         distanceView.setText(distance);
-        
+
         //Find the TextView with view ID cityName or Location on earh
         TextView cityNameView = listView.findViewById(R.id.cityName);
         //Display the city name in the TextView
@@ -94,9 +97,59 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
         TextView timeView = listView.findViewById(R.id.time);
         timeView.setText(time);
 
+        //Find the TextView background color of magnitude
+        GradientDrawable magnitudeBackground = (GradientDrawable) magnitudeView.getBackground();
+        //Get the approperiate  background color based on the current earthquake magnitude
+        int magnitudeColor = getMagnitudeColor(magnitude);
+        //set the color on the magnitude value
+        magnitudeBackground.setColor(magnitudeColor);
+
 
         //Return the list item that is now showing the appropriate data
         return listView;
+    }
+
+    private int getMagnitudeColor(String magnitude) {
+
+        //converting string into integer value
+        int magnitudeFloor = (int) Math.floor(Double.valueOf(magnitude));
+
+        //color value setting
+        int magnitudeResourceColorId = 000000;
+
+        switch (magnitudeFloor) {
+            case 1:
+                magnitudeResourceColorId = ContextCompat.getColor(getContext(), R.color.magnitude1);
+                break;
+            case 2:
+                magnitudeResourceColorId = ContextCompat.getColor(getContext(), R.color.magnitude2);
+                break;
+            case 3:
+                magnitudeResourceColorId = ContextCompat.getColor(getContext(), R.color.magnitude3);
+                break;
+            case 4:
+                magnitudeResourceColorId = ContextCompat.getColor(getContext(), R.color.magnitude4);
+                break;
+            case 5:
+                magnitudeResourceColorId = ContextCompat.getColor(getContext(), R.color.magnitude5);
+                break;
+            case 6:
+                magnitudeResourceColorId = ContextCompat.getColor(getContext(), R.color.magnitude6);
+                break;
+            case 7:
+                magnitudeResourceColorId = ContextCompat.getColor(getContext(), R.color.magnitude7);
+                break;
+            case 8:
+                magnitudeResourceColorId = ContextCompat.getColor(getContext(), R.color.magnitude8);
+                break;
+            case 9:
+                magnitudeResourceColorId = ContextCompat.getColor(getContext(), R.color.magnitude9);
+                break;
+            case 10:
+                magnitudeResourceColorId = ContextCompat.getColor(getContext(), R.color.magnitude10plus);
+                break;
+        }
+        return magnitudeResourceColorId;
     }
 
     /**
