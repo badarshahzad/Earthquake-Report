@@ -42,6 +42,7 @@ public class EarthquakeActivity extends AppCompatActivity {
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
     private String TAG = EarthquakeActivity.class.getSimpleName();
     private ListView earthquakeListView;
+    private EarthQuakeAdapter earthListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,16 @@ public class EarthquakeActivity extends AppCompatActivity {
         earthquakeListView = findViewById(R.id.list);
         ActivityCompat.requestPermissions(this, new String[]{"android.permission.INTERNET"}, 1);
         new GetEarthquakeData().execute();
+
+        //Add list view listener to open detail activity of each list view value
+//        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(EarthquakeActivity.this,DetailActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+
     }
 
     private static class HttpHandler {
@@ -118,7 +129,8 @@ public class EarthquakeActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             //Making a request to url and getting response
-            String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2017-11-12&endtime=2017-11-13&minmag=7";
+            String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2017-11-10&endtime=2017-11-14&minmag=1&maxmag=10";
+            //String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson";
             String jasonStr = HttpHandler.makeServeiceCall(url);
 
             //if the internet available and the jason data receive in jasonStr then
@@ -173,7 +185,7 @@ public class EarthquakeActivity extends AppCompatActivity {
 
             List<EarthQuakes> values = DataProvider.productList;
             //custom adapter and giving my context, own view to display, values as list to display in List view
-            EarthQuakeAdapter earthListAdapter = new EarthQuakeAdapter(EarthquakeActivity.this, R.layout.earthquake_item, values);
+            earthListAdapter = new EarthQuakeAdapter(EarthquakeActivity.this, R.layout.earthquake_item, values);
 
 
             // Set the adapter on the {@link ListView}
