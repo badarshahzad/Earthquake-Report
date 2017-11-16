@@ -52,6 +52,7 @@ public class EarthquakeActivity extends AppCompatActivity {
         // Find a reference to the {@link ListView} in the layout
         earthquakeListView = findViewById(R.id.list);
         ActivityCompat.requestPermissions(this, new String[]{"android.permission.INTERNET"}, 1);
+// here we can give the argument in execute the argument could be the `url`
         new GetEarthquakeData().execute();
 
         //Add list view listener to open detail activity of each list view value
@@ -76,6 +77,10 @@ public class EarthquakeActivity extends AppCompatActivity {
                 URL url = new URL(reqUrl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
+//connection.setConnectTimeout(500);
+//check the method 
+//connectionn timeout 
+//check the status is HTTTP.ok or not
                 //read the response
                 InputStream inputStream = new BufferedInputStream(connection.getInputStream());
                 response = converStreamToString(inputStream);
@@ -123,6 +128,15 @@ public class EarthquakeActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             //Give message to user the data is downloading
+
+//	check the internet conneccctivity 
+// ConnectiyManger connecvitiy Manager = () getSystemServer(Context.Connect;
+//NetworkInfor networkInfo = connectvityManager.getActivitNetworInfo();
+//checc the response code 
+//if(netowkrik = =null || !netowkriinfo.isConnected){
+//set text no connection error cancel (true); to cancel the doingbackgroudn return and onCancel you don't go on post executre 
+//you don't go into do in background you just return back
+//}
             Toast.makeText(EarthquakeActivity.this, "Earth Quake Data is loading ...", Toast.LENGTH_LONG).show();
         }
 
