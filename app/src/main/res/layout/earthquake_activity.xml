@@ -37,6 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navBottom"
         android:layout_width="0dp"
@@ -45,13 +46,11 @@
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
-
+        android:background="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/list"
-
         app:menu="@menu/menu_nav" />
-
 
 </android.support.constraint.ConstraintLayout>
