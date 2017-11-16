@@ -11,6 +11,30 @@ public class DataProvider {
 
     public static List<EarthQuakes> productList = new ArrayList<>();
 
+
+    static {
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+        addProduct("6.5", "Mianwali", "1234");
+
+    }
     public static void addProduct(String magnitude, String cityName, String date) {
 
         EarthQuakes value = new EarthQuakes(magnitude, cityName, date);

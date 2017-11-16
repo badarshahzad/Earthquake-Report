@@ -52,8 +52,19 @@ public class EarthquakeActivity extends AppCompatActivity {
         // Find a reference to the {@link ListView} in the layout
         earthquakeListView = findViewById(R.id.list);
         ActivityCompat.requestPermissions(this, new String[]{"android.permission.INTERNET"}, 1);
-// here we can give the argument in execute the argument could be the `url`
-        new GetEarthquakeData().execute();
+
+        List<EarthQuakes> values = DataProvider.productList;
+        //custom adapter and giving my context, own view to display, values as list to display in List view
+        earthListAdapter = new EarthQuakeAdapter(EarthquakeActivity.this, R.layout.earthquake_item, values);
+
+
+        // Set the adapter on the {@link ListView}
+        // so the list can be populated in the user interface
+        earthquakeListView.setAdapter(earthListAdapter);
+
+        // here we can give the argument in execute the argument could be the `url`
+        //to get data from web
+        //new GetEarthquakeData().execute();
 
         //Add list view listener to open detail activity of each list view value
 //        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -137,7 +148,7 @@ public class EarthquakeActivity extends AppCompatActivity {
 //set text no connection error cancel (true); to cancel the doingbackgroudn return and onCancel you don't go on post executre 
 //you don't go into do in background you just return back
 //}
-            Toast.makeText(EarthquakeActivity.this, "Earth Quake Data is loading ...", Toast.LENGTH_LONG).show();
+            Toast.makeText(EarthquakeActivity.this, "Earth Quake Data is loading ...", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -187,6 +198,18 @@ public class EarthquakeActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(), "Couldn't get jason from server. Check your network connection!", Toast.LENGTH_LONG).show();
+
+                        //If internet is not available the sample data will be
+                        List<EarthQuakes> values = DataProvider.productList;
+                        //custom adapter and giving my context, own view to display, values as list to display in List view
+                        earthListAdapter = new EarthQuakeAdapter(EarthquakeActivity.this, R.layout.earthquake_item, values);
+
+
+                        // Set the adapter on the {@link ListView}
+                        // so the list can be populated in the user interface
+                        earthquakeListView.setAdapter(earthListAdapter);
+
+                        Toast.makeText(getApplicationContext(), "Sample Data loaded!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
