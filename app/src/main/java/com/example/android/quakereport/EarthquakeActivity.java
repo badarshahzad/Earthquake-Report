@@ -15,11 +15,14 @@
  */
 package com.example.android.quakereport;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -53,10 +56,9 @@ public class EarthquakeActivity extends AppCompatActivity {
         earthquakeListView = findViewById(R.id.list);
         ActivityCompat.requestPermissions(this, new String[]{"android.permission.INTERNET"}, 1);
 
-        List<EarthQuakes> values = DataProvider.productList;
+        final List<EarthQuakes> values = DataProvider.productList;
         //custom adapter and giving my context, own view to display, values as list to display in List view
         earthListAdapter = new EarthQuakeAdapter(EarthquakeActivity.this, R.layout.earthquake_item, values);
-
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
@@ -64,16 +66,25 @@ public class EarthquakeActivity extends AppCompatActivity {
 
         // here we can give the argument in execute the argument could be the `url`
         //to get data from web
-        //new GetEarthquakeData().execute();
+        new GetEarthquakeData().execute();
 
         //Add list view listener to open detail activity of each list view value
-//        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(EarthquakeActivity.this,DetailActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                //Log.i("URL: ",values.get(position).getUrl());
+                //  Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(values.get(position).getUrl()));
+                Intent intent = new Intent(EarthquakeActivity.this, Map.class);
+                Bundle bundle = new Bundle();
+                bundle.putDouble("LONGITUDE", values.get(position).getLongitude());
+                bundle.putDouble("LATITUDE", values.get(position).getLatitude());
+                bundle.putString("CITY", values.get(position).getCityname());
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            }
+        });
 
     }
 
@@ -154,9 +165,9 @@ public class EarthquakeActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             //Making a request to url and getting response
-            String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2017-11-10&endtime=2017-11-14&minmag=1&maxmag=10";
+            String URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2017-11-10&endtime=2017-11-14&minmag=1&maxmag=10";
             //String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson";
-            String jasonStr = HttpHandler.makeServeiceCall(url);
+            String jasonStr = HttpHandler.makeServeiceCall(URL);
 
             //if the internet available and the jason data receive in jasonStr then
             if (jasonStr != null) {
@@ -181,9 +192,19 @@ public class EarthquakeActivity extends AppCompatActivity {
                         String place = properties.getString("place");
                         //third value date and time get form the properties object
                         String time = properties.getString("time");
+                        //fourth value url if user want to detail
+                        String url = properties.getString("url");
+
+                        JSONObject geometry = indexes.getJSONObject("geometry");
+                        JSONArray coordinates = geometry.getJSONArray("coordinates");
+
+                        double longitude = (double) coordinates.get(0);
+                        double latitude = (double) coordinates.get(1);
+
+
 
                         //inserting values in the list of earth quakes (model) type and making objects
-                        DataProvider.addProduct(mag, place, time);
+                        DataProvider.addProduct(mag, place, time, url, longitude, latitude);
 
                     }
                 } catch (JSONException e) {
