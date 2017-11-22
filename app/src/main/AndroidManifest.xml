@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android.quakereport">
+    package="com.example.android.earthreport">
 
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -32,13 +32,13 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".EarthquakeActivity">
+        <activity android:name="com.example.android.earthreport.EarthquakeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Map" />
+        <activity android:name="com.example.android.earthreport.Map" />
     </application>
 
 </manifest>

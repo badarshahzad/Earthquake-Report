@@ -1,4 +1,4 @@
-package com.example.android.quakereport;
+package com.example.android.earthreport;
 
 /**
  * Created by root on 11/10/17.

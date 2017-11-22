@@ -1,4 +1,4 @@
-package com.example.android.quakereport;
+package com.example.android.earthreport;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -41,7 +41,20 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         LatLng location = new LatLng(latitude, longitude);
         googleMap.addMarker(new MarkerOptions()
                 .position(location)
-                .title(cityName));
+                .title(cityName)
+                .snippet(" Magnitude: 6.5" +
+                        " Time: 03:03 pm " +
+                        " Depth: 19.79"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+
+        LatLng location2 = new LatLng(latitude + 100, longitude - 50);
+        googleMap.addMarker(new MarkerOptions()
+                .position(location2)
+                .title(cityName)
+                .snippet(" Magnitude: 5.5" +
+                        " Time: 03:03 pm " +
+                        " Depth: 19.79"));
+        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(location2));
     }
+
 }

@@ -13,18 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.quakereport;
+package com.example.android.earthreport;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,31 +42,32 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
+    private static final String PREF_FILE = "com.example.android.earthreport.preferences";
+    private static final String KEY_QUAKEVALUES = "KEY_QUAKEVALUES";
+    private static List<EarthQuakes> values;
     private String TAG = EarthquakeActivity.class.getSimpleName();
     private ListView earthquakeListView;
     private EarthQuakeAdapter earthListAdapter;
+    private SharedPreferences.Editor shEditor;
+    private SharedPreferences sharedPreferences;
+    private String jsonConverted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
+        storeList(values);
+
         // Find a reference to the {@link ListView} in the layout
         earthquakeListView = findViewById(R.id.list);
-        ActivityCompat.requestPermissions(this, new String[]{"android.permission.INTERNET"}, 1);
-
-        final List<EarthQuakes> values = DataProvider.productList;
-        //custom adapter and giving my context, own view to display, values as list to display in List view
-        earthListAdapter = new EarthQuakeAdapter(EarthquakeActivity.this, R.layout.earthquake_item, values);
-
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(earthListAdapter);
 
         // here we can give the argument in execute the argument could be the `url`
         //to get data from web
@@ -86,6 +91,61 @@ public class EarthquakeActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    public void storeList(List<EarthQuakes> values) {
+
+        sharedPreferences = getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+        shEditor = sharedPreferences.edit();
+
+        if (sharedPreferences.contains(KEY_QUAKEVALUES)) {
+            String convertedToValues = sharedPreferences.getString(KEY_QUAKEVALUES, null);
+            Gson gson = new Gson();
+            EarthQuakes[] earthQuakes = gson.fromJson(convertedToValues,
+                    EarthQuakes[].class);
+
+            values = Arrays.asList(earthQuakes);
+            values = new ArrayList<EarthQuakes>(values);
+
+            for (int a = 0; a < values.size(); a++) {
+                Log.i("Values", values + "");
+            }
+            DataProvider.setProductList(values);
+        }
+
+
+              /*
+            Gson is a Java library that can be used to convert Java Objects into their
+            JSON representation. It can also be used to convert a JSON string to an
+            equivalent Java object. Gson can work with arbitrary Java objects including
+            pre-existing objects that you do not have source-code of.
+         */
+        Gson gson = new Gson();
+        jsonConverted = gson.toJson(values);
+        shEditor.putString(KEY_QUAKEVALUES, jsonConverted);
+        shEditor.commit();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        shEditor.putString(KEY_QUAKEVALUES, jsonConverted);
+        shEditor.apply();
+
+    }
+
+    //This method store the data
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     private static class HttpHandler {
@@ -100,8 +160,8 @@ public class EarthquakeActivity extends AppCompatActivity {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
 //connection.setConnectTimeout(500);
-//check the method 
-//connectionn timeout 
+//check the method
+//connectionn timeout
 //check the status is HTTTP.ok or not
                 //read the response
                 InputStream inputStream = new BufferedInputStream(connection.getInputStream());
@@ -151,12 +211,12 @@ public class EarthquakeActivity extends AppCompatActivity {
             super.onPreExecute();
             //Give message to user the data is downloading
 
-//	check the internet conneccctivity 
+//	check the internet conneccctivity
 // ConnectiyManger connecvitiy Manager = () getSystemServer(Context.Connect;
 //NetworkInfor networkInfo = connectvityManager.getActivitNetworInfo();
-//checc the response code 
+//checc the response code
 //if(netowkrik = =null || !netowkriinfo.isConnected){
-//set text no connection error cancel (true); to cancel the doingbackgroudn return and onCancel you don't go on post executre 
+//set text no connection error cancel (true); to cancel the doingbackgroudn return and onCancel you don't go on post executre
 //you don't go into do in background you just return back
 //}
             Toast.makeText(EarthquakeActivity.this, "Earth Quake Data is loading ...", Toast.LENGTH_SHORT).show();
@@ -166,7 +226,7 @@ public class EarthquakeActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             //Making a request to url and getting response
             String URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2017-11-10&endtime=2017-11-14&minmag=1&maxmag=10";
-            //String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson";
+            //String URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson";
             String jasonStr = HttpHandler.makeServeiceCall(URL);
 
             //if the internet available and the jason data receive in jasonStr then
@@ -202,7 +262,6 @@ public class EarthquakeActivity extends AppCompatActivity {
                         double latitude = (double) coordinates.get(1);
 
 
-
                         //inserting values in the list of earth quakes (model) type and making objects
                         DataProvider.addProduct(mag, place, time, url, longitude, latitude);
 
@@ -219,18 +278,6 @@ public class EarthquakeActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(), "Couldn't get jason from server. Check your network connection!", Toast.LENGTH_LONG).show();
-
-                        //If internet is not available the sample data will be
-                        List<EarthQuakes> values = DataProvider.productList;
-                        //custom adapter and giving my context, own view to display, values as list to display in List view
-                        earthListAdapter = new EarthQuakeAdapter(EarthquakeActivity.this, R.layout.earthquake_item, values);
-
-
-                        // Set the adapter on the {@link ListView}
-                        // so the list can be populated in the user interface
-                        earthquakeListView.setAdapter(earthListAdapter);
-
-                        Toast.makeText(getApplicationContext(), "Sample Data loaded!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -245,12 +292,11 @@ public class EarthquakeActivity extends AppCompatActivity {
             //custom adapter and giving my context, own view to display, values as list to display in List view
             earthListAdapter = new EarthQuakeAdapter(EarthquakeActivity.this, R.layout.earthquake_item, values);
 
-
-            // Set the adapter on the {@link ListView}
             // so the list can be populated in the user interface
             earthquakeListView.setAdapter(earthListAdapter);
 
         }
 
     }
+
 }

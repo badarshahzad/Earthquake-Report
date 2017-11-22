@@ -14,6 +14,6 @@
      limitations under the License.
 -->
 <resources>
-    <string name="app_name">Quake Report</string>
+    <string name="app_name">Earth Report</string>
     <string name="google_maps_key">AIzaSyDGopBjpemhUOna5YPIIGfIhxhEjvZCByQ</string>
 </resources>
