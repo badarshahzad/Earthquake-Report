@@ -15,20 +15,15 @@
  */
 package com.example.android.earthreport;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,8 +37,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
@@ -55,16 +48,11 @@ public class EarthquakeActivity extends AppCompatActivity {
     private String TAG = EarthquakeActivity.class.getSimpleName();
     private ListView earthquakeListView;
     private EarthQuakeAdapter earthListAdapter;
-    private SharedPreferences.Editor shEditor;
-    private SharedPreferences sharedPreferences;
-    private String jsonConverted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
-
-        storeList(values);
 
         // Find a reference to the {@link ListView} in the layout
         earthquakeListView = findViewById(R.id.list);
@@ -94,58 +82,11 @@ public class EarthquakeActivity extends AppCompatActivity {
 
     }
 
-    public void storeList(List<EarthQuakes> values) {
-
-        sharedPreferences = getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
-        shEditor = sharedPreferences.edit();
-
-        if (sharedPreferences.contains(KEY_QUAKEVALUES)) {
-            String convertedToValues = sharedPreferences.getString(KEY_QUAKEVALUES, null);
-            Gson gson = new Gson();
-            EarthQuakes[] earthQuakes = gson.fromJson(convertedToValues,
-                    EarthQuakes[].class);
-
-            values = Arrays.asList(earthQuakes);
-            values = new ArrayList<EarthQuakes>(values);
-
-            for (int a = 0; a < values.size(); a++) {
-                Log.i("Values", values + "");
-            }
-            DataProvider.setProductList(values);
-        }
-
-
-              /*
-            Gson is a Java library that can be used to convert Java Objects into their
-            JSON representation. It can also be used to convert a JSON string to an
-            equivalent Java object. Gson can work with arbitrary Java objects including
-            pre-existing objects that you do not have source-code of.
-         */
-        Gson gson = new Gson();
-        jsonConverted = gson.toJson(values);
-        shEditor.putString(KEY_QUAKEVALUES, jsonConverted);
-        shEditor.commit();
-
-    }
 
     @Override
     protected void onStop() {
         super.onStop();
-        shEditor.putString(KEY_QUAKEVALUES, jsonConverted);
-        shEditor.apply();
 
-    }
-
-    //This method store the data
-
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
     }
 
     private static class HttpHandler {
