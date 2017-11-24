@@ -15,9 +15,14 @@
  */
 package com.example.android.earthreport;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -41,19 +46,22 @@ import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
-    public static final String LOG_TAG = EarthquakeActivity.class.getName();
+
     private static final String PREF_FILE = "com.example.android.earthreport.preferences";
     private static final String KEY_QUAKEVALUES = "KEY_QUAKEVALUES";
+
     private static List<EarthQuakes> values;
     private String TAG = EarthquakeActivity.class.getSimpleName();
     private ListView earthquakeListView;
     private EarthQuakeAdapter earthListAdapter;
+    private ConstraintLayout constraintView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
+        constraintView = findViewById(R.id.constraint);
         // Find a reference to the {@link ListView} in the layout
         earthquakeListView = findViewById(R.id.list);
 
@@ -79,15 +87,50 @@ public class EarthquakeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    private void showSnackBarMessage() {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "Pause");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "Restart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "Resume");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "Start");
+    }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d(TAG, "Stop");
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "Destroy");
+    }
+
 
     private static class HttpHandler {
 
@@ -151,16 +194,25 @@ public class EarthquakeActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             //Give message to user the data is downloading
+            Toast.makeText(EarthquakeActivity.this,
+                    "Earth Quake Data is loading ...",
+                    Toast.LENGTH_SHORT).show();
+            //	check the internet conneccctivity
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if (networkInfo == null || !networkInfo.isConnected()) {
+                Snackbar.make(constraintView, "Connection Error", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null)
+                        .show();
 
-//	check the internet conneccctivity
-// ConnectiyManger connecvitiy Manager = () getSystemServer(Context.Connect;
-//NetworkInfor networkInfo = connectvityManager.getActivitNetworInfo();
+                cancel(true);
+            }
 //checc the response code
 //if(netowkrik = =null || !netowkriinfo.isConnected){
 //set text no connection error cancel (true); to cancel the doingbackgroudn return and onCancel you don't go on post executre
 //you don't go into do in background you just return back
 //}
-            Toast.makeText(EarthquakeActivity.this, "Earth Quake Data is loading ...", Toast.LENGTH_SHORT).show();
+
         }
 
         @Override
@@ -229,6 +281,9 @@ public class EarthquakeActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
+            Snackbar.make(constraintView, "Data Loaded", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null)
+                    .show();
             List<EarthQuakes> values = DataProvider.productList;
             //custom adapter and giving my context, own view to display, values as list to display in List view
             earthListAdapter = new EarthQuakeAdapter(EarthquakeActivity.this, R.layout.earthquake_item, values);
