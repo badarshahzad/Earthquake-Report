@@ -47,14 +47,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         " Depth: 19.79"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
 
-        LatLng location2 = new LatLng(latitude + 100, longitude - 50);
-        googleMap.addMarker(new MarkerOptions()
-                .position(location2)
-                .title(cityName)
-                .snippet(" Magnitude: 5.5" +
-                        " Time: 03:03 pm " +
-                        " Depth: 19.79"));
-        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(location2));
     }
 
 }
