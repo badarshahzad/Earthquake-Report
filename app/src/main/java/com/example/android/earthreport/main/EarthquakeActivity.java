@@ -23,15 +23,14 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.android.earthreport.FragmentOne;
-import com.example.android.earthreport.FragmentThree;
-import com.example.android.earthreport.FragmentTwo;
+import com.example.android.earthreport.Home;
 import com.example.android.earthreport.R;
+import com.example.android.earthreport.fragments.TimelineFragment;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
@@ -51,24 +50,27 @@ public class EarthquakeActivity extends AppCompatActivity {
                     FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction1.replace(R.id.containerForFragments, fragment1, "FragmentOne Text");
                     fragmentTransaction1.commit();
+                    getSupportActionBar().show();
                     return true;
 
                 case R.id.timeline:
                     Log.i("CLICK", "yes");
                     setTitle("Timeline");
-                    FragmentTwo fragment2 = new FragmentTwo();
+                    TimelineFragment timelineFragment = new TimelineFragment();
                     FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction2.replace(R.id.containerForFragments, fragment2, "FragmentTwo Text");
+                    fragmentTransaction2.replace(R.id.containerForFragments, timelineFragment, "Timeline Text");
                     fragmentTransaction2.commit();
+                    getSupportActionBar().show();
                     return true;
 
                 case R.id.setting:
                     Log.i("CLICK", "yes");
                     setTitle("Setting");
-                    FragmentThree fragment3 = new FragmentThree();
+                    Home homeFragment = new Home();
                     FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction3.replace(R.id.containerForFragments, fragment3, "FragmentThree text");
+                    fragmentTransaction3.replace(R.id.containerForFragments, homeFragment, "Home text");
                     fragmentTransaction3.commit();
+                    getSupportActionBar().hide();
                     return true;
             }
             return false;
@@ -84,10 +86,6 @@ public class EarthquakeActivity extends AppCompatActivity {
         //get the root referance
         root = findViewById(R.id.root);
 
-        //Custom Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         BottomNavigationView navigationView = findViewById(R.id.navBottom);
         navigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
@@ -97,17 +95,18 @@ public class EarthquakeActivity extends AppCompatActivity {
         //fragmenttransaction is the api for performing a set of fragment
         // operatins such as add, remove,  replace, attach ,detach, hide , and show
         FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction1.replace(R.id.containerForFragments, fragment1, "FragmentThree Text");
+        fragmentTransaction1.replace(R.id.containerForFragments, fragment1, "Home Text");
         fragmentTransaction1.commit();
 
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
+        //About option
         menu.add(0, MENU_ITEM_ABOUT, 102, R.string.about);
 
-        menu.add(0, REFRESH, 0, "Refresh");
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
         return true;
     }
 
@@ -160,4 +159,5 @@ public class EarthquakeActivity extends AppCompatActivity {
         super.onDestroy();
         Log.d(TAG, "Destroy");
     }
+
 }
