@@ -4,84 +4,111 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
+    android:layout_margin="8dp"
     tools:context="com.example.android.earthreport.Home"
     tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="25dp">
+    tools:layout_editor_absoluteY="81dp">
 
 
     <TextView
         android:id="@+id/thisMonthEarthquakes"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:text="72565"
-        android:textSize="24sp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/magnitude_circle"
+        android:paddingLeft="15dp"
+        android:paddingTop="25dp"
+        android:text="72345"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textView"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/thisWeekEarthquakes" />
 
     <TextView
         android:id="@+id/thisWeekEarthquakes"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        android:text="72456"
-        android:textSize="24sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/thisMonthEarthquakes"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/magnitude_circle"
+        android:paddingLeft="15dp"
+        android:paddingTop="25dp"
+        android:text="72345"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/thisMonthEarthquakes"
         app:layout_constraintEnd_toStartOf="@+id/textView3"
-        app:layout_constraintStart_toEndOf="@+id/textView2" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/todayEarthquakes" />
 
     <TextView
         android:id="@+id/todayEarthquakes"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/magnitude_circle"
+        android:paddingLeft="15dp"
+        android:paddingTop="25dp"
         android:text="72345"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/thisWeekEarthquakes"
+        app:layout_constraintBottom_toTopOf="@+id/thisWeekEarthquakes"
         app:layout_constraintEnd_toStartOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="32dp"
-        android:text="Month"
+        android:layout_marginStart="8dp"
+        android:text="This Month"
+        android:textSize="24sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/thisMonthEarthquakes"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/thisMonthEarthquakes"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/thisMonthEarthquakes" />
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        android:text="Week"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView"
-        app:layout_constraintEnd_toStartOf="@+id/thisMonthEarthquakes"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="This Week"
+        android:textSize="24sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/thisWeekEarthquakes"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/thisWeekEarthquakes" />
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        android:text="Today"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
-        app:layout_constraintEnd_toStartOf="@+id/thisWeekEarthquakes"
+
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Earthquakes Today"
+        android:textSize="24sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/todayEarthquakes"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/todayEarthquakes" />
 
 
+
 </android.support.constraint.ConstraintLayout>
+

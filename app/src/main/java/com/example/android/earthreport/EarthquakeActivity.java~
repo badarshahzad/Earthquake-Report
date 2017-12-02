@@ -13,20 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.earthreport;
+package com.example.android.quakereport;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -46,91 +39,32 @@ import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
-
-    private static final String PREF_FILE = "com.example.android.earthreport.preferences";
-    private static final String KEY_QUAKEVALUES = "KEY_QUAKEVALUES";
-
-    private static List<EarthQuakes> values;
+    public static final String LOG_TAG = EarthquakeActivity.class.getName();
     private String TAG = EarthquakeActivity.class.getSimpleName();
     private ListView earthquakeListView;
     private EarthQuakeAdapter earthListAdapter;
-    private ConstraintLayout constraintView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        constraintView = findViewById(R.id.constraint);
         // Find a reference to the {@link ListView} in the layout
         earthquakeListView = findViewById(R.id.list);
-
-        // here we can give the argument in execute the argument could be the `url`
-        //to get data from web
+        ActivityCompat.requestPermissions(this, new String[]{"android.permission.INTERNET"}, 1);
+// here we can give the argument in execute the argument could be the `url`
         new GetEarthquakeData().execute();
 
         //Add list view listener to open detail activity of each list view value
-        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                //Log.i("URL: ",values.get(position).getUrl());
-                //  Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(values.get(position).getUrl()));
-                Intent intent = new Intent(EarthquakeActivity.this, Map.class);
-                Bundle bundle = new Bundle();
-                bundle.putDouble("LONGITUDE", values.get(position).getLongitude());
-                bundle.putDouble("LATITUDE", values.get(position).getLatitude());
-                bundle.putString("CITY", values.get(position).getCityname());
-                intent.putExtras(bundle);
-                startActivity(intent);
-
-            }
-        });
+//        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(EarthquakeActivity.this,DetailActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
     }
-
-
-    private void showSnackBarMessage() {
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "Pause");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "Restart");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "Resume");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "Start");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "Stop");
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "Destroy");
-    }
-
 
     private static class HttpHandler {
 
@@ -144,8 +78,8 @@ public class EarthquakeActivity extends AppCompatActivity {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
 //connection.setConnectTimeout(500);
-//check the method
-//connectionn timeout
+//check the method 
+//connectionn timeout 
 //check the status is HTTTP.ok or not
                 //read the response
                 InputStream inputStream = new BufferedInputStream(connection.getInputStream());
@@ -194,33 +128,23 @@ public class EarthquakeActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             //Give message to user the data is downloading
-            Toast.makeText(EarthquakeActivity.this,
-                    "Earth Quake Data is loading ...",
-                    Toast.LENGTH_SHORT).show();
-            //	check the internet conneccctivity
-            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            if (networkInfo == null || !networkInfo.isConnected()) {
-                Snackbar.make(constraintView, "Connection Error", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
 
-                cancel(true);
-            }
-//checc the response code
+//	check the internet conneccctivity 
+// ConnectiyManger connecvitiy Manager = () getSystemServer(Context.Connect;
+//NetworkInfor networkInfo = connectvityManager.getActivitNetworInfo();
 //if(netowkrik = =null || !netowkriinfo.isConnected){
-//set text no connection error cancel (true); to cancel the doingbackgroudn return and onCancel you don't go on post executre
+//set text no connection error cancel (true); to cancel the doingbackgroudn return and onCancel you don't go on post executre 
 //you don't go into do in background you just return back
 //}
-
+            Toast.makeText(EarthquakeActivity.this, "Earth Quake Data is loading ...", Toast.LENGTH_LONG).show();
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             //Making a request to url and getting response
-            String URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2017-11-10&endtime=2017-11-14&minmag=1&maxmag=10";
-            //String URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson";
-            String jasonStr = HttpHandler.makeServeiceCall(URL);
+            String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2017-11-10&endtime=2017-11-14&minmag=1&maxmag=10";
+            //String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson";
+            String jasonStr = HttpHandler.makeServeiceCall(url);
 
             //if the internet available and the jason data receive in jasonStr then
             if (jasonStr != null) {
@@ -245,18 +169,9 @@ public class EarthquakeActivity extends AppCompatActivity {
                         String place = properties.getString("place");
                         //third value date and time get form the properties object
                         String time = properties.getString("time");
-                        //fourth value url if user want to detail
-                        String url = properties.getString("url");
-
-                        JSONObject geometry = indexes.getJSONObject("geometry");
-                        JSONArray coordinates = geometry.getJSONArray("coordinates");
-
-                        double longitude = (double) coordinates.get(0);
-                        double latitude = (double) coordinates.get(1);
-
 
                         //inserting values in the list of earth quakes (model) type and making objects
-                        DataProvider.addProduct(mag, place, time, url, longitude, latitude);
+                        DataProvider.addProduct(mag, place, time);
 
                     }
                 } catch (JSONException e) {
@@ -281,18 +196,16 @@ public class EarthquakeActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            Snackbar.make(constraintView, "Data Loaded", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null)
-                    .show();
             List<EarthQuakes> values = DataProvider.productList;
             //custom adapter and giving my context, own view to display, values as list to display in List view
             earthListAdapter = new EarthQuakeAdapter(EarthquakeActivity.this, R.layout.earthquake_item, values);
 
+
+            // Set the adapter on the {@link ListView}
             // so the list can be populated in the user interface
             earthquakeListView.setAdapter(earthListAdapter);
 
         }
 
     }
-
 }
