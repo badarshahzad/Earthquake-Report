@@ -1,4 +1,4 @@
-package com.example.android.earthreport;
+package com.example.android.earthreport.model;
 
 import java.util.ArrayList;
 import java.util.List;

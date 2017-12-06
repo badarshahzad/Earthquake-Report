@@ -1,4 +1,4 @@
-package com.example.android.earthreport;
+package com.example.android.earthreport.model;
 
 /**
  * Created by root on 11/10/17.
@@ -13,6 +13,7 @@ public class EarthQuakes {
     private double longitude;
     private double latitude;
 
+
     public EarthQuakes(String magnitude, String cityname, String date, String url, double longitude, double latitude) {
 
         this.url = url;
@@ -21,6 +22,7 @@ public class EarthQuakes {
         this.date = date;
         this.longitude = longitude;
         this.latitude = latitude;
+
     }
 
     public String getMagnitude() {
@@ -46,4 +48,6 @@ public class EarthQuakes {
     public double getLatitude() {
         return latitude;
     }
+
+
 }

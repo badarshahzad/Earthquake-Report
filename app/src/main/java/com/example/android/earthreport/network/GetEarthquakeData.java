@@ -12,11 +12,12 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.android.earthreport.DataProvider;
 import com.example.android.earthreport.EarthQuakeAdapter;
-import com.example.android.earthreport.EarthQuakes;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.main.EarthquakeActivity;
+import com.example.android.earthreport.model.DataProvider;
+import com.example.android.earthreport.model.EarthQuakes;
+import com.example.android.earthreport.model.EarthQuakesCount;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +38,7 @@ import java.util.List;
  * Created by root on 11/24/17.
  */
 //This url handling and getting data learn from www.tutorialspoint.com/android/android_json_parser.htm
-public class GetEarthquakeData extends AsyncTask<Void, Void, Void> {
+public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
 
 
     public String TAG = GetEarthquakeData.class.getSimpleName();
@@ -90,21 +91,20 @@ public class GetEarthquakeData extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(Void... voids) {
-
+    protected Void doInBackground(String... voids) {
         //Making a request to url and getting response
         //String URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2017-11-10&endtime=2017-11-14&minmag=1&maxmag=10";
         //String URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2017-11-10&endtime=2017-11-14&minmag=1&maxmag=10";
 
         //one hour
-        //String URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
+        // String URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
 
         //one day
-        String URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+        //String URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
 
         //String URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson";
 
-        String jasonStr = HttpHandler.makeServeiceCall(URL);
+        String jasonStr = HttpHandler.makeServeiceCall(voids[0]);
 
         //if the internet available and the jason data receive in jasonStr then
         if (jasonStr != null) {
@@ -115,7 +115,12 @@ public class GetEarthquakeData extends AsyncTask<Void, Void, Void> {
                 //get json string values as an object
                 JSONObject root = new JSONObject(jasonStr);
                 //get the json arrray from jason object
-                JSONArray features = root.getJSONArray("features");
+                final JSONArray features = root.getJSONArray("features");
+
+                //set the count of earthQuakes
+                EarthQuakesCount.TODAY_EARTHQUAKES = features.length();
+                EarthQuakesCount.WEEK_EARTHQUAKES = features.length();
+                Log.i("COUNT", features.length() + "");
 
                 for (int a = 0; a < features.length(); a++) {
                     //get the indexes values of objects from features array
@@ -139,8 +144,10 @@ public class GetEarthquakeData extends AsyncTask<Void, Void, Void> {
                     double latitude = (double) coordinates.get(1);
 
 
+                    int totalEarthquakes = features.length();
                     //inserting values in the list of earth quakes (model) type and making objects
                     DataProvider.addProduct(mag, place, time, url, longitude, latitude);
+                    Log.i(TAG, "data added " + mag + " " + place + " " + time);
 
                 }
             } catch (JSONException e) {

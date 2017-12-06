@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.android.earthreport.model.EarthQuakes;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -59,7 +61,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
         //Here the distance and location is separated by reges index 0 in Km distance
         // and index 1 is the location
         //?<=of is the string that just pick string including 'of' also init
-        // and remaining will beat 2nd index
+        // and remaining will be 2nd index
         String[] parseValue = earthQuakesValue.getCityname().split("(?<=of)");
 
         String distance = null;
@@ -74,9 +76,6 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
             distance = parseValue[0];
             cityName = parseValue[1];
         }
-
-
-
 
         //As the time we get from jason in milliseconds (Unix time format)
         // so I converted it into date and time with Date type object
@@ -136,7 +135,6 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
             int magnitudeFloor = (int) Math.floor(Double.valueOf(magnitude));
 
             //color value setting
-
 
             switch (magnitudeFloor) {
 

@@ -14,7 +14,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.android.earthreport.model.DataProvider;
 import com.example.android.earthreport.network.GetEarthquakeData;
+
+import java.util.ArrayList;
 
 
 /**
@@ -61,9 +64,14 @@ public class FragmentOne extends Fragment {
         // Find a reference to the {@link ListView} in the layout
         earthquakeListView = view.findViewById(R.id.list);
 
+        //Data replicate in listview due to this I add for just when view appear listview
+        // instance recereate and assigned (check):
+        DataProvider.valuesList = new ArrayList<>();
+
+        String url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
         // here we can give the argument in execute the argument could be the `url`
         //to get data from web
-        new GetEarthquakeData(getContext(), earthquakeListView).execute();
+        new GetEarthquakeData(getContext(), earthquakeListView).execute(url);
 
         //Add list view listener to open detail activity of each list view value
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

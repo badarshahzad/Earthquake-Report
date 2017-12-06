@@ -28,8 +28,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.android.earthreport.FragmentOne;
-import com.example.android.earthreport.Home;
 import com.example.android.earthreport.R;
+import com.example.android.earthreport.fragments.HomeFragment;
 import com.example.android.earthreport.fragments.TimelineFragment;
 
 public class EarthquakeActivity extends AppCompatActivity {
@@ -44,33 +44,30 @@ public class EarthquakeActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.home:
-                    Log.i("CLICK", "yes");
                     setTitle("Home");
-                    FragmentOne fragment1 = new FragmentOne();
-                    FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction1.replace(R.id.containerForFragments, fragment1, "FragmentOne Text");
-                    fragmentTransaction1.commit();
-                    getSupportActionBar().show();
+                    HomeFragment homeFragment = new HomeFragment();
+                    FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction3.replace(R.id.containerForFragments, homeFragment, "Home text");
+                    fragmentTransaction3.commit();
+//                    getSupportActionBar().show();
                     return true;
 
                 case R.id.timeline:
-                    Log.i("CLICK", "yes");
                     setTitle("Timeline");
                     TimelineFragment timelineFragment = new TimelineFragment();
                     FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction2.replace(R.id.containerForFragments, timelineFragment, "Timeline Text");
                     fragmentTransaction2.commit();
-                    getSupportActionBar().show();
+//                    getSupportActionBar().show();
                     return true;
 
                 case R.id.setting:
-                    Log.i("CLICK", "yes");
                     setTitle("Setting");
-                    Home homeFragment = new Home();
-                    FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction3.replace(R.id.containerForFragments, homeFragment, "Home text");
-                    fragmentTransaction3.commit();
-                    getSupportActionBar().hide();
+                    FragmentOne fragment1 = new FragmentOne();
+                    FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction1.replace(R.id.containerForFragments, fragment1, "FragmentOne Text");
+                    fragmentTransaction1.commit();
+//                    getSupportActionBar().hide();
                     return true;
             }
             return false;
@@ -91,12 +88,13 @@ public class EarthquakeActivity extends AppCompatActivity {
 
         //when the app starts fragment three will be displayed
         setTitle("Home");
-        FragmentOne fragment1 = new FragmentOne();
+        HomeFragment homeFragment = new HomeFragment();
         //fragmenttransaction is the api for performing a set of fragment
         // operatins such as add, remove,  replace, attach ,detach, hide , and show
-        FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction1.replace(R.id.containerForFragments, fragment1, "Home Text");
-        fragmentTransaction1.commit();
+        FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
+        //Optional tag name at then end for the fragment to retrive when necessery to find fragment
+        fragmentTransaction3.replace(R.id.containerForFragments, homeFragment, "Home text");
+        fragmentTransaction3.commit();
 
     }
 
@@ -119,6 +117,8 @@ public class EarthquakeActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
 //                Toast.makeText(context,"You select about",Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.action_refresh:
+
         }
         return super.onOptionsItemSelected(item);
     }
