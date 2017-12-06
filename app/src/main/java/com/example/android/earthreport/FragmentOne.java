@@ -54,7 +54,7 @@ public class FragmentOne extends Fragment {
 
         // Find a reference to the {@link ListView} in the layout
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_fragment_one, container, false);
+        View view = inflater.inflate(R.layout.fragment_datalist, container, false);
         // To get the referance we don't have findviewbyId method in fragment so we use view
 
 
