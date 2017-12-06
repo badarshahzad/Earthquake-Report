@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.android.earthreport.model.DataProvider;
 import com.example.android.earthreport.network.GetEarthquakeData;
@@ -27,7 +26,6 @@ public class FragmentOne extends Fragment {
 
     private static final String TAG = FragmentOne.class.getSimpleName();
     //main activity root
-    private TextView textView;
     private ListView earthquakeListView;
 
     public FragmentOne() {
@@ -58,8 +56,7 @@ public class FragmentOne extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragment_one, container, false);
         // To get the referance we don't have findviewbyId method in fragment so we use view
-        textView = view.findViewById(R.id.textview);
-        textView.setText("First Fragment");
+
 
         // Find a reference to the {@link ListView} in the layout
         earthquakeListView = view.findViewById(R.id.list);

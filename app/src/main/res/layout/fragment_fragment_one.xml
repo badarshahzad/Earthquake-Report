@@ -5,13 +5,6 @@
     android:orientation="vertical"
     tools:context="com.example.android.earthreport.FragmentOne">
 
-    <TextView
-        android:id="@+id/textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="First fragment 1"
-        android:textSize="42sp" />
-
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
