@@ -2,11 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.earthreport.fragments.WeekFragment">
+    tools:context="com.example.android.earthreport.fragments.TodayFragment">
+
 
     <ListView
-        android:id="@+id/weekList"
+        android:id="@+id/todayList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
 </FrameLayout>

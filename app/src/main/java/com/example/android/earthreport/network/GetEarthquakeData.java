@@ -31,6 +31,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -45,10 +46,17 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
     private Context context;
     private ListView earthquakeListView;
     private EarthQuakeAdapter earthListAdapter;
+    private DataProvider dataProvider;
 
+    //2 argument constructor for any unexpected errors
     public GetEarthquakeData(Context context, ListView earthquakeListView) {
         this.context = context;
         this.earthquakeListView = earthquakeListView;
+    }
+    public GetEarthquakeData(Context context, ListView earthquakeListView, List<EarthQuakes> valuesList ) {
+        this.context = context;
+        this.earthquakeListView = earthquakeListView;
+        dataProvider.setValuesList(valuesList);
 
     }
 
@@ -140,8 +148,12 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
                     JSONObject geometry = indexes.getJSONObject("geometry");
                     JSONArray coordinates = geometry.getJSONArray("coordinates");
 
-                    double longitude = (double) coordinates.get(0);
-                    double latitude = (double) coordinates.get(1);
+                    //I test on 5 different devices but on QMobile Android version 4.3 this error occure
+                    //double longitude = (double) coordinates.get(0);
+                    //Honestly just one device show an error don't cast Integer while other didn't give error?
+                    //So, i simply with concatenate a string with interger and parse it into double :)
+                    double longitude = Double.valueOf(coordinates.get(0)+"");
+                    double latitude = Double.valueOf(coordinates.get(1)+"");
 
 
                     int totalEarthquakes = features.length();
@@ -176,7 +188,7 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        List<EarthQuakes> values = DataProvider.valuesList;
+        List<EarthQuakes> values = DataProvider.getValuesList();
         //custom adapter and giving my context, own view to display, values as list to display in List view
         earthListAdapter = new EarthQuakeAdapter(context, R.layout.earthquake_item, values);
 

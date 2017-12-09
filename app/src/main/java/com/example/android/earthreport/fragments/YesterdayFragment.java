@@ -4,60 +4,60 @@ package com.example.android.earthreport.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.android.earthreport.Map;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.DataProvider;
-import com.example.android.earthreport.model.EarthQuakesCount;
+import com.example.android.earthreport.model.EarthQuakes;
 import com.example.android.earthreport.network.GetEarthquakeData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class YesterdayFragment extends Fragment {
 
-    private static final String TAG = HomeFragment.class.getSimpleName();
-    private ListView earthquakeListView;
+    public final static String YESTERDAY = "Yesterday";
+    private ListView earthquakeListViewYesterday;
+    private DataProvider dataProvider;
 
-    private TextView todayTxt;
-    public HomeFragment() {
+    public YesterdayFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        // Find a reference to the {@link ListView} in the layout
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        // To get the referance we don't have findviewbyId method in fragment so we use view
+        View view = inflater.inflate(R.layout.fragment_yesterday, container, false);
 
-
-        // Find a reference to the {@link ListView} in the layout
-        earthquakeListView = view.findViewById(R.id.dataList);
+        //Find the reference of Listview
+        earthquakeListViewYesterday = (ListView) view.findViewById(R.id.yesterdayList);
 
         //Data replicate in listview due to this I add for just when view appear listview
         // instance recereate and assigned (check):
-        DataProvider.valuesList = new ArrayList<>();
 
+        dataProvider = new DataProvider();
+        List<EarthQuakes> yesterdayValuesList = new ArrayList<>();
+        dataProvider.setValuesList(yesterdayValuesList);
+
+        //Yesterday Url
         String url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+
         // here we can give the argument in execute the argument could be the `url`
         //to get data from web
-        new GetEarthquakeData(getContext(), earthquakeListView).execute(url);
+        new GetEarthquakeData(getContext(), earthquakeListViewYesterday).execute(url);
 
         //Add list view listener to open detail activity of each list view value
-        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        earthquakeListViewYesterday.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -67,28 +67,17 @@ public class HomeFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
 
-                bundle.putDouble("LONGITUDE", DataProvider.valuesList.get(position).getLongitude());
-                bundle.putDouble("LATITUDE", DataProvider.valuesList.get(position).getLatitude());
-                bundle.putString("CITY", DataProvider.valuesList.get(position).getCityname());
+                bundle.putDouble("LONGITUDE", dataProvider.getValuesList().get(position).getLongitude());
+                bundle.putDouble("LATITUDE", dataProvider.getValuesList().get(position).getLatitude());
+                bundle.putString("CITY", dataProvider.getValuesList().get(position).getCityname());
                 intent.putExtras(bundle);
                 startActivity(intent);
 
             }
         });
 
-
-        // container is viewgroup root and return fragment layout root view
-        // return view;
-        // Inflate the layout for this fragment
-        //View view = inflater.inflate(R.layout.fragment_home, container, false);
-        Log.i("LALA", "TodayFragment counts 123");
-        todayTxt = view.findViewById(R.id.todayEarthquakes);
-        todayTxt.setText(EarthQuakesCount.TODAY_EARTHQUAKES + "");
-        Log.i("LALA", "TodayFragment counts" + todayTxt.getText().toString());
-
-
         return view;
-    }
 
+    }
 
 }

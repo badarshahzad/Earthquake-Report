@@ -7,7 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.example.android.earthreport.fragments.MonthFragment;
-import com.example.android.earthreport.fragments.PastDayFragment;
+import com.example.android.earthreport.fragments.TodayFragment;
+import com.example.android.earthreport.fragments.YesterdayFragment;
 import com.example.android.earthreport.fragments.WeekFragment;
 
 import java.util.ArrayList;
@@ -32,16 +33,16 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
 
         switch (position) {
-//            case 0:
-//                HourFragment hourFragment = new HourFragment();
-//                return hourFragment;
             case 0:
-                PastDayFragment pastDayFragment = new PastDayFragment();
-                return pastDayFragment;
+                TodayFragment todayFragment = new TodayFragment();
+                return todayFragment;
             case 1:
+                YesterdayFragment yesterdayFragment = new YesterdayFragment();
+                return yesterdayFragment;
+            case 2:
                 WeekFragment weekFragment = new WeekFragment();
                 return weekFragment;
-            case 2:
+            case 3:
                 MonthFragment monthFragment = new MonthFragment();
                 return monthFragment;
             default:

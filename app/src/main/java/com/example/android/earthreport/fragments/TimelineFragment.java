@@ -25,7 +25,7 @@ public class TimelineFragment extends Fragment {
 
 
     private static final int MENU_ITEM_ABOUT = 1000;
-    String[] tabTitle = {"Hour", "Yesterday", "Week", "Month"};
+    //String[] tabTitle = {"Today", "Yesterday", "Week", "Month"};
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
@@ -77,7 +77,7 @@ public class TimelineFragment extends Fragment {
         // first add adapter then do somthing! :)
         tabLayout.setupWithViewPager(viewPager);
 //        tabLayout.addTab(tabLayout.newTab().setText(HourFragment.HOUR));
-//        tabLayout.addTab(tabLayout.newTab().setText(PastDayFragment.YESTERDAY));
+//        tabLayout.addTab(tabLayout.newTab().setText(YesterdayFragment.YESTERDAY));
 //        tabLayout.addTab(tabLayout.newTab().setText(WeekFragment.WEEK));
 //        tabLayout.addTab(tabLayout.newTab().setText(MonthFragment.MONTH));
 
@@ -122,14 +122,14 @@ public class TimelineFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
 
-        HourFragment hourFragment = new HourFragment();
-        PastDayFragment pastDayFragment = new PastDayFragment();
+        TodayFragment todayFragment= new TodayFragment();
+        YesterdayFragment yesterdayFragment = new YesterdayFragment();
         WeekFragment weekFragment = new WeekFragment();
         MonthFragment monthFragment = new MonthFragment();
 
         adapter = new ViewPagerAdapter(getFragmentManager());
-        //  adapter.addFragment(hourFragment,hourFragment.HOUR);
-        adapter.addFragment(pastDayFragment, PastDayFragment.YESTERDAY);
+        adapter.addFragment(todayFragment,TodayFragment.TODAY);
+        adapter.addFragment(yesterdayFragment, YesterdayFragment.YESTERDAY);
         adapter.addFragment(weekFragment, WeekFragment.WEEK);
         adapter.addFragment(monthFragment, MonthFragment.MONTH);
         viewPager.setAdapter(adapter);
