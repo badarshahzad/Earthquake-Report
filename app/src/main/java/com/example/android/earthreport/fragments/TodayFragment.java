@@ -13,11 +13,9 @@ import android.widget.ListView;
 import com.example.android.earthreport.Map;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.DataProvider;
-import com.example.android.earthreport.model.EarthQuakes;
 import com.example.android.earthreport.network.GetEarthquakeData;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +25,6 @@ public class TodayFragment extends Fragment {
     public final static String TODAY = "Today";
 
     private ListView earthquakeListViewToday;
-    private DataProvider dataProvider;
     public TodayFragment() {
         // Required empty public constructor
     }
@@ -41,13 +38,11 @@ public class TodayFragment extends Fragment {
             View view = inflater.inflate(R.layout.fragment_today, container, false);
 
             //Find the reference of Listview
-            earthquakeListViewToday = (ListView) view.findViewById(R.id.todayList);
+        earthquakeListViewToday = view.findViewById(R.id.todayList);
 
             //Data replicate in listview due to this I add for just when view appear listview
             // instance recereate and assigned (check):
-            dataProvider = new DataProvider();
-            List<EarthQuakes> todayValuesList = new ArrayList<>();
-            dataProvider.setValuesList(todayValuesList);
+        DataProvider.valuesList = new ArrayList<>();
 
 
             //Today Url
@@ -58,7 +53,7 @@ public class TodayFragment extends Fragment {
             new GetEarthquakeData(getContext(), earthquakeListViewToday).execute(url);
 
             //Add list view listener to open detail activity of each list view value
-            earthquakeListViewToday.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        earthquakeListViewToday.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -68,10 +63,9 @@ public class TodayFragment extends Fragment {
 
                     Bundle bundle = new Bundle();
 
-                    bundle.putDouble("LONGITUDE", dataProvider.getValuesList().get(position).getLongitude());
-                    bundle.putDouble("LATITUDE", dataProvider.getValuesList().get(position).getLatitude());
-                    bundle.putString("CITY", dataProvider.getValuesList().get(position).getCityname());
-                    intent.putExtras(bundle);
+                    bundle.putDouble("LONGITUDE", DataProvider.valuesList.get(position).getLongitude());
+                    bundle.putDouble("LATITUDE", DataProvider.valuesList.get(position).getLatitude());
+                    bundle.putString("CITY", DataProvider.valuesList.get(position).getCityname());
                     startActivity(intent);
 
                 }

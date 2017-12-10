@@ -13,10 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.android.earthreport.model.DataProvider;
 import com.example.android.earthreport.network.GetEarthquakeData;
-
-import java.util.ArrayList;
 
 
 /**
@@ -63,7 +60,7 @@ public class FragmentOne extends Fragment {
 
         //Data replicate in listview due to this I add for just when view appear listview
         // instance recereate and assigned (check):
-        DataProvider.valuesList = new ArrayList<>();
+//        DataProvider.valuesList = new ArrayList<>();
 
         String url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
         // here we can give the argument in execute the argument could be the `url`
@@ -81,9 +78,9 @@ public class FragmentOne extends Fragment {
 
                 Bundle bundle = new Bundle();
 
-                bundle.putDouble("LONGITUDE", DataProvider.valuesList.get(position).getLongitude());
-                bundle.putDouble("LATITUDE", DataProvider.valuesList.get(position).getLatitude());
-                bundle.putString("CITY", DataProvider.valuesList.get(position).getCityname());
+//                bundle.putDouble("LONGITUDE", DataProvider.valuesList.get(position).getLongitude());
+//                bundle.putDouble("LATITUDE", DataProvider.valuesList.get(position).getLatitude());
+//                bundle.putString("CITY", DataProvider.valuesList.get(position).getCityname());
                 intent.putExtras(bundle);
                 startActivity(intent);
 

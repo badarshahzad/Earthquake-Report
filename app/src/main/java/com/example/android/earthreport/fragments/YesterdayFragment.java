@@ -13,11 +13,9 @@ import android.widget.ListView;
 import com.example.android.earthreport.Map;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.DataProvider;
-import com.example.android.earthreport.model.EarthQuakes;
 import com.example.android.earthreport.network.GetEarthquakeData;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -27,7 +25,7 @@ public class YesterdayFragment extends Fragment {
 
     public final static String YESTERDAY = "Yesterday";
     private ListView earthquakeListViewYesterday;
-    private DataProvider dataProvider;
+
 
     public YesterdayFragment() {
         // Required empty public constructor
@@ -40,14 +38,12 @@ public class YesterdayFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_yesterday, container, false);
 
         //Find the reference of Listview
-        earthquakeListViewYesterday = (ListView) view.findViewById(R.id.yesterdayList);
+        earthquakeListViewYesterday = view.findViewById(R.id.yesterdayList);
 
         //Data replicate in listview due to this I add for just when view appear listview
         // instance recereate and assigned (check):
+        DataProvider.valuesList = new ArrayList<>();
 
-        dataProvider = new DataProvider();
-        List<EarthQuakes> yesterdayValuesList = new ArrayList<>();
-        dataProvider.setValuesList(yesterdayValuesList);
 
         //Yesterday Url
         String url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
@@ -67,9 +63,9 @@ public class YesterdayFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
 
-                bundle.putDouble("LONGITUDE", dataProvider.getValuesList().get(position).getLongitude());
-                bundle.putDouble("LATITUDE", dataProvider.getValuesList().get(position).getLatitude());
-                bundle.putString("CITY", dataProvider.getValuesList().get(position).getCityname());
+                bundle.putDouble("LONGITUDE", DataProvider.valuesList.get(position).getLongitude());
+                bundle.putDouble("LATITUDE", DataProvider.valuesList.get(position).getLatitude());
+                bundle.putString("CITY", DataProvider.valuesList.get(position).getCityname());
                 intent.putExtras(bundle);
                 startActivity(intent);
 

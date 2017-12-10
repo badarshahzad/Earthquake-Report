@@ -31,7 +31,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -46,17 +45,14 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
     private Context context;
     private ListView earthquakeListView;
     private EarthQuakeAdapter earthListAdapter;
-    private DataProvider dataProvider;
 
-    //2 argument constructor for any unexpected errors
+    public GetEarthquakeData() {
+
+    }
+       
     public GetEarthquakeData(Context context, ListView earthquakeListView) {
         this.context = context;
         this.earthquakeListView = earthquakeListView;
-    }
-    public GetEarthquakeData(Context context, ListView earthquakeListView, List<EarthQuakes> valuesList ) {
-        this.context = context;
-        this.earthquakeListView = earthquakeListView;
-        dataProvider.setValuesList(valuesList);
 
     }
 
@@ -188,7 +184,7 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        List<EarthQuakes> values = DataProvider.getValuesList();
+        List<EarthQuakes> values = DataProvider.valuesList;
         //custom adapter and giving my context, own view to display, values as list to display in List view
         earthListAdapter = new EarthQuakeAdapter(context, R.layout.earthquake_item, values);
 
