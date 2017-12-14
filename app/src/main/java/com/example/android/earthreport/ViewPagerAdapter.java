@@ -8,8 +8,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.example.android.earthreport.fragments.MonthFragment;
 import com.example.android.earthreport.fragments.TodayFragment;
-import com.example.android.earthreport.fragments.YesterdayFragment;
 import com.example.android.earthreport.fragments.WeekFragment;
+import com.example.android.earthreport.fragments.YesterdayFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private final List<Fragment> fragmentList = new ArrayList<>();
     private final List<String> fragmentTitleList = new ArrayList<>();
-    int numberOfTabs;
+    // int numberOfTabs;
 
     public ViewPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);

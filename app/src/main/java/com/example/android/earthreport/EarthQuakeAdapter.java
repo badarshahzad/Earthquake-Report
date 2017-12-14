@@ -180,7 +180,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
      * @param dateObject Take a Date type object
      * @return return the date in human readable format e.g "Nov 11, 2017"
      */
-    private String formateDate(Date dateObject) {
+    public String formateDate(Date dateObject) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
         return dateFormat.format(dateObject);
     }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,10 +13,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.android.earthreport.FilterDialog;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.ViewPagerAdapter;
+import com.example.android.earthreport.model.EarthQuakes;
+import com.example.android.earthreport.network.GetEarthquakeData;
+
+import java.util.ArrayList;
 
 
 /**
@@ -25,11 +33,16 @@ public class TimelineFragment extends Fragment {
 
 
     private static final int MENU_ITEM_ABOUT = 1000;
+    ArrayList<EarthQuakes> earthQuakesList;
     //String[] tabTitle = {"Today", "Yesterday", "Week", "Month"};
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
     private View view;
+    private View view2;
+    private String todayURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+    private ProgressBar progressBar;
+    private ListView earthquakeListView;
 
     public TimelineFragment() {
         // Required empty public constructor
@@ -54,7 +67,21 @@ public class TimelineFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            Toast.makeText(getContext(), "Yes", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Timline refresh", Toast.LENGTH_SHORT).show();
+        }
+        if (id == R.id.action_filter) {
+            //Toast.makeText(getContext(), "Timline Filter", Toast.LENGTH_SHORT).show();
+
+            //-------Show dialog-----------
+            FragmentManager fm = getFragmentManager();
+            FilterDialog filterDialog = new FilterDialog();
+            filterDialog.show(fm, "");
+
+            //-------------Show Activity---
+            //  Intent intent = new Intent(getContext(), ShowEarthquakeDetails.class);
+            //   startActivity(intent);
+
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -63,9 +90,22 @@ public class TimelineFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //TODO:Set the timline view I have two views :Timline Change
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_timeline, container, false);
 
+        //test the one list only
+        view2 = inflater.inflate(R.layout.fragment_datalist, container, false);
+
+        earthquakeListView = view2.findViewById(R.id.list);
+
+        progressBar = view2.findViewById(R.id.progress_bar);
+
+        earthQuakesList = new ArrayList<>();
+
+        // Get data from web of this hour earthquakes
+        GetEarthquakeData getEarthquakeData = new GetEarthquakeData(getContext(), earthquakeListView, earthQuakesList);
+        getEarthquakeData.execute(todayURL);
         viewPager = view.findViewById(R.id.viewPager);
         //viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(4);
@@ -76,28 +116,6 @@ public class TimelineFragment extends Fragment {
         //Sudo don't forget ever
         // first add adapter then do somthing! :)
         tabLayout.setupWithViewPager(viewPager);
-//        tabLayout.addTab(tabLayout.newTab().setText(HourFragment.HOUR));
-//        tabLayout.addTab(tabLayout.newTab().setText(YesterdayFragment.YESTERDAY));
-//        tabLayout.addTab(tabLayout.newTab().setText(WeekFragment.WEEK));
-//        tabLayout.addTab(tabLayout.newTab().setText(MonthFragment.MONTH));
-
-
-     /*   tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });*/
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -107,6 +125,7 @@ public class TimelineFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
+
                 viewPager.setCurrentItem(position, false);
             }
 
@@ -116,7 +135,7 @@ public class TimelineFragment extends Fragment {
             }
         });
 
-        return view;
+        return view2;
     }
 
 
@@ -134,6 +153,15 @@ public class TimelineFragment extends Fragment {
         adapter.addFragment(monthFragment, MonthFragment.MONTH);
         viewPager.setAdapter(adapter);
     }
+
+    public void displayProgressBar(boolean display) {
+        if (display) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
 
 
 }

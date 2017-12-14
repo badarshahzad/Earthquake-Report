@@ -20,17 +20,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.android.earthreport.FragmentOne;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.fragments.HomeFragment;
+import com.example.android.earthreport.fragments.SettingFragment;
 import com.example.android.earthreport.fragments.TimelineFragment;
+import com.example.android.earthreport.network.DownloadData;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
@@ -46,14 +45,14 @@ public class EarthquakeActivity extends AppCompatActivity {
                 case R.id.home:
                     setTitle("Home");
                     HomeFragment homeFragment = new HomeFragment();
-                    FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction3.replace(R.id.containerForFragments, homeFragment, "Home text");
-                    fragmentTransaction3.commit();
+                    FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction1.replace(R.id.containerForFragments, homeFragment, "Home text");
+                    fragmentTransaction1.commit();
 //                    getSupportActionBar().show();
                     return true;
 
                 case R.id.timeline:
-                    setTitle("Timeline");
+                    setTitle("Earthquake List");
                     TimelineFragment timelineFragment = new TimelineFragment();
                     FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction2.replace(R.id.containerForFragments, timelineFragment, "Timeline Text");
@@ -63,17 +62,16 @@ public class EarthquakeActivity extends AppCompatActivity {
 
                 case R.id.setting:
                     setTitle("Setting");
-                    FragmentOne fragment1 = new FragmentOne();
-                    FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction1.replace(R.id.containerForFragments, fragment1, "FragmentOne Text");
-                    fragmentTransaction1.commit();
+                    SettingFragment settingFragment = new SettingFragment();
+                    FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction3.replace(R.id.containerForFragments, settingFragment, "FragmentOne Text");
+                    fragmentTransaction3.commit();
 //                    getSupportActionBar().hide();
                     return true;
             }
             return false;
         }
     };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,36 +89,52 @@ public class EarthquakeActivity extends AppCompatActivity {
         HomeFragment homeFragment = new HomeFragment();
         //fragmenttransaction is the api for performing a set of fragment
         // operatins such as add, remove,  replace, attach ,detach, hide , and show
-        FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         //Optional tag name at then end for the fragment to retrive when necessery to find fragment
-        fragmentTransaction3.replace(R.id.containerForFragments, homeFragment, "Home text");
-        fragmentTransaction3.commit();
+        fragmentTransaction.replace(R.id.containerForFragments, homeFragment, "Home text");
+        fragmentTransaction.commit();
+
+
+        //Go and fetch Today, Yesterday, Week, and Month Earthquakes Now
+        //  String month = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
+        //   String week = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+        //  String day = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+
+        // String []dataFetchURLS = {day,day,week,month};
+        //    String []dataFetchURLS = {day};
+        //    gogogo(dataFetchURLS);
+
+        //   DataProvider dataProvider = new DataProvider();
+        //Show the size of list data was enter
+        //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(0).size(),Toast.LENGTH_LONG).show();
+        //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(1).size(),Toast.LENGTH_LONG).show();
+        //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(2).size(),Toast.LENGTH_LONG).show();
+        //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(3).size(),Toast.LENGTH_LONG).show();
+
 
     }
 
+    private void gogogo(final String[] URLS) {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //About option
-        menu.add(0, MENU_ITEM_ABOUT, 102, R.string.about);
 
-        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
-        return true;
-    }
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case MENU_ITEM_ABOUT:
-                Snackbar.make(root, "You selected about.", Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
-//                Toast.makeText(context,"You select about",Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.action_refresh:
+                // Get data from web
+                for (int a = 0; a < URLS.length; a++) {
 
-        }
-        return super.onOptionsItemSelected(item);
+//                    DownloadData getEarthquakeData = new DownloadData(DataProvider.arrayLists.get(a));
+                    DownloadData getEarthquakeData = new DownloadData();
+
+                    getEarthquakeData.execute(URLS);
+                }
+
+            }
+        };
+
+        Thread th = new Thread(runnable);
+        th.start();
     }
 
     @Override

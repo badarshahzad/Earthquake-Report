@@ -13,6 +13,18 @@
     tools:layout_editor_absoluteY="81dp">
 
 
+    <FrameLayout
+        android:id="@+id/containerForFragments"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="0dp"
+
+        app:layout_constraintBottom_toTopOf="@+id/navBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.564"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></FrameLayout>
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navBottom"
         android:layout_width="0dp"
@@ -25,19 +37,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_nav" />
-
-    <FrameLayout
-        android:id="@+id/containerForFragments"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-
-        android:layout_marginTop="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/navBottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.564"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </FrameLayout>
-
 
 </android.support.constraint.ConstraintLayout>

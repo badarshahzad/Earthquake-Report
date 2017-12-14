@@ -92,4 +92,5 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="about">About</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

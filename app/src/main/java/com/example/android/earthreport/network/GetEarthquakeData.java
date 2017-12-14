@@ -15,9 +15,7 @@ import android.widget.Toast;
 import com.example.android.earthreport.EarthQuakeAdapter;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.main.EarthquakeActivity;
-import com.example.android.earthreport.model.DataProvider;
 import com.example.android.earthreport.model.EarthQuakes;
-import com.example.android.earthreport.model.EarthQuakesCount;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +29,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
+import java.util.ArrayList;
 
 
 /**
@@ -42,18 +40,25 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
 
 
     public String TAG = GetEarthquakeData.class.getSimpleName();
+    //what is List and ArrayList difference? List<EarthQuakes> earthQuakesList;
+    ArrayList<EarthQuakes> earthQuakesList;
     private Context context;
     private ListView earthquakeListView;
-    private EarthQuakeAdapter earthListAdapter;
+
+    // private String todayEarthquakesCountUrl = "https://earthquake.usgs.gov/fdsnws/event/1/count?starttime=2017-12-10";
+    private int count;
+
+    //private EarthQuakeAdapter earthListAdapter;
 
     public GetEarthquakeData() {
 
     }
-       
-    public GetEarthquakeData(Context context, ListView earthquakeListView) {
+
+    public GetEarthquakeData(Context context, ListView earthquakeListView, ArrayList<EarthQuakes> earthQuakesList) {
         this.context = context;
         this.earthquakeListView = earthquakeListView;
-
+//        earthQuakesList = new ArrayList<>();
+        this.earthQuakesList = earthQuakesList;
     }
 
     @Override
@@ -61,9 +66,10 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
         super.onPreExecute();
 
         //Give message to user the data is downloading
-        Toast.makeText(context,
-                "Earth Quake Data is loading ...",
-                Toast.LENGTH_SHORT).show();
+        // Toast.makeText(context,
+        //         "Earth Quake Data is loading ...",
+        //         Toast.LENGTH_SHORT).show();
+
 
         //Wifi turn off/on
         final WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
@@ -94,19 +100,10 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
         }
     }
 
+
     @Override
     protected Void doInBackground(String... voids) {
         //Making a request to url and getting response
-        //String URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2017-11-10&endtime=2017-11-14&minmag=1&maxmag=10";
-        //String URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2017-11-10&endtime=2017-11-14&minmag=1&maxmag=10";
-
-        //one hour
-        // String URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
-
-        //one day
-        //String URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
-
-        //String URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson";
 
         String jasonStr = HttpHandler.makeServeiceCall(voids[0]);
 
@@ -116,15 +113,11 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
             //Created a dumivalues list of earthquake magnitude, cityname and date
 
             try {
+
                 //get json string values as an object
                 JSONObject root = new JSONObject(jasonStr);
                 //get the json arrray from jason object
                 final JSONArray features = root.getJSONArray("features");
-
-                //set the count of earthQuakes
-                EarthQuakesCount.TODAY_EARTHQUAKES = features.length();
-                EarthQuakesCount.WEEK_EARTHQUAKES = features.length();
-                Log.i("COUNT", features.length() + "");
 
                 for (int a = 0; a < features.length(); a++) {
                     //get the indexes values of objects from features array
@@ -148,16 +141,17 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
                     //double longitude = (double) coordinates.get(0);
                     //Honestly just one device show an error don't cast Integer while other didn't give error?
                     //So, i simply with concatenate a string with interger and parse it into double :)
-                    double longitude = Double.valueOf(coordinates.get(0)+"");
-                    double latitude = Double.valueOf(coordinates.get(1)+"");
+                    double longitude = Double.valueOf(coordinates.get(0) + "");
+                    double latitude = Double.valueOf(coordinates.get(1) + "");
 
-
-                    int totalEarthquakes = features.length();
                     //inserting values in the list of earth quakes (model) type and making objects
-                    DataProvider.addProduct(mag, place, time, url, longitude, latitude);
+                    earthQuakesList.add(new EarthQuakes(mag, place, time, url, longitude, latitude));
+                    //DataProvider.addProduct(mag, place, time, url, longitude, latitude);
                     Log.i(TAG, "data added " + mag + " " + place + " " + time);
 
                 }
+
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -177,6 +171,8 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
                 }
             });
         }
+
+
         return null;
     }
 
@@ -184,16 +180,19 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        List<EarthQuakes> values = DataProvider.valuesList;
+        //List<EarthQuakes> values = DataProvider.valuesList;
         //custom adapter and giving my context, own view to display, values as list to display in List view
-        earthListAdapter = new EarthQuakeAdapter(context, R.layout.earthquake_item, values);
+        EarthQuakeAdapter earthListAdapter = new EarthQuakeAdapter(context, R.layout.earthquake_item, earthQuakesList);
+
+        //TODO: Show progressbar
 
         // so the list can be populated in the user interface
         earthquakeListView.setAdapter(earthListAdapter);
 
     }
 
-    private static class HttpHandler {
+
+    public static class HttpHandler {
 
         public String TAG = HttpHandler.class.getSimpleName();
 
@@ -244,5 +243,6 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
         }
 
     }
+
 
 }
