@@ -1,59 +1,147 @@
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="5dp"
-    tools:context="com.example.android.earthreport.FilterDialog">
+
+    tools:context="com.example.android.earthreport.FilterDialog"
+    tools:layout_editor_absoluteY="81dp">
+
+    <!--Period Text-->
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Period"
+        app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintEnd_toStartOf="@+id/period"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--Period-->
+    <Spinner
+        android:id="@+id/period"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+
+        android:layout_marginTop="8dp"
+        android:entries="@array/period"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="@+id/textView5" />
 
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/dialogAlertRoot"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!--Max Text-->
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Max"
+        app:layout_constraintBottom_toTopOf="@+id/textView9"
+        app:layout_constraintEnd_toStartOf="@+id/max_of"
+        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <!--Max Spinner-->
+    <Spinner
+        android:id="@+id/max_of"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+
+        android:layout_marginTop="8dp"
+        android:entries="@array/min_earthquakes"
+        app:layout_constraintBottom_toBottomOf="@+id/textView7"
+        app:layout_constraintEnd_toEndOf="@+id/min_of"
+        app:layout_constraintStart_toStartOf="@+id/min_of"
+        app:layout_constraintTop_toTopOf="@+id/textView7" />
 
 
-        <Button
-            android:id="@+id/done_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+    <!--Min Text-->
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Min"
+        app:layout_constraintBottom_toTopOf="@+id/textView7"
+        app:layout_constraintEnd_toStartOf="@+id/min_of"
+        app:layout_constraintStart_toStartOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:text="Done"
-            app:layout_constraintBottom_toBottomOf="@+id/dialogAlertRoot"
-            app:layout_constraintEnd_toEndOf="@+id/dialogAlertRoot" />
+    <!--Min Spinner-->
+    <Spinner
+        android:id="@+id/min_of"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
 
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:src="@drawable/ic_timelapse_black_24dp"
-            app:layout_constraintBottom_toTopOf="@+id/done_filter"
-            app:layout_constraintEnd_toStartOf="@+id/spinner"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="100dp"
-            android:layout_height="22dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            app:layout_constraintBottom_toTopOf="@+id/done_filter"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageButton2"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="8dp"
+        android:entries="@array/min_earthquakes"
+        app:layout_constraintBottom_toBottomOf="@+id/textView6"
+        app:layout_constraintEnd_toEndOf="@+id/period"
+        app:layout_constraintStart_toStartOf="@+id/period"
+        app:layout_constraintTop_toTopOf="@+id/textView6" />
 
 
-    </android.support.constraint.ConstraintLayout>
+    <!--Region Text-->
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Region"
+        app:layout_constraintBottom_toTopOf="@+id/done_filter"
+        app:layout_constraintEnd_toStartOf="@+id/region_of"
+        app:layout_constraintStart_toStartOf="@+id/textView7"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
-</android.support.v7.widget.CardView>
+    <!---Region -->
+    <Spinner
+        android:id="@+id/region_of"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+
+        android:layout_marginTop="8dp"
+        android:entries="@array/region"
+        app:layout_constraintBottom_toBottomOf="@+id/textView9"
+        app:layout_constraintEnd_toEndOf="@+id/max_of"
+        app:layout_constraintStart_toStartOf="@+id/max_of"
+        app:layout_constraintTop_toTopOf="@+id/textView9" />
+
+
+    <!--Done-->
+    <Button
+        android:id="@+id/done_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="9dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+
+        android:elevation="0dp"
+        android:text="Done"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/region_of" />
+
+
+</android.support.constraint.ConstraintLayout>
+

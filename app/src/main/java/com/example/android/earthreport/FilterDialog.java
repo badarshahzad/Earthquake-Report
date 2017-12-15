@@ -25,7 +25,6 @@ public class FilterDialog extends DialogFragment {
         }
     };
 
-
     public FilterDialog() {
         // Required empty public constructor
     }
@@ -39,6 +38,12 @@ public class FilterDialog extends DialogFragment {
 
         Button donefilter = view.findViewById(R.id.done_filter);
         donefilter.setOnClickListener(donefilterAction);
+
+
+        //TODO: Add
+        // This hour , Yesterday, weeek, month ,
+        // min and max magnitude
+        // region
 
         return view;
     }

@@ -14,13 +14,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.android.earthreport.Map;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.ShowEarthquakeDetails;
 import com.example.android.earthreport.model.DataProvider;
@@ -44,12 +40,12 @@ public class HomeFragment extends Fragment {
     public static String TODAY_COUNT_KEY = "todayCountkey";
     public static String WEEK_COUNT_KEY = "weekCountkey";
     public static String MONTH_COUNT_KEY = "monthCountkey";
+
     public static Handler handler;
+
     public TextView todayEarthquakes;
     public TextView thisMonthEarthquakes;
     public TextView thisWeekEarthquakes;
-    ArrayList<EarthQuakes> earthQuakesList;
-    String[] countURLS = new String[3];
     View.OnClickListener showDataList = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -58,19 +54,16 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         }
     };
+    private ArrayList<EarthQuakes> earthQuakesList;
+    private String[] countURLS = new String[3];
     private ProgressBar progressBar;
-    private ListView earthquakeListView;
     //This hour earthQuakes url (query to get values) | Below I concatenate the date for todady
     private String thisHourURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
     //Today earthquakes count
-    private String todayEarthquakesCountURL = "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=";
-    //Week earthquakes count
-    private String weekEarthquakesCountURL = "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=";
-    //Month earthquakes count
-    private String monthEarthquakesCountURL = "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=";
+    private String CountURL = "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=";
 
     public HomeFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -121,35 +114,6 @@ public class HomeFragment extends Fragment {
         //Find a reference to the {@link Progressbar} int the layout
         progressBar = view.findViewById(R.id.progress_bar);
 
-        // Find a reference to the {@link ListView} in the layout
-        // The application is working fine without casting?
-        // Honestly I didn't add any external library yet
-        earthquakeListView = view.findViewById(R.id.dataList);
-
-     /*   //----------Checking Retrofit------------
-        //  retrofiDataFetch();
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(todayEarthquakesCountURL)
-                .addConverterFactory(GsonConverterFactory.create());
-
-        Retrofit retrofit = builder.build();
-
-        GitHubClient client = retrofit.create(GitHubClient.class);
-        Call<List<GitHubRepo>> call = client.reposForUser("fs-opensource");
-        call.enqueue(new Callback<List<GitHubRepo>>() {
-            @Override
-            public void onResponse(Call<List<GitHubRepo>> call, Response<List<GitHubRepo>> response) {
-                //actuallyy got a response
-              Toast.makeText(getContext(),"Data Fetched:"+response.body().get(0),Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(Call<List<GitHubRepo>> call, Throwable t) {
-                //on internet failure
-                Toast.makeText(getContext(),"Error: Network Failure",Toast.LENGTH_SHORT).show();
-            }
-        });
-       // -----------*/
 
         // Data replicate in listview due to creation of activity
         // I added for just when view appear listview
@@ -179,13 +143,13 @@ public class HomeFragment extends Fragment {
         // thisHourURL = thisHourURL + date;
 
         //today date concatenate url string
-        countURLS[0] = todayEarthquakesCountURL + todayDate;
+        countURLS[0] = CountURL + todayDate;
 
         //week concatenate url string
-        countURLS[1] = weekEarthquakesCountURL + weekDate;
+        countURLS[1] = CountURL + weekDate;
 
         //month concatenate url string
-        countURLS[2] = monthEarthquakesCountURL + monthDate;
+        countURLS[2] = CountURL + monthDate;
 
 
         //Fetch today earthquakes count
@@ -200,6 +164,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void handleMessage(Message msg) {
 
+                //TODO: If net is not available handle this in network package
+                //But progressbar issue?
+
                 Bundle bundle = msg.getData();
 
                 String todayCount = bundle.getString(TODAY_COUNT_KEY);
@@ -211,35 +178,17 @@ public class HomeFragment extends Fragment {
                 thisWeekEarthquakes.setText(weekCount);
                 thisMonthEarthquakes.setText(monthCount);
 
+                //Toast.makeText(getContext(), "Home Refresh", Toast.LENGTH_SHORT).show();
+
                 //Stop the progressbar and hide
                 displayProgressBar(false);
             }
         };
 
-        // Get data from web of this hour earthquakes
-        GetEarthquakeData getEarthquakeData = new GetEarthquakeData(getContext(), earthquakeListView, earthQuakesList);
-        getEarthquakeData.execute(thisHourURL);
-
-
         //Add listeners to the Circles and Textviews
         todayEarthquakes.setOnClickListener(showDataList);
         thisWeekEarthquakes.setOnClickListener(showDataList);
         thisMonthEarthquakes.setOnClickListener(showDataList);
-
-        //Add list view listener to open detail activity of each list view value
-        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), Map.class);
-                Bundle bundle = new Bundle();
-                bundle.putDouble("LONGITUDE", earthQuakesList.get(position).getLongitude());
-                bundle.putDouble("LATITUDE", earthQuakesList.get(position).getLatitude());
-                bundle.putString("CITY", earthQuakesList.get(position).getCityname());
-                intent.putExtras(bundle);
-                startActivity(intent);
-
-            }
-        });
 
         return view;
     }
@@ -318,11 +267,6 @@ public class HomeFragment extends Fragment {
 
         //Referesh will update the earthquakes count and hourly earthquakes list
         if (itemId == R.id.action_refresh) {
-            Toast.makeText(getContext(), "Home Update", Toast.LENGTH_SHORT).show();
-
-            //there could be many other ways to update the listview values what I did this below
-            //Referesh menu click and values again fetch and update the listview
-            new GetEarthquakeData(getContext(), earthquakeListView, earthQuakesList).execute(thisHourURL);
 
             //Fetch today earthquakes count
             dataFetch(countURLS);

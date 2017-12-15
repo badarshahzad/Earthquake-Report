@@ -1,25 +1,25 @@
 package com.example.android.earthreport.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.android.earthreport.FilterDialog;
+import com.example.android.earthreport.Map;
 import com.example.android.earthreport.R;
-import com.example.android.earthreport.ViewPagerAdapter;
 import com.example.android.earthreport.model.EarthQuakes;
 import com.example.android.earthreport.network.GetEarthquakeData;
 
@@ -34,12 +34,9 @@ public class TimelineFragment extends Fragment {
 
     private static final int MENU_ITEM_ABOUT = 1000;
     ArrayList<EarthQuakes> earthQuakesList;
-    //String[] tabTitle = {"Today", "Yesterday", "Week", "Month"};
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private ViewPagerAdapter adapter;
+
     private View view;
-    private View view2;
+
     private String todayURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
     private ProgressBar progressBar;
     private ListView earthquakeListView;
@@ -47,7 +44,6 @@ public class TimelineFragment extends Fragment {
     public TimelineFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +55,7 @@ public class TimelineFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //Firstly clear the existed menu & and add my own menu
         menu.clear();
-        menu.add(0, MENU_ITEM_ABOUT, 102, R.string.about);
+        // menu.add(0, MENU_ITEM_ABOUT, 102, R.string.about);
         inflater.inflate(R.menu.menu_timline, menu);
     }
 
@@ -90,69 +86,40 @@ public class TimelineFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //TODO:Set the timline view I have two views :Timline Change
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_timeline, container, false);
+        //TODO:Set the timline view
+
 
         //test the one list only
-        view2 = inflater.inflate(R.layout.fragment_datalist, container, false);
+        view = inflater.inflate(R.layout.fragment_datalist, container, false);
 
-        earthquakeListView = view2.findViewById(R.id.list);
+        earthquakeListView = view.findViewById(R.id.list);
 
-        progressBar = view2.findViewById(R.id.progress_bar);
+        progressBar = view.findViewById(R.id.progress_bar);
 
         earthQuakesList = new ArrayList<>();
 
         // Get data from web of this hour earthquakes
         GetEarthquakeData getEarthquakeData = new GetEarthquakeData(getContext(), earthquakeListView, earthQuakesList);
         getEarthquakeData.execute(todayURL);
-        viewPager = view.findViewById(R.id.viewPager);
-        //viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(4);
-        setupViewPager(viewPager);
 
-        tabLayout = view.findViewById(R.id.tablayout);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-        //Sudo don't forget ever
-        // first add adapter then do somthing! :)
-        tabLayout.setupWithViewPager(viewPager);
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-                viewPager.setCurrentItem(position, false);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), Map.class);
+                Bundle bundle = new Bundle();
+                bundle.putDouble("LONGITUDE", earthQuakesList.get(position).getLongitude());
+                bundle.putDouble("LATITUDE", earthQuakesList.get(position).getLatitude());
+                bundle.putString("CITY", earthQuakesList.get(position).getCityname());
+                intent.putExtras(bundle);
+                startActivity(intent);
 
             }
         });
 
-        return view2;
+
+        return view;
     }
 
-
-    private void setupViewPager(ViewPager viewPager) {
-
-        TodayFragment todayFragment= new TodayFragment();
-        YesterdayFragment yesterdayFragment = new YesterdayFragment();
-        WeekFragment weekFragment = new WeekFragment();
-        MonthFragment monthFragment = new MonthFragment();
-
-        adapter = new ViewPagerAdapter(getFragmentManager());
-        adapter.addFragment(todayFragment,TodayFragment.TODAY);
-        adapter.addFragment(yesterdayFragment, YesterdayFragment.YESTERDAY);
-        adapter.addFragment(weekFragment, WeekFragment.WEEK);
-        adapter.addFragment(monthFragment, MonthFragment.MONTH);
-        viewPager.setAdapter(adapter);
-    }
 
     public void displayProgressBar(boolean display) {
         if (display) {
@@ -161,7 +128,6 @@ public class TimelineFragment extends Fragment {
             progressBar.setVisibility(View.INVISIBLE);
         }
     }
-
 
 
 }
