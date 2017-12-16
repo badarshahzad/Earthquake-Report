@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,32 +18,41 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.earthreport.EarthQuakeAdapter;
 import com.example.android.earthreport.FilterDialog;
 import com.example.android.earthreport.Map;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.EarthQuakes;
+import com.example.android.earthreport.network.EarthquakeLoader;
 import com.example.android.earthreport.network.GetEarthquakeData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TimelineFragment extends Fragment {
+public class TimelineFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<EarthQuakes>> {
 
 
     private static final int MENU_ITEM_ABOUT = 1000;
-    public static ArrayList<EarthQuakes> earthQuakesArrayList;
+    public static List<EarthQuakes> earthQuakesArrayList;
     private final String TAG = TimelineFragment.class.getSimpleName();
     public FilterDialog filterDialog;
-    private View view;
     private String todayURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+    private View view;
+    //private View emptyView;
+    private TextView emptyText;
     private ProgressBar progressBar;
     private ListView earthquakeListView;
     private GetEarthquakeData getEarthquakeData;
+    private EarthQuakeAdapter earthListAdapter;
+
+
 
     public TimelineFragment() {
         // Required empty public constructor
@@ -92,7 +103,13 @@ public class TimelineFragment extends Fragment {
 
 
         //test the one list only
-        view = inflater.inflate(R.layout.fragment_datalist, container, false);
+        view = inflater.inflate(R.layout.fragment_timeline, container, false);
+
+        emptyText = view.findViewById(R.id.empty);
+
+        //TODO:Empty view
+        //emptyview
+        //emptyView = inflater.inflate(R.layout.fragment_empty, container, false);
 
         earthquakeListView = view.findViewById(R.id.list);
 
@@ -102,8 +119,16 @@ public class TimelineFragment extends Fragment {
         earthQuakesArrayList = new ArrayList<>();
 
         // Get data from web of this hour earthquakes
-        getEarthquakeData = new GetEarthquakeData(getContext(), earthquakeListView);
-        getEarthquakeData.execute(todayURL);
+        // getEarthquakeData = new GetEarthquakeData(getContext(), earthquakeListView);
+        // getEarthquakeData.execute(todayURL);
+
+
+        earthListAdapter = new EarthQuakeAdapter(getContext(), R.layout.earthquake_item, earthQuakesArrayList);
+        earthquakeListView.setAdapter(earthListAdapter);
+
+        Log.d(TAG, "getLoaderManger init: ");
+        getLoaderManager().initLoader(1, null, this).forceLoad();
+        Log.d(TAG, "getLoaderManger created: ");
 
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -166,6 +191,35 @@ public class TimelineFragment extends Fragment {
         //Update view
         //  EarthQuakeAdapter earthListAdapter = new EarthQuakeAdapter(getContext(), R.layout.earthquake_item, earthQuakesArrayList);
         //  earthquakeListView.setAdapter(earthListAdapter);
+    }
+
+
+    @Override
+    public Loader<List<EarthQuakes>> onCreateLoader(int id, Bundle args) {
+        Log.d(TAG, "onCreateLoader: ");
+        return new EarthquakeLoader(getContext(), todayURL);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<EarthQuakes>> loader, List<EarthQuakes> data) {
+
+        Log.d(TAG, "onLoadFinished: ");
+
+        earthListAdapter.clear();
+        earthListAdapter.addAll(data);
+
+        emptyText.setVisibility(View.VISIBLE);
+        earthquakeListView.setEmptyView(emptyText);
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<EarthQuakes>> loader) {
+
+        earthListAdapter.clear();
+        Log.d(TAG, "onLoaderReset: ");
+        earthListAdapter.setEarthQuakesList(new ArrayList<EarthQuakes>());
+
     }
 
 

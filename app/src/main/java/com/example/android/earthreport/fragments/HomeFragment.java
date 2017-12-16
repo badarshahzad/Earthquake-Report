@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -54,7 +55,7 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         }
     };
-    private ArrayList<EarthQuakes> earthQuakesList;
+    private List<EarthQuakes> earthQuakesList;
     private String[] countURLS = new String[3];
     private ProgressBar progressBar;
     //This hour earthQuakes url (query to get values) | Below I concatenate the date for todady

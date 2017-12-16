@@ -5,7 +5,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,19 +39,23 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
         // Check if there is an existing list item view ( called convertView) that we can resuse,
         // otherwise, if convertview is null,  then inflate a new list item layout
+
         View listView = convertView;
-        Log.i("ViewBefore", "" + listView);
+        //Log.i("ViewBefore", "" + listView);
+
         if (listView == null) {
-            Log.i("ViewInIf", "null");
+
+            // Log.i("ViewInIf", "null");
             listView = LayoutInflater.from(getContext()).inflate(R.layout.earthquake_item, parent, false);
 
         }
 
         //Find the earthquake at the given positions
         EarthQuakes earthQuakesValue = earthQuakesQuakesValues.get(position);
-        Log.i("EarthQuakes value index", "" + position);
+        //Log.i("EarthQuakes value index", "" + position);
 
         //Here I get the values from EarthQuakes model getter
         //from EarthQuakes getter method get the value of magnitude
@@ -125,6 +128,27 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
 
         //Return the list item that is now showing the appropriate data
         return listView;
+    }
+
+    public void setEarthQuakesList(List<EarthQuakes> data) {
+        earthQuakesQuakesValues.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    @Override
+    public int getCount() {
+        return super.getCount();
+    }
+
+    @Nullable
+    @Override
+    public EarthQuakes getItem(int position) {
+        return super.getItem(position);
     }
 
     private int getMagnitudeColor(String magnitude) {
