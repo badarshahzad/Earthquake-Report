@@ -153,21 +153,23 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
 
 
             //if the jason string is null that could be the case when internet is no available
-        } else {
-            Log.e(TAG, "Couldn't get jason from server.");
+        }
+        /*else {
+
+            //Log.e(TAG, "Couldn't get jason from server.");
 
             //I get the idea of runnign below thread from Sir Sarmad example
             ((Activity) context).runOnUiThread(new Runnable() {
                 //runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(context, "Couldn't get jason from server. Check your network connection!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "No internet connection!", Toast.LENGTH_LONG).show();
                     //Toast.makeText(getApplicationContext(), "Couldn't get jason from server. Check your network connection!", Toast.LENGTH_LONG).show();
                 }
             });
-        }
+        }*/
 
-        Log.d(TAG, "loadInBackground: finished ");
+      //  Log.d(TAG, "loadInBackground: finished ");
         return earthQuakesArrayList;
     }
 

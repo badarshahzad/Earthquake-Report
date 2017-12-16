@@ -66,11 +66,6 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        //Give message to user the data is downloading
-        // Toast.makeText(context,
-        //         "Earth Quake Data is loading ...",
-        //         Toast.LENGTH_SHORT).show();
-
 
         //Wifi turn off/on
         final WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);

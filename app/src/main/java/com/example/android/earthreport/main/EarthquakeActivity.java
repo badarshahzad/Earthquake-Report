@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -62,8 +63,8 @@ public class EarthquakeActivity extends AppCompatActivity {
 
                 case R.id.setting:
                     setTitle("Setting");
-                    SettingFragment settingFragment = new SettingFragment();
-                    FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
+                    Fragment settingFragment = new SettingFragment.SettingPreferenceFragment();
+                    FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction().replace(R.id.containerForFragments, new SettingFragment());
                     fragmentTransaction3.replace(R.id.containerForFragments, settingFragment, "FragmentOne Text");
                     fragmentTransaction3.commit();
 //                    getSupportActionBar().hide();

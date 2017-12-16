@@ -198,7 +198,7 @@ public class HomeFragment extends Fragment {
         if (display) {
             progressBar.setVisibility(View.VISIBLE);
         } else {
-            progressBar.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.GONE);
         }
     }
 

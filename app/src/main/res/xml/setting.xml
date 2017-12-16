@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="General">
+
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="alert_notification"
+        android:title="Alert Notification" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Filter Option">
+        <ListPreference
+            android:defaultValue="1"
+            android:key="@string/key_min_magnitude"
+            android:title="@string/min_magnitude_title"
+            android:entries="@array/min_earthquakes"/>
+
+        <ListPreference
+            android:defaultValue="5"
+            android:key="@string/key_max_magnitude"
+            android:title="@string/title_max_magnitude"
+            android:entries="@array/max_earthquakes"/>
+
+        <ListPreference
+            android:defaultValue="4"
+            android:key="key_sort"
+            android:title="@string/title_sort"
+            android:entries="@array/sort_array"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pre_title_notification">
+
+        <RingtonePreference
+            android:defaultValue="content://settings/system/notification_sound"
+            android:dependency="notifications_new_message"
+            android:key="@string/notifications_new_message"
+            android:ringtoneType="notification"
+            android:summary="@string/notification_summary"
+            android:title="@string/pref_title_ringtone"/>
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/key_vibrate"
+            android:summary="@string/summary_vibrate"
+            android:title="@string/title_vibrate"
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_title_about">
+
+        <Preference
+            android:selectable="false"
+            android:summary="This is 7th Semester Android Application Project. Programming is my dream and my crush. I love to do programming."
+            />
+        <Preference
+            android:summary="v1.0.0"
+            android:title="@string/title_version"/>
+        <Preference
+            android:key="@string/key_send_feedback"
+            android:summary="@string/summary_feedback"
+            android:title="@string/send_feedback"
+            />
+
+
+    </PreferenceCategory>
+</PreferenceScreen>
