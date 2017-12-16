@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.android.earthreport.fragments.TimelineFragment;
 
 
 /**
@@ -17,10 +20,30 @@ import android.widget.Toast;
 public class FilterDialog extends DialogFragment {
 
 
+    private String selectedPeriod;
+    private String selectedMin;
+    private String selectedMax;
+    private String selectedregion;
+
+
+    private Spinner period;
+    private Spinner minMagnitude;
+    private Spinner maxMagnitude;
+    private Spinner region;
+
     View.OnClickListener donefilterAction = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Toast.makeText(getActivity(), "Test", Toast.LENGTH_LONG).show();
+
+            selectedPeriod = String.valueOf(period.getSelectedItem());
+            selectedMin = String.valueOf(minMagnitude.getSelectedItem());
+            selectedMax = String.valueOf(maxMagnitude.getSelectedItem());
+            selectedregion = String.valueOf(region.getSelectedItem());
+
+            TimelineFragment timelineFragment = new TimelineFragment();
+            timelineFragment.filterRefreshList(selectedPeriod, selectedMin, selectedMax, selectedregion);
+
             getDialog().dismiss();
         }
     };
@@ -45,7 +68,30 @@ public class FilterDialog extends DialogFragment {
         // min and max magnitude
         // region
 
+        period = view.findViewById(R.id.period);
+        minMagnitude = view.findViewById(R.id.min_of);
+        maxMagnitude = view.findViewById(R.id.max_of);
+        region = view.findViewById(R.id.region_of);
+
+
         return view;
+    }
+
+
+    public String getSelectedPeriod() {
+        return selectedPeriod;
+    }
+
+    public String getSelectedMin() {
+        return selectedMin;
+    }
+
+    public String getSelectedMax() {
+        return selectedMax;
+    }
+
+    public String getSelectedregion() {
+        return selectedregion;
     }
 
 }

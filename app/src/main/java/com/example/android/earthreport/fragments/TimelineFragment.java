@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,13 +34,14 @@ public class TimelineFragment extends Fragment {
 
 
     private static final int MENU_ITEM_ABOUT = 1000;
-    ArrayList<EarthQuakes> earthQuakesList;
-
+    public static ArrayList<EarthQuakes> earthQuakesArrayList;
+    private final String TAG = TimelineFragment.class.getSimpleName();
+    public FilterDialog filterDialog;
     private View view;
-
     private String todayURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
     private ProgressBar progressBar;
     private ListView earthquakeListView;
+    private GetEarthquakeData getEarthquakeData;
 
     public TimelineFragment() {
         // Required empty public constructor
@@ -70,7 +72,7 @@ public class TimelineFragment extends Fragment {
 
             //-------Show dialog-----------
             FragmentManager fm = getFragmentManager();
-            FilterDialog filterDialog = new FilterDialog();
+            filterDialog = new FilterDialog();
             filterDialog.show(fm, "");
 
             //-------------Show Activity---
@@ -96,10 +98,11 @@ public class TimelineFragment extends Fragment {
 
         progressBar = view.findViewById(R.id.progress_bar);
 
-        earthQuakesList = new ArrayList<>();
+
+        earthQuakesArrayList = new ArrayList<>();
 
         // Get data from web of this hour earthquakes
-        GetEarthquakeData getEarthquakeData = new GetEarthquakeData(getContext(), earthquakeListView, earthQuakesList);
+        getEarthquakeData = new GetEarthquakeData(getContext(), earthquakeListView);
         getEarthquakeData.execute(todayURL);
 
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -107,9 +110,9 @@ public class TimelineFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), Map.class);
                 Bundle bundle = new Bundle();
-                bundle.putDouble("LONGITUDE", earthQuakesList.get(position).getLongitude());
-                bundle.putDouble("LATITUDE", earthQuakesList.get(position).getLatitude());
-                bundle.putString("CITY", earthQuakesList.get(position).getCityname());
+                bundle.putDouble("LONGITUDE", earthQuakesArrayList.get(position).getLongitude());
+                bundle.putDouble("LATITUDE", earthQuakesArrayList.get(position).getLatitude());
+                bundle.putString("CITY", earthQuakesArrayList.get(position).getCityname());
                 intent.putExtras(bundle);
                 startActivity(intent);
 
@@ -130,4 +133,41 @@ public class TimelineFragment extends Fragment {
     }
 
 
+    public void filterRefreshList(String selectedPeriod, final String selectedMin, final String selectedMax, String selectedregion) {
+
+        Log.i(TAG, "onOptionsItemSelected: " + selectedPeriod);
+        Log.i(TAG, "onOptionsItemSelected: " + selectedMin);
+        Log.i(TAG, "onOptionsItemSelected: " + selectedMax);
+        Log.i(TAG, "onOptionsItemSelected: " + selectedregion);
+
+
+        Log.i(TAG, "Size: " + earthQuakesArrayList.size());
+
+
+        ArrayList<EarthQuakes> newEarthQuakesList = new ArrayList<>();
+
+        double var = 0;
+        for (int a = 0; a < earthQuakesArrayList.size(); a++) {
+
+            //Minimum
+            var = Double.valueOf(earthQuakesArrayList.get(a).getMagnitude());
+            if (var >= Double.valueOf(selectedMin) &&
+                    var <= Double.valueOf(selectedMax)) {
+                newEarthQuakesList.add(earthQuakesArrayList.get(a));
+
+                Log.i(TAG, "run:" + earthQuakesArrayList.get(a).getMagnitude());
+
+            }
+
+        }
+
+        //TODO: Update the list according to the filter
+        // earthQuakesArrayList =  newEarthQuakesList;
+        //Update view
+        //  EarthQuakeAdapter earthListAdapter = new EarthQuakeAdapter(getContext(), R.layout.earthquake_item, earthQuakesArrayList);
+        //  earthquakeListView.setAdapter(earthListAdapter);
+    }
+
+
 }
+

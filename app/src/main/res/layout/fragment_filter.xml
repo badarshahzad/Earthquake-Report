@@ -30,6 +30,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
 
+        android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
         android:entries="@array/period"
         app:layout_constraintBottom_toBottomOf="@+id/textView5"
@@ -123,7 +124,6 @@
         app:layout_constraintEnd_toEndOf="@+id/max_of"
         app:layout_constraintStart_toStartOf="@+id/max_of"
         app:layout_constraintTop_toTopOf="@+id/textView9" />
-
 
     <!--Done-->
     <Button

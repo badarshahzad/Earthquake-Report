@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.android.earthreport.EarthQuakeAdapter;
 import com.example.android.earthreport.R;
+import com.example.android.earthreport.fragments.TimelineFragment;
 import com.example.android.earthreport.main.EarthquakeActivity;
 import com.example.android.earthreport.model.EarthQuakes;
 
@@ -21,7 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +29,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.nio.charset.Charset;
 
 
 /**
@@ -40,8 +40,9 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
 
 
     public String TAG = GetEarthquakeData.class.getSimpleName();
+
     //what is List and ArrayList difference? List<EarthQuakes> earthQuakesList;
-    ArrayList<EarthQuakes> earthQuakesList;
+    //  private ArrayList<EarthQuakes> earthQuakesList;
     private Context context;
     private ListView earthquakeListView;
 
@@ -54,11 +55,11 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
 
     }
 
-    public GetEarthquakeData(Context context, ListView earthquakeListView, ArrayList<EarthQuakes> earthQuakesList) {
+    public GetEarthquakeData(Context context, ListView earthquakeListView) {
         this.context = context;
         this.earthquakeListView = earthquakeListView;
 //        earthQuakesList = new ArrayList<>();
-        this.earthQuakesList = earthQuakesList;
+        // this.earthQuakesList = earthQuakesList;
     }
 
     @Override
@@ -145,7 +146,7 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
                     double latitude = Double.valueOf(coordinates.get(1) + "");
 
                     //inserting values in the list of earth quakes (model) type and making objects
-                    earthQuakesList.add(new EarthQuakes(mag, place, time, url, longitude, latitude));
+                    TimelineFragment.earthQuakesArrayList.add(new EarthQuakes(mag, place, time, url, longitude, latitude));
                     //DataProvider.addProduct(mag, place, time, url, longitude, latitude);
                     Log.i(TAG, "data added " + mag + " " + place + " " + time);
 
@@ -180,69 +181,106 @@ public class GetEarthquakeData extends AsyncTask<String, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
+        //TODO:Show dialog data update in list
+
         //List<EarthQuakes> values = DataProvider.valuesList;
         //custom adapter and giving my context, own view to display, values as list to display in List view
-        EarthQuakeAdapter earthListAdapter = new EarthQuakeAdapter(context, R.layout.earthquake_item, earthQuakesList);
-
-        //TODO: Show progressbar
+        EarthQuakeAdapter earthListAdapter = new EarthQuakeAdapter(context, R.layout.earthquake_item, TimelineFragment.earthQuakesArrayList);
 
         // so the list can be populated in the user interface
         earthquakeListView.setAdapter(earthListAdapter);
 
     }
 
+    //TODO:Progress update
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        //super.onProgressUpdate(values);
+    }
 
     public static class HttpHandler {
 
-        public String TAG = HttpHandler.class.getSimpleName();
+        public static String TAG = HttpHandler.class.getSimpleName();
 
         public static String makeServeiceCall(String reqUrl) {
+
             String response = null;
+            HttpURLConnection connection = null;
+            //   InputStream inputStream = null;
+            URL url = null;
 
             try {
-                URL url = new URL(reqUrl);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+                url = new URL(reqUrl);
+
+                //Return a URLConnection instance that represents connection to the remote
+                //object referret to b the URL
+                connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
-//connection.setConnectTimeout(500);
-//check the method
-//connectionn timeout
-//check the status is HTTTP.ok or not
-                //read the response
-                InputStream inputStream = new BufferedInputStream(connection.getInputStream());
-                response = converStreamToString(inputStream);
+                connection.setReadTimeout(10000);
+                connection.setConnectTimeout(15000);
+                connection.connect();
+
+                Log.i(TAG, "makeServeiceCall Response code: " + connection.getResponseCode());
+
+                //if the request is successfull
+                if (connection.getResponseCode() == 200) {
+
+                    //read the response
+                    //inputStream = new BufferedInputStream(connection.getInputStream());
+
+                    //readFrom the stream that contains the result
+                    response = converStreamToString(connection.getInputStream());
+
+                }
+
 
             } catch (MalformedURLException e) {
+                //TODO: Show the notifications in case no response
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+
+                //disconnect the connection
+                if (connection != null) {
+                    connection.disconnect();
+                }
+
             }
 
             return response;
         }
 
+        //Convert the inputstream raw data into human readable string  which
+        //contains json response from the server
         private static String converStreamToString(InputStream inputStream) {
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("UTF-8")));
             StringBuilder sb = new StringBuilder();
             String stringLine;
+
             try {
                 while ((stringLine = reader.readLine()) != null) {
-                    sb.append(stringLine).append('\n');
-                    Log.i("Append Data: ", stringLine);
+                    sb.append(stringLine);
+                    //sb.append(stringLine).append('\n');
+                    //   Log.i("Append Data: ", stringLine);
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
+
                 try {
                     inputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+
             return sb.toString();
         }
 
     }
-
 
 }
