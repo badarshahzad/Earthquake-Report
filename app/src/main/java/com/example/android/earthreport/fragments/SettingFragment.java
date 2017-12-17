@@ -18,14 +18,17 @@ import com.github.machinarius.preferencefragment.PreferenceFragment;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingFragment extends Fragment {
+public class SettingFragment extends PreferenceFragment {
 
-
-    public SettingFragment() {
-        // Required empty public constructor
-    }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.setting);
+
+    }
+
+   /* @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -46,6 +49,6 @@ public class SettingFragment extends Fragment {
         }
     }
 
-
+*/
 
 }

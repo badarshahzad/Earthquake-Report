@@ -20,7 +20,9 @@
         app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintEnd_toStartOf="@+id/period"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp" />
 
     <!--Period-->
     <Spinner
@@ -66,7 +68,6 @@
         app:layout_constraintEnd_toEndOf="@+id/min_of"
         app:layout_constraintStart_toStartOf="@+id/min_of"
         app:layout_constraintTop_toTopOf="@+id/textView7" />
-
 
     <!--Min Text-->
     <TextView

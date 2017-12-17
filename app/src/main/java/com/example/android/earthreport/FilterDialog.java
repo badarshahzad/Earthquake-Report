@@ -26,23 +26,23 @@ public class FilterDialog extends DialogFragment {
     private String selectedregion;
 
 
-    private Spinner period;
-    private Spinner minMagnitude;
-    private Spinner maxMagnitude;
-    private Spinner region;
+    private Spinner period ;
+    private Spinner minMagnitude ;
+    private Spinner maxMagnitude ;
+    private Spinner region ;
 
     View.OnClickListener donefilterAction = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Toast.makeText(getActivity(), "Test", Toast.LENGTH_LONG).show();
 
-            selectedPeriod = String.valueOf(period.getSelectedItem());
+            selectedPeriod =  String.valueOf(period.getSelectedItem());
             selectedMin = String.valueOf(minMagnitude.getSelectedItem());
             selectedMax = String.valueOf(maxMagnitude.getSelectedItem());
-            selectedregion = String.valueOf(region.getSelectedItem());
+            selectedregion  = String.valueOf(region.getSelectedItem());
 
             TimelineFragment timelineFragment = new TimelineFragment();
-            timelineFragment.filterRefreshList(selectedPeriod, selectedMin, selectedMax, selectedregion);
+            timelineFragment.filterRefreshList(selectedPeriod,selectedMin,selectedMax,selectedregion);
 
             getDialog().dismiss();
         }
@@ -76,6 +76,7 @@ public class FilterDialog extends DialogFragment {
 
         return view;
     }
+
 
 
     public String getSelectedPeriod() {

@@ -63,7 +63,7 @@ public class EarthquakeActivity extends AppCompatActivity {
 
                 case R.id.setting:
                     setTitle("Setting");
-                    Fragment settingFragment = new SettingFragment.SettingPreferenceFragment();
+                    Fragment settingFragment = new SettingFragment();
                     FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction().replace(R.id.containerForFragments, new SettingFragment());
                     fragmentTransaction3.replace(R.id.containerForFragments, settingFragment, "FragmentOne Text");
                     fragmentTransaction3.commit();

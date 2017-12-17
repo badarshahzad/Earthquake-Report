@@ -40,5 +40,13 @@ dependencies {
 //    //OkHttp library
 //    compile 'com.squareup.okhttp3:okhttp:3.9.1'
 
+    /**
+     * Title:PreferenceFragment with android-support-v4
+     * Author: Mattblang
+     * Date: Mar 17 '14 at 18:39
+     * Code version: N/A
+     * Availability:  https://stackoverflow.com/questions/9783368/alternatives-to-preferencefragment-with-android-support-v4
+     */
+    //This library is helping me to add PreferenceFragment support.v4
     compile 'com.github.machinarius:preferencefragment:0.1.1'
 }
