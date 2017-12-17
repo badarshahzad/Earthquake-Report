@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -34,11 +34,13 @@ import com.example.android.earthreport.FilterDialog;
 import com.example.android.earthreport.Map;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.main.EarthquakeActivity;
+import com.example.android.earthreport.model.DataProvider;
 import com.example.android.earthreport.model.EarthQuakes;
 import com.example.android.earthreport.network.EarthquakeLoader;
-import com.example.android.earthreport.network.GetEarthquakeData;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -50,22 +52,35 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 
     private static final int MENU_ITEM_ABOUT = 1000;
 
-    private static final String MIN_MAGNITUDE = "min_magnitude";
-    private static final String MAX_MAGNITUDE = "max_magnitude";
     private static final String PERIOD = "period";
-
-    public static List<EarthQuakes> earthQuakesArrayList;
     private final String TAG = TimelineFragment.class.getSimpleName();
+    public List<EarthQuakes> earthQuakesArrayList;
     public FilterDialog filterDialog;
-    private String todayURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
-    private View view;
 
+    private String URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?";
+
+    //Period_URL
+    private String HOUR_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
+    private String TODAY_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+    private String YESTERDAY_URL;
+    private String WEEK_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+    private String MONTH_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
+
+    //setting_save_Period
+    private String period;
+
+    //setting_save_filter Magnitude
+    private String filterMagnitude;
+
+    //setting_save_Sort
+    private String sort;
+
+    private View view;
     //private View emptyView;
     private TextView emptyText;
     private ImageView noInternetImg;
     private ProgressBar progressBar;
     private ListView earthquakeListView;
-    private GetEarthquakeData getEarthquakeData;
     private EarthQuakeAdapter earthListAdapter;
 
 
@@ -93,7 +108,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         if (id == R.id.action_refresh) {
             Toast.makeText(getContext(), "Timline refresh", Toast.LENGTH_SHORT).show();
         }
-        if (id == R.id.action_filter) {
+        /*if (id == R.id.action_filter) {
             //Toast.makeText(getContext(), "Timline Filter", Toast.LENGTH_SHORT).show();
 
             //-------Show dialog-----------
@@ -105,8 +120,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
             //  Intent intent = new Intent(getContext(), ShowEarthquakeDetails.class);
             //   startActivity(intent);
 
-
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -115,7 +129,6 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //TODO:Set the timline view
-
 
         //test the one list only
         view = inflater.inflate(R.layout.fragment_timeline, container, false);
@@ -133,7 +146,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 
         // Get data from web of this hour earthquakes
         // getEarthquakeData = new GetEarthquakeData(getContext(), earthquakeListView);
-        // getEarthquakeData.execute(todayURL);
+        // getEarthquakeData.execute(TODAY_URL);
 
 
         earthListAdapter = new EarthQuakeAdapter(getContext(), R.layout.earthquake_item, earthQuakesArrayList);
@@ -212,14 +225,73 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         Log.d(TAG, "onCreateLoader: ");
 
         //TODO: Sharedpreferances to store he filter
-        //SharefPreferences
-       /* SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String  minMag = sharedPref.getString(MIN_MAGNITUDE,"1");
-        String  maxMag = sharedPref.getString(MAX_MAGNITUDE,"5");
-        String  period = sharedPref.getString(PERIOD,"Today");
-*/
 
-        return new EarthquakeLoader(getContext(), todayURL);
+        //SharefPreferences
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        String filterMag = sharedPref.getString("key_filter_magnitude", "5");
+        String period = sharedPref.getString("key_period", "Today");
+        String orderBy = sharedPref.getString("key_sort", "Time");
+
+        Log.i(TAG, "filterMag: " + filterMag);
+        Log.i(TAG, "period: " + period);
+        Log.i(TAG, "orderBy: " + orderBy.toLowerCase());
+
+
+        switch (period) {
+            case "1 Hour":
+                URL = HOUR_URL;
+                Log.i(TAG, "1 hour");
+                break;
+
+            case "1 Day":
+                URL = TODAY_URL;
+                Log.i(TAG, "1 day ");
+                break;
+
+            case "Yesterday":
+                URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getYesterdayDate() + "T00:00&endtime=" + getYesterdayDate() + "T23:59";
+                Log.i(TAG, "yesterday ");
+                break;
+
+            case "Week":
+                URL = WEEK_URL;
+                Log.i(TAG, " week");
+                break;
+
+            case "Month":
+                URL = MONTH_URL;
+                Log.i(TAG, " Month");
+                break;
+
+            default:
+                URL = TODAY_URL;
+        }
+
+        int length = URL.length();
+
+        //Make the url according to to the settings of user
+        Uri uri = Uri.parse(URL);
+        Uri.Builder builder = uri.buildUpon();
+
+        builder.appendQueryParameter("format", "geojson");
+        if (!(filterMag.equals("All"))) {
+            builder.appendQueryParameter("minmagnitude", filterMag);
+        }
+        builder.appendQueryParameter("orderby", orderBy.toLowerCase());
+
+        URL = builder.toString();
+
+        //URL.replace('&','?');
+        //Url with ? mark not get the result from web
+        StringBuilder sb = new StringBuilder(URL);
+        sb.setCharAt(length, '&');
+        URL = sb.toString();
+        Log.i(TAG, "url ready: " + URL);
+
+
+        //String url1 = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson&format=geojson&minmag=7&orderby=time";
+        return new EarthquakeLoader(getContext(), URL);
     }
 
     @Override
@@ -227,49 +299,54 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 
         Log.d(TAG, "onLoadFinished: ");
 
-        earthListAdapter.clear();
-        earthListAdapter.addAll(data);
+        if (data != null) {
 
-        //hdie the progressbar
-        progressBar.setVisibility(View.GONE);
+            earthListAdapter.clear();
+            earthListAdapter.addAll(data);
 
-        /**
-         * Title: Check the data connection available or not
-         * Author: Sarmad
-         * Date: Nov 22 '17
-         * Code version: N/A
-         * Availability: http://lms.namal.edu.pk/course/view.php?id=267
-         */
+            //hdie the progressbar
+            progressBar.setVisibility(View.GONE);
 
-        // Checked the Network State
-        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkState = connectivityManager.getActiveNetworkInfo();
+            /**
+             * Title: Check the data connection available or not
+             * Author: Sarmad
+             * Date: Nov 22 '17
+             * Code version: N/A
+             * Availability: http://lms.namal.edu.pk/course/view.php?id=267
+             */
 
-        //Test if wifi or data connection available or not
-        if (networkState == null || !networkState.isConnected()) {
-            //Wifi turn off/on
-            final WifiManager wifiManager = (WifiManager) getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            // Checked the Network State
+            ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkState = connectivityManager.getActiveNetworkInfo();
 
-            if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
-                Log.i("WIFI", "ON");
-                Snackbar.make(EarthquakeActivity.root, "No Internet Connection", Snackbar.LENGTH_LONG)
-                        .setAction("Turn on Wifi", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                wifiManager.setWifiEnabled(true);
-                                Toast.makeText(getContext(), "WiFi Enabled", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .show();
+            //Test if wifi or data connection available or not
+            if (networkState == null || !networkState.isConnected()) {
+                //Wifi turn off/on
+                final WifiManager wifiManager = (WifiManager) getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+                if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
+
+                    Log.i("WIFI", "ON");
+                    Snackbar.make(EarthquakeActivity.root, "No Internet Connection", Snackbar.LENGTH_LONG)
+                            .setAction("Turn on Wifi", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    wifiManager.setWifiEnabled(true);
+                                    Toast.makeText(getContext(), "WiFi Enabled", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .show();
+                }
             }
+
+
+            emptyText.setVisibility(View.VISIBLE);
+            noInternetImg.setVisibility(View.VISIBLE);
+
+            earthquakeListView.setEmptyView(emptyText);
+            earthquakeListView.setEmptyView(noInternetImg);
+
         }
-
-
-        emptyText.setVisibility(View.VISIBLE);
-        noInternetImg.setVisibility(View.VISIBLE);
-
-        earthquakeListView.setEmptyView(emptyText);
-        earthquakeListView.setEmptyView(noInternetImg);
 
     }
 
@@ -280,6 +357,16 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         Log.d(TAG, "onLoaderReset: ");
         earthListAdapter.setEarthQuakesList(new ArrayList<EarthQuakes>());
 
+    }
+
+    public String getYesterdayDate() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, -1);
+        Date yesterdayDate = calendar.getTime();
+        Log.i(TAG, "Yesterday Date Ready: " + yesterdayDate);
+
+        return DataProvider.getformateDate(yesterdayDate);
     }
 
 

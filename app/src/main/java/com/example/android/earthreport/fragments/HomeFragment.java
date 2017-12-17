@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +22,7 @@ import com.example.android.earthreport.R;
 import com.example.android.earthreport.ShowEarthquakeDetails;
 import com.example.android.earthreport.model.DataProvider;
 import com.example.android.earthreport.model.EarthQuakes;
-import com.example.android.earthreport.network.GetEarthquakeData;
+import com.example.android.earthreport.network.EarthquakeLoader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -126,15 +127,15 @@ public class HomeFragment extends Fragment {
         // REFERENCE: https://stackoverflow.com/questions/3747490/android-get-date-before-7-days-one-week
         // Made the date 7 days back
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
         calendar.add(Calendar.DAY_OF_YEAR, -7);
         Date newDateForWeek = calendar.getTime();
+        Log.i(TAG, "Seven day back " + newDateForWeek);
 
         //Made the 1st date of this month
         Calendar calendar1 = Calendar.getInstance();
         calendar1.set(Calendar.DAY_OF_MONTH, 1);
         Date newDateForMonth = calendar1.getTime();
-
+        Log.i(TAG, "Month date " + newDateForMonth);
 
         String todayDate = DataProvider.getformateDate(new Date());
         String weekDate = DataProvider.getformateDate(newDateForWeek);
@@ -217,7 +218,7 @@ public class HomeFragment extends Fragment {
 
                 for (int a = 0; a < count.length; a++) {
 
-                    String jasonStr = GetEarthquakeData.HttpHandler.makeServeiceCall(URLS[a]);
+                    String jasonStr = EarthquakeLoader.HttpHandler.makeServeiceCall(URLS[a]);
                     //if the internet available and the jason data receive in jasonStr then
                     if (jasonStr != null) {
 

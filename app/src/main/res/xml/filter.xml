@@ -3,7 +3,6 @@
 
     <PreferenceCategory
 
-        android:icon="@drawable/ic_filter_list_black_24dp"
         android:title="Filter Option">
 
         <ListPreference

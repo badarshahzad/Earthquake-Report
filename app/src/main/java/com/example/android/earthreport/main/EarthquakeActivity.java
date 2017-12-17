@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -30,7 +29,6 @@ import com.example.android.earthreport.R;
 import com.example.android.earthreport.fragments.HomeFragment;
 import com.example.android.earthreport.fragments.SettingFragment;
 import com.example.android.earthreport.fragments.TimelineFragment;
-import com.example.android.earthreport.network.DownloadData;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
@@ -63,8 +61,8 @@ public class EarthquakeActivity extends AppCompatActivity {
 
                 case R.id.setting:
                     setTitle("Setting");
-                    Fragment settingFragment = new SettingFragment();
-                    FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction().replace(R.id.containerForFragments, new SettingFragment());
+                    SettingFragment settingFragment = new SettingFragment();
+                    FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction3.replace(R.id.containerForFragments, settingFragment, "FragmentOne Text");
                     fragmentTransaction3.commit();
 //                    getSupportActionBar().hide();
@@ -114,7 +112,7 @@ public class EarthquakeActivity extends AppCompatActivity {
 
 
     }
-
+/*
     private void gogogo(final String[] URLS) {
 
 
@@ -136,7 +134,7 @@ public class EarthquakeActivity extends AppCompatActivity {
 
         Thread th = new Thread(runnable);
         th.start();
-    }
+    }*/
 
     @Override
     protected void onPause() {

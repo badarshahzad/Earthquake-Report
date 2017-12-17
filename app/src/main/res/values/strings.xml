@@ -58,7 +58,6 @@
     <string-array name="sort_array">
         <item>Time</item>
         <item>Magnitude</item>
-        <item>Distance</item>
     </string-array>
 
     <!--String of Region-->
@@ -73,7 +72,6 @@
     </string-array>
 
 
-    <!--- Setting Preferences -->
     <!--String of Min Entries-->
     <string-array name="min_earthquakes_entries">
         <item>1</item>
@@ -119,36 +117,60 @@
         <item>7</item>
     </string-array>
 
+
+    <!--- Setting Preferences -->
+
+    <string-array name="magnitude_entries">
+        <item>All</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+    <string-array name="magnitude_entries_values">
+        <item>All</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+
     <!--Sort By entries-->
     <string-array name="sort_array_entries">
         <item>Time</item>
         <item>Magnitude</item>
-        <item>Distance</item>
+
     </string-array>
 
     <!--Sort By entries values-->
     <string-array name="sort_array_entries_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
+        <item>Time</item>
+        <item>Magnitude</item>
     </string-array>
 
     <!--Period Entries-->
     <string-array name="period_entries">
         <item>1 Hour</item>
         <item>1 Day</item>
+        <item>Yesterday</item>
         <item>Week</item>
         <item>Month</item>
     </string-array>
 
     <!--Period Entries Array-->
     <string-array name="period_entries_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
+        <item>1 Hour</item>
+        <item>1 Day</item>
+        <item>Yesterday</item>
+        <item>Week</item>
+        <item>Month</item>
     </string-array>
-
 
 
     <!--Notification-->
@@ -160,6 +182,7 @@
     <string name="key_max_magnitude">key_max_magnitude</string>
     <string name="key_sort">key_sort</string>
     <string name="key_period">key_period</string>
+    <string name="key_filter_magnitude">key_filter_magnitude</string>
 
     <string name="title_ringtone">Ringtone</string>
     <string name="title_vibrate">Vibrate</string>
@@ -174,6 +197,7 @@
     <string name="title_period">Period</string>
     <string name="title_filter_option">Filter Option</string>
     <string name="title_general">General</string>
+    <string name="title_filter_magnitude">Filter Magnitude</string>
 
     <string name="summary_vibrate">Vibrate on new notification</string>
     <string name="summary_feedback">Give the feedback!</string>

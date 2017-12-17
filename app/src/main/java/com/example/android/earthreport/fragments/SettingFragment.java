@@ -2,12 +2,9 @@ package com.example.android.earthreport.fragments;
 
 
 import android.os.Bundle;
+import android.preference.Preference;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.android.earthreport.R;
 import com.github.machinarius.preferencefragment.PreferenceFragment;
@@ -18,8 +15,9 @@ import com.github.machinarius.preferencefragment.PreferenceFragment;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingFragment extends PreferenceFragment {
+public class SettingFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
 
+    //Converting preference xml as a fragment
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,6 +25,17 @@ public class SettingFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.setting);
 
     }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object o) {
+        String value = o.toString();
+        preference.setSummary(value);
+        return true;
+    }
+
+
+    //Couple of testing to make Xml preference to Fragment and at the end I found something new
+    //That is not available in android support libraries
 
    /* @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

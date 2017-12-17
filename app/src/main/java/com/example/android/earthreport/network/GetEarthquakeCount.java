@@ -33,7 +33,7 @@ public class GetEarthquakeCount {
 
                 for (int a = 0; a < URLS.length; a++) {
 
-                    String jasonStr = GetEarthquakeData.HttpHandler.makeServeiceCall(URLS[a]);
+                    String jasonStr = EarthquakeLoader.HttpHandler.makeServeiceCall(URLS[a]);
                     //if the internet available and the jason data receive in jasonStr then
                     if (jasonStr != null) {
 

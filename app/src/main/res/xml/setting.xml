@@ -17,28 +17,23 @@
             android:defaultValue="1"
             android:entries="@array/period_entries"
             android:entryValues="@array/period_entries_values"
+            android:icon="@drawable/ic_timelapse_black_24dp"
             android:key="@string/key_period"
             android:title="@string/title_period"/>
 
         <ListPreference
             android:defaultValue="1"
-            android:entries="@array/min_earthquakes_entries"
-            android:entryValues="@array/min_earthquakes_entries_values"
-            android:key="@string/key_min_magnitude"
-            android:title="@string/title_min_magnitude" />
-
-
-        <ListPreference
-            android:defaultValue="5"
-            android:entries="@array/max_earthquakes_entries"
-            android:entryValues="@array/max_earthquakes_entries_Values"
-            android:key="@string/key_max_magnitude"
-            android:title="@string/title_max_magnitude" />
+            android:entries="@array/magnitude_entries"
+            android:entryValues="@array/magnitude_entries_values"
+            android:icon="@drawable/ic_filter_list_black_24dp"
+            android:key="@string/key_filter_magnitude"
+            android:title="@string/title_filter_magnitude" />
 
         <ListPreference
             android:defaultValue="4"
             android:entries="@array/sort_array_entries"
             android:entryValues="@array/sort_array_entries_values"
+            android:icon="@drawable/ic_sort_black_24dp"
             android:key="@string/key_sort"
             android:title="@string/title_sort" />
 

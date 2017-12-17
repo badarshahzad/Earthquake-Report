@@ -1,11 +1,9 @@
 package com.example.android.earthreport.network;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.android.earthreport.model.EarthQuakes;
 
@@ -140,7 +138,9 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
 
                     //inserting values in the list of earth quakes (model) type and making objects
                     // TimelineFragment.earthQuakesArrayList.add(new EarthQuakes(mag, place, time, url, longitude, latitude));
-                    earthQuakesArrayList.add(new EarthQuakes(mag, place, time, url, longitude, latitude));
+                    if (place != null) {
+                        earthQuakesArrayList.add(new EarthQuakes(mag, place, time, url, longitude, latitude));
+                    }
                     //DataProvider.addProduct(mag, place, time, url, longitude, latitude);
                     Log.i(TAG, "data added " + mag + " " + place + " " + time);
 
@@ -169,7 +169,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
             });
         }*/
 
-      //  Log.d(TAG, "loadInBackground: finished ");
+        Log.d(TAG, "loadInBackground: finished ");
         return earthQuakesArrayList;
     }
 
