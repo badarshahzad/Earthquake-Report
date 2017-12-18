@@ -34,33 +34,41 @@
     <!--No Internet Connection Imageview -->
     <ImageView
         android:id="@+id/noInternet"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_cloud_off_black_24dp"
-        android:visibility="invisible"
 
-        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--Empty Listview text-->
     <TextView
         android:id="@+id/empty"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center"
         android:text="No Internet Connection"
+
         android:textSize="16sp"
         android:visibility="invisible"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/noInternet"
+        app:layout_constraintStart_toStartOf="@+id/noInternet"
         app:layout_constraintTop_toBottomOf="@id/noInternet" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/magnitude6"
+        android:src="@drawable/ic_map_white_24dp"
 
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

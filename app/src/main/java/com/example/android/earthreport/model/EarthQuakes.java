@@ -1,10 +1,12 @@
 package com.example.android.earthreport.model;
 
+import java.io.Serializable;
+
 /**
  * Created by root on 11/10/17.
  */
 
-public class EarthQuakes {
+public class EarthQuakes implements Serializable{
 
     private String magnitude;
     private String cityname;

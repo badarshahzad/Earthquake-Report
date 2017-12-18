@@ -20,6 +20,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
+    <!-- To add the vibration on notification-->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
     <!-- To access the internet we need -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -36,7 +39,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".main.EarthquakeActivity">
+        <!--if activity already running I don't need to relunch app : singleTop-->
+        <activity
+            android:name=".main.EarthquakeActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

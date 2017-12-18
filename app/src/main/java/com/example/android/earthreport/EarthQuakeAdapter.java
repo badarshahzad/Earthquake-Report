@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import java.util.List;
 public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
 
 
+    private static final String TAG = EarthQuakeAdapter.class.getSimpleName();
     List<EarthQuakes> earthQuakesQuakesValues;
 
     public EarthQuakeAdapter(@NonNull Context context, int resource, @NonNull List<EarthQuakes> objects) {
@@ -61,6 +63,8 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
         //from EarthQuakes getter method get the value of magnitude
         String magnitude = earthQuakesValue.getMagnitude();
 
+        //Log.i(TAG, "city name: "+earthQuakesValue.getCityname());
+
         //Here the distance and location is separated by reges index 0 in Km distance
         // and index 1 is the location
         //?<=of is the string that just pick string including 'of' also init
@@ -96,6 +100,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
         //Display  the magnitude of the current earthquake in the TextView
         magnitudeView.setText(magnitude);
 
+        TextView cityNameView = null;
         //Im not gonna show the values the place and distance is not mention
         if (distance != null && cityName != null) {
             //Find the Textview with view ID for distance
@@ -103,9 +108,10 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
             distanceView.setText(distance);
 
             //Find the TextView with view ID cityName or Location on earth
-            TextView cityNameView = listView.findViewById(R.id.cityName);
+            cityNameView = listView.findViewById(R.id.cityName);
             //Display the city name in the TextView
             cityNameView.setText(cityName);
+
         }
 
         //Find the TextView  with view ID date

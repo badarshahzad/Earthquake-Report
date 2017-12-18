@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/title_general">
+    /**
+    * Title: Android Implementing Preferences Settings Screen
+    * Author: Ravi Tamada, developer.android
+    * Date: 2017/12/17
+    * Code version: N/A
+    * Availability:https://developer.android.com/reference/android/support/v14/preference/PreferenceFragment.html
+    *              https://www.androidhive.info/2017/07/android-implementing-preferences-settings-screen/
+    */
 
+    <PreferenceCategory android:title="@string/title_general">
 
         <SwitchPreference
             android:defaultValue="true"
@@ -44,8 +52,8 @@
             android:defaultValue="content://settings/system/notification_sound"
             android:dependency="notifications_new_message"
             android:icon="@drawable/ic_audiotrack_black_24dp"
-            android:key="@string/key_notifications_new_message"
             android:ringtoneType="notification"
+            android:key="@string/key_notifications_new_message"
             android:summary="@string/summary_notification"
             android:title="@string/title_ringtone" />
 

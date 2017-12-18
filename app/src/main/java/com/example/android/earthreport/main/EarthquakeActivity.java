@@ -17,6 +17,7 @@ package com.example.android.earthreport.main;
 
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
@@ -36,6 +37,9 @@ public class EarthquakeActivity extends AppCompatActivity {
     private static final int MENU_ITEM_ABOUT = 1000;
     private static final int REFRESH = 0;
     public static ConstraintLayout root;
+
+
+
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -43,10 +47,12 @@ public class EarthquakeActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.home:
                     setTitle("Home");
+
                     HomeFragment homeFragment = new HomeFragment();
                     FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction1.replace(R.id.containerForFragments, homeFragment, "Home text");
+                    fragmentTransaction1.replace(R.id.containerForFragments, homeFragment);
                     fragmentTransaction1.commit();
+
 //                    getSupportActionBar().show();
                     return true;
 
@@ -54,8 +60,9 @@ public class EarthquakeActivity extends AppCompatActivity {
                     setTitle("Earthquake List");
                     TimelineFragment timelineFragment = new TimelineFragment();
                     FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction2.replace(R.id.containerForFragments, timelineFragment, "Timeline Text");
+                    fragmentTransaction2.replace(R.id.containerForFragments, timelineFragment);
                     fragmentTransaction2.commit();
+
 //                    getSupportActionBar().show();
                     return true;
 
@@ -63,8 +70,9 @@ public class EarthquakeActivity extends AppCompatActivity {
                     setTitle("Setting");
                     SettingFragment settingFragment = new SettingFragment();
                     FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction3.replace(R.id.containerForFragments, settingFragment, "FragmentOne Text");
+                    fragmentTransaction3.replace(R.id.containerForFragments, settingFragment);
                     fragmentTransaction3.commit();
+
 //                    getSupportActionBar().hide();
                     return true;
             }
@@ -109,6 +117,7 @@ public class EarthquakeActivity extends AppCompatActivity {
         //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(1).size(),Toast.LENGTH_LONG).show();
         //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(2).size(),Toast.LENGTH_LONG).show();
         //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(3).size(),Toast.LENGTH_LONG).show();
+
 
 
     }
@@ -173,4 +182,10 @@ public class EarthquakeActivity extends AppCompatActivity {
         Log.d(TAG, "Destroy");
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        Log.d(TAG, "onSaveInstanceState: ");
+    }
+    
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,6 +24,7 @@ import com.example.android.earthreport.ShowEarthquakeDetails;
 import com.example.android.earthreport.model.DataProvider;
 import com.example.android.earthreport.model.EarthQuakes;
 import com.example.android.earthreport.network.EarthquakeLoader;
+import com.example.android.earthreport.notifications.NotificationsUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -129,13 +131,13 @@ public class HomeFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, -7);
         Date newDateForWeek = calendar.getTime();
-        Log.i(TAG, "Seven day back " + newDateForWeek);
+       // Log.i(TAG, "Seven day back " + newDateForWeek);
 
         //Made the 1st date of this month
         Calendar calendar1 = Calendar.getInstance();
         calendar1.set(Calendar.DAY_OF_MONTH, 1);
         Date newDateForMonth = calendar1.getTime();
-        Log.i(TAG, "Month date " + newDateForMonth);
+       // Log.i(TAG, "Month date " + newDateForMonth);
 
         String todayDate = DataProvider.getformateDate(new Date());
         String weekDate = DataProvider.getformateDate(newDateForWeek);
@@ -272,9 +274,51 @@ public class HomeFragment extends Fragment {
 
             //Fetch today earthquakes count
             dataFetch(countURLS);
+
+            //show notification
+            NotificationsUtils.remindUser(getContext());
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    //Life Cycle
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: ");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: ");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "onSaveInstanceState: ");
     }
 
 }

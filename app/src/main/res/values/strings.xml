@@ -202,5 +202,8 @@
     <string name="summary_vibrate">Vibrate on new notification</string>
     <string name="summary_feedback">Give the feedback!</string>
     <string name="summary_notification">Choose notification sound</string>
+    <string name="main_notification_channel">main_notification_channel</string>
+    <string name="notificaiton_title">Earthquake Notification</string>
+    <string name="notification_summary">Earthquake occur near your left and right side but the quake is never occur in the sky. Do you know why?</string>
 
 </resources>

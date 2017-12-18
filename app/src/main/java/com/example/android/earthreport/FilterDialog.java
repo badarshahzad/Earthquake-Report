@@ -20,6 +20,8 @@ import com.example.android.earthreport.fragments.TimelineFragment;
 public class FilterDialog extends DialogFragment {
 
 
+    //TODO: Convert this filter class to search class
+
     private String selectedPeriod;
     private String selectedMin;
     private String selectedMax;
@@ -42,7 +44,7 @@ public class FilterDialog extends DialogFragment {
             selectedregion  = String.valueOf(region.getSelectedItem());
 
             TimelineFragment timelineFragment = new TimelineFragment();
-            timelineFragment.filterRefreshList(selectedPeriod,selectedMin,selectedMax,selectedregion);
+           // timelineFragment.filterRefreshList(selectedPeriod,selectedMin,selectedMax,selectedregion);
 
             getDialog().dismiss();
         }
