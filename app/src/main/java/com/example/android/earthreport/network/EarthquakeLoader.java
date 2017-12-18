@@ -2,6 +2,8 @@ package com.example.android.earthreport.network;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
@@ -138,9 +140,27 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
 
                     //inserting values in the list of earth quakes (model) type and making objects
                     // TimelineFragment.earthQuakesArrayList.add(new EarthQuakes(mag, place, time, url, longitude, latitude));
-                    if (place != null) {
-                        earthQuakesArrayList.add(new EarthQuakes(mag, place, time, url, longitude, latitude));
+
+                    //SharefPreferences filter Setting
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    String filterMag = sharedPref.getString("key_filter_magnitude", "5");
+                    Log.d(TAG, "filterValue: " + filterMag);
+
+                    //in case user want all magnitudes
+                    if (filterMag.equalsIgnoreCase("All")) {
+                        filterMag = "0";
                     }
+
+                    //filter the arraylist while data fetching and passing into arraylist
+                    if (place.contains("of") && Double.valueOf(mag) >= Double.valueOf(filterMag)) {
+                        earthQuakesArrayList.add(new EarthQuakes(mag, place, time, url, longitude, latitude));
+                        //    Log.i(TAG, "Yes contains of");
+                    }
+
+                    Log.i(TAG, "loadInBackground: size " + earthQuakesArrayList.size());
+
+                    //if (Double.valueOf(mag) >= Double.valueOf(filterMag)) {
+                    //}
                     //DataProvider.addProduct(mag, place, time, url, longitude, latitude);
                     Log.i(TAG, "data added " + mag + " " + place + " " + time);
 
