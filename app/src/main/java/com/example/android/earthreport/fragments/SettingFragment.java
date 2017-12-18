@@ -31,6 +31,11 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.setting);
+
+
+        //Fragment protect from destroy and recreate and retain
+        // the current instance of the fragment when the activity is recreated.
+        setRetainInstance(true);
 //        Log.i(TAG, "onCreate: ");
     }
 

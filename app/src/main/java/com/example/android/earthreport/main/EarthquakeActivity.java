@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -34,57 +35,61 @@ import com.example.android.earthreport.fragments.TimelineFragment;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
+    public static final String HOME_FRAGMENT = "home_fragment";
+    public static final String TIMELINE_FRAGMENT = "timeline_fragment";
+    public static final String SETTING_FRAGMENT = "setting_fragment";
     private static final String TAG = EarthquakeActivity.class.getSimpleName();
     private static final int MENU_ITEM_ABOUT = 1000;
     private static final int REFRESH = 0;
     public static ConstraintLayout root;
 
-
+    private HomeFragment homeFragment;
+    private TimelineFragment timelineFragment;
+    private SettingFragment settingFragment;
 
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
+
+                //TODO:whenever the menu item click the fragment replace again and
+                // life cycle its not good try to check befor going to replace the fragment
+                //TODO:Add viewpager to navigate with swap
                 case R.id.home:
                     setTitle("Home");
-
-                    HomeFragment homeFragment = new HomeFragment();
-                    FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction1.replace(R.id.containerForFragments, homeFragment);
-                    fragmentTransaction1.commit();
-
-//                    getSupportActionBar().show();
+                    homeFragment = new HomeFragment();
+                    fragmentTransactionCommit(homeFragment, HOME_FRAGMENT);
                     return true;
 
                 case R.id.timeline:
                     setTitle("Earthquake List");
-                    TimelineFragment timelineFragment = new TimelineFragment();
-                    FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction2.replace(R.id.containerForFragments, timelineFragment);
-                    fragmentTransaction2.commit();
-
-//                    getSupportActionBar().show();
+                    timelineFragment = new TimelineFragment();
+                    fragmentTransactionCommit(timelineFragment, TIMELINE_FRAGMENT);
                     return true;
 
                 case R.id.setting:
                     setTitle("Setting");
-                    SettingFragment settingFragment = new SettingFragment();
-                    FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction3.replace(R.id.containerForFragments, settingFragment);
-                    fragmentTransaction3.commit();
-
-//                    getSupportActionBar().hide();
+                    settingFragment = new SettingFragment();
+                    fragmentTransactionCommit(settingFragment, SETTING_FRAGMENT);
                     return true;
             }
             return false;
         }
     };
 
-    public void fragmentTransactionCommit(Fragment fragment) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.containerForFragments, fragment);
-        fragmentTransaction.commit();
+    //TODO: Check this method working or not yet I don't have usb cable
+    public void fragmentTransactionCommit(Fragment fragment, String TAG) {
+
+        String existTag = getSupportFragmentManager().getPrimaryNavigationFragment().getTag();
+        if (existTag.equals(TAG)) {
+            return;
+        } else {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.containerForFragments, fragment, TAG);
+            fragmentTransaction.commit();
+        }
+
     }
 
     @Override
@@ -98,16 +103,26 @@ public class EarthquakeActivity extends AppCompatActivity {
         BottomNavigationView navigationView = findViewById(R.id.navBottom);
         navigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
-        //when the app starts fragment three will be displayed
-        setTitle("Home");
-        HomeFragment homeFragment = new HomeFragment();
-        //fragmenttransaction is the api for performing a set of fragment
-        // operatins such as add, remove,  replace, attach ,detach, hide , and show
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        //Optional tag name at then end for the fragment to retrive when necessery to find fragment
-        fragmentTransaction.replace(R.id.containerForFragments, homeFragment, "Home text");
-        fragmentTransaction.commit();
+        //TODO:Does these tags are working or not
+        //Find the retain fragment on activity restarts
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        homeFragment = (HomeFragment) fragmentManager.findFragmentByTag(HOME_FRAGMENT);
+        timelineFragment = (TimelineFragment) fragmentManager.findFragmentByTag(TIMELINE_FRAGMENT);
+        settingFragment = (SettingFragment) fragmentManager.findFragmentByTag(SETTING_FRAGMENT);
 
+        //TODO:Check the fragments or retaining or not
+
+        //when the app starts fragment will be null so
+        if (homeFragment == null && timelineFragment == null && settingFragment == null) {
+            setTitle("Home");
+            homeFragment = new HomeFragment();
+            //fragmenttransaction is the api for performing a set of fragment
+            // operatins such as add, remove,  replace, attach ,detach, hide , and show
+            //Optional tag name at then end for the fragment to retrive when necessery to find fragment
+            fragmentManager.beginTransaction()
+                    .replace(R.id.containerForFragments, homeFragment, "Home text")
+                    .commit();
+        }
 
         //Go and fetch Today, Yesterday, Week, and Month Earthquakes Now
         //  String month = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
@@ -124,7 +139,6 @@ public class EarthquakeActivity extends AppCompatActivity {
         //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(1).size(),Toast.LENGTH_LONG).show();
         //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(2).size(),Toast.LENGTH_LONG).show();
         //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(3).size(),Toast.LENGTH_LONG).show();
-
 
 
     }
@@ -194,5 +208,5 @@ public class EarthquakeActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState, outPersistentState);
         Log.d(TAG, "onSaveInstanceState: ");
     }
-    
+
 }

@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -79,6 +80,15 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 
     public TimelineFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //Fragment protect from destroy and recreate and retain
+        // the current instance of the fragment when the activity is recreated.
+        setRetainInstance(true);
     }
 
     //Always add adapter first! Always add adapter first! Always add adapter first!

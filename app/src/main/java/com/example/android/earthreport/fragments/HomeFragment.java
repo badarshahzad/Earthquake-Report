@@ -74,6 +74,10 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        //Fragment protect from destroy and recreate and retain
+        // the current instance of the fragment when the activity is recreated.
+        setRetainInstance(true);
     }
 
     /*private void retrofiDataFetch() {
