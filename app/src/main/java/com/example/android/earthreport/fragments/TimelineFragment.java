@@ -223,35 +223,35 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         String period = sharedPref.getString("key_period", "Today");
         String orderBy = sharedPref.getString("key_sort", "Time");
 
-//        Log.i(TAG, "filterMag: " + filterMag);
-//        Log.i(TAG, "period: " + period);
-//        Log.i(TAG, "orderBy: " + orderBy.toLowerCase());
+        Log.i(TAG, "filterMag: " + filterMag);
+        Log.i(TAG, "period: " + period);
+        Log.i(TAG, "orderBy: " + orderBy.toLowerCase());
 
 
         switch (period) {
             case "1 Hour":
                 URL = HOUR_URL;
-//                Log.i(TAG, "1 hour");
+                Log.i(TAG, "1 hour");
                 break;
 
             case "1 Day":
                 URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getTodayDate() + "T00:00&endtime=" + getTodayDate() + "T23:59";
-//                Log.i(TAG, "1 day ");
+                Log.i(TAG, "1 day ");
                 break;
 
             case "Yesterday":
                 URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getYesterdayDate() + "T00:00&endtime=" + getYesterdayDate() + "T23:59";
-//                Log.i(TAG, "yesterday ");
+                Log.i(TAG, "yesterday ");
                 break;
 
             case "Week":
                 URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getWeekDate() + "T00:00&endtime=" + getTodayDate() + "T23:59";
-//                Log.i(TAG, " week");
+                Log.i(TAG, " week");
                 break;
 
             case "Month":
                 URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getMonthDate() + "T00:00&endtime=" + getTodayDate() + "T23:59";
-//                Log.i(TAG, " Month");
+                Log.i(TAG, " Month");
                 break;
 
             default:
@@ -259,6 +259,10 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         }
 
         int length = URL.length();
+
+        if (filterMag.equals("All")) {
+            filterMag = "0";
+        }
 
         //Make the url according to to the settings of user
         Uri uri = Uri.parse(URL);
@@ -274,7 +278,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         StringBuilder sb = new StringBuilder(URL);
         sb.setCharAt(length, '&');
         URL = sb.toString();
-//        Log.i(TAG, "url ready: " + URL);
+        Log.i(TAG, "url ready: " + URL);
 
 
         //String url1 = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson&format=geojson&orderby=magnitude-asc";
@@ -286,11 +290,50 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<List<EarthQuakes>> loader, List<EarthQuakes> data) {
 
-        //TODO: Handle the empty list
+        //CheckdTODO: Handle the empty list
 
         Log.d(TAG, "onLoadFinished: ");
 
-        if (data.isEmpty()) {
+        /**
+         * Title: Check the data connection available or not
+         * Author: Sarmad
+         * Date: Nov 22 '17
+         * Code version: N/A
+         * Availability: http://lms.namal.edu.pk/course/view.php?id=267
+         */
+
+        // Checked the Network State
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkState = connectivityManager.getActiveNetworkInfo();
+
+        //Test if wifi or data connection available or not
+        if (networkState == null || !networkState.isConnected()) {
+            //Wifi turn off/on
+            final WifiManager wifiManager = (WifiManager) getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+            if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
+
+
+                emptyText.setText("No Internet Connection");
+                emptyText.setVisibility(View.VISIBLE);
+
+                noInternetImg.setImageResource(R.drawable.ic_cloud_off_black_24dp);
+                noInternetImg.setVisibility(View.VISIBLE);
+
+
+                Log.i(TAG, "OFF");
+                Snackbar.make(EarthquakeActivity.root, "No Internet Connection", Snackbar.LENGTH_LONG)
+                        .setAction("Turn on Wifi", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                wifiManager.setWifiEnabled(true);
+                                Toast.makeText(getContext(), "WiFi Enabled", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
+
+            }
+        } else if (data.isEmpty()) {
 
             Log.i(TAG, "data List empty: No Data fetch check your filter");
 
@@ -300,60 +343,21 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
             //show the text if the filter data is empty
             emptyText.setText("No data is found due to filter or period setting.");
             emptyText.setVisibility(View.VISIBLE);
-            noInternetImg.setVisibility(View.INVISIBLE);
 
-        } else {
-
-            //TODO: earthListAdapter clear method what actually it do
-            Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());
-            earthListAdapter.clear();
-            Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());
-            earthListAdapter.addAll(data);
-            Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());
-
-            //hdie the progressbar but just invisible it will not show during the scrolling
-            progressBar.setVisibility(View.GONE);
-
-            /**
-             * Title: Check the data connection available or not
-             * Author: Sarmad
-             * Date: Nov 22 '17
-             * Code version: N/A
-             * Availability: http://lms.namal.edu.pk/course/view.php?id=267
-             */
-
-            // Checked the Network State
-            ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkState = connectivityManager.getActiveNetworkInfo();
-
-            //Test if wifi or data connection available or not
-            if (networkState == null || !networkState.isConnected()) {
-                //Wifi turn off/on
-                final WifiManager wifiManager = (WifiManager) getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-
-                if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
-
-                    Log.i(TAG, "OFF");
-                    Snackbar.make(EarthquakeActivity.root, "No Internet Connection", Snackbar.LENGTH_LONG)
-                            .setAction("Turn on Wifi", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    wifiManager.setWifiEnabled(true);
-                                    Toast.makeText(getContext(), "WiFi Enabled", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .show();
-                }
-            }
-
-            emptyText.setText("No Internet Connection");
-            emptyText.setVisibility(View.VISIBLE);
+            noInternetImg.setImageResource(R.drawable.ic_error_colored_24dp);
             noInternetImg.setVisibility(View.VISIBLE);
 
-            //Show the No interconnection text and image
-            earthquakeListView.setEmptyView(emptyText);
-            earthquakeListView.setEmptyView(noInternetImg);
         }
+
+        //TODO: earthListAdapter clear method what actually it do
+        // Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());
+        earthListAdapter.clear();
+        // Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());
+        earthListAdapter.addAll(data);
+        // Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());
+
+        //hdie the progressbar but just invisible it will not show during the scrolling
+        progressBar.setVisibility(View.GONE);
 
     }
 
