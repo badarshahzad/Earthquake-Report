@@ -184,7 +184,7 @@
     <string name="key_period">key_period</string>
     <string name="key_filter_magnitude">key_filter_magnitude</string>
 
-    <string name="title_ringtone">Ringtone</string>
+    <string name="title_ringtone">Notifications Tone</string>
     <string name="title_vibrate">Vibrate</string>
     <string name="title_version">Version</string>
     <string name="title_max_magnitude">Maxmimum Magnitude</string>

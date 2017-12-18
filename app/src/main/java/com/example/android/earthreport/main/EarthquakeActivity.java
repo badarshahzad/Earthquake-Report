@@ -21,6 +21,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -79,6 +80,12 @@ public class EarthquakeActivity extends AppCompatActivity {
             return false;
         }
     };
+
+    public void fragmentTransactionCommit(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.containerForFragments, fragment);
+        fragmentTransaction.commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

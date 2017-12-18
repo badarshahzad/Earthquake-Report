@@ -63,12 +63,12 @@
         android:id="@+id/fabButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/magnitude6"
+        android:layout_marginRight="16dp"
         android:src="@drawable/ic_map_white_24dp"
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:backgroundTint="@color/magnitude4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
