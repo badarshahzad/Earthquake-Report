@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -18,9 +17,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,7 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.earthreport.EarthQuakeAdapter;
-import com.example.android.earthreport.FilterDialog;
 import com.example.android.earthreport.Map;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.main.EarthquakeActivity;
@@ -52,32 +47,30 @@ import java.util.List;
 public class TimelineFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<EarthQuakes>> {
 
 
-    private static final int MENU_ITEM_ABOUT = 1000;
+    public static final String KEY_FILTER_MAGNITUDE = "key_filter_magnitude";
+    public static final String KEY_PERIOD = "key_period";
+    public static final String KEY_SORT = "key_sort";
+    public static final String MARK_TYPE = "MARK_TYPE";
+    public static final String LONGITUDE = "LONGITUDE";
+    public static final String LATITUDE = "LATITUDE";
+    public static final String CITY = "CITY";
+    public static final String MAGNITUDE = "MAGNITUDE";
+    public static final String DATE = "DATE";
+    public static final String DATA = "DATA";
 
-    private static final String PERIOD = "period";
     private final String TAG = TimelineFragment.class.getSimpleName();
-    public List<EarthQuakes> earthQuakesArrayList;
-    public FilterDialog filterDialog;
-
-    private String URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?";
+    private List<EarthQuakes> earthQuakesArrayList;
 
     //Period_URL
+    private String URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?";
     private String HOUR_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
     private String TODAY_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
 
-    //setting_save_Period
-    private String period;
-
-    //setting_save_filter Magnitude
-    private String filterMagnitude;
-
-    //setting_save_Sort
-    private String sort;
 
     private View view;
-    //private View emptyView;
     private TextView emptyText;
     private ImageView noInternetImg;
+
     private ProgressBar progressBar;
     private ListView earthquakeListView;
     private FloatingActionButton fabButton;
@@ -88,88 +81,50 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //Firstly clear the existed menu & and add my own menu
-        menu.clear();
-        // menu.add(0, MENU_ITEM_ABOUT, 102, R.string.about);
-        inflater.inflate(R.menu.menu_timline, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_refresh) {
-
-            //Toast.makeText(getContext(), "Timline refresh", Toast.LENGTH_SHORT).show();
-
-        }
-        /*if (id == R.id.action_filter) {
-            //Toast.makeText(getContext(), "Timline Filter", Toast.LENGTH_SHORT).show();
-
-            //-------Show dialog-----------
-            FragmentManager fm = getFragmentManager();
-            filterDialog = new FilterDialog();
-            filterDialog.show(fm, "");
-
-            //-------------Show Activity---
-            //  Intent intent = new Intent(getContext(), ShowEarthquakeDetails.class);
-            //   startActivity(intent);
-
-        }*/
-        return super.onOptionsItemSelected(item);
-    }
-
     //Always add adapter first! Always add adapter first! Always add adapter first!
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //TODO:Set the timline view
+
+        //CheckedkTODO:Set the timline view
 
         //test the one list only
         view = inflater.inflate(R.layout.fragment_timeline, container, false);
 
-        //TODO:Add like a material design view
         emptyText = view.findViewById(R.id.empty);
         noInternetImg = view.findViewById(R.id.noInternet);
         earthquakeListView = view.findViewById(R.id.list);
         progressBar = view.findViewById(R.id.progress_bar);
+        //CheckedTODO:Add like a material design view
         fabButton = view.findViewById(R.id.fabButton);
 
         earthQuakesArrayList = new ArrayList<>();
         earthListAdapter = new EarthQuakeAdapter(getContext(), R.layout.earthquake_item, earthQuakesArrayList);
         earthquakeListView.setAdapter(earthListAdapter);
 
-
         //I can start the load data from here with just forceLoad at the end but
         //I added in onStartLoading method of AyscnLoader class the correct way
         //getLoaderManager().initLoader(1, null, this).forceLoad();
-        Log.d(TAG, "getLoaderManger init: ");
+        //Log.d(TAG, "getLoaderManger init: ");
         getLoaderManager().initLoader(1, null, this);
-        Log.d(TAG, "getLoaderManger created: ");
-
+        //Log.d(TAG, "getLoaderManger created: ");
 
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Intent intent = new Intent(getContext(), Map.class);
+
                 Bundle bundle = new Bundle();
-                bundle.putString("MARK_TYPE", "single");
-                bundle.putDouble("LONGITUDE", earthQuakesArrayList.get(position).getLongitude());
-                bundle.putDouble("LATITUDE", earthQuakesArrayList.get(position).getLatitude());
-                bundle.putString("CITY", earthQuakesArrayList.get(position).getCityname());
-                bundle.putString("MAGNITUDE", earthQuakesArrayList.get(position).getMagnitude());
-                bundle.putString("DATE", earthQuakesArrayList.get(position).getDate());
+                bundle.putString(MARK_TYPE, "single");
+                bundle.putDouble(LONGITUDE, earthQuakesArrayList.get(position).getLongitude());
+                bundle.putDouble(LATITUDE, earthQuakesArrayList.get(position).getLatitude());
+                bundle.putString(CITY, earthQuakesArrayList.get(position).getCityname());
+                bundle.putString(MAGNITUDE, earthQuakesArrayList.get(position).getMagnitude());
+                bundle.putString(DATE, earthQuakesArrayList.get(position).getDate());
 
                 intent.putExtras(bundle);
                 startActivity(intent);
-
             }
         });
 
@@ -189,8 +144,8 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 
                 Intent intent = new Intent(getContext(), Map.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("MARK_TYPE", "multiple");
-                bundle.putSerializable("DATA", (Serializable) earthQuakesArrayList);
+                bundle.putString(MARK_TYPE, "multiple");
+                bundle.putSerializable(DATA, (Serializable) earthQuakesArrayList);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -212,46 +167,46 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     //Return a new loader instance that is ready to start loading
     @Override
     public Loader<List<EarthQuakes>> onCreateLoader(int id, Bundle args) {
-        Log.d(TAG, "onCreateLoader: ");
+//        Log.d(TAG, "onCreateLoader: ");
 
-        //TODO: Sharedpreferances to store he filter
+        //CheckedTODO: Sharedpreferances to store the filter
 
         //SharefPreferences
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        String filterMag = sharedPref.getString("key_filter_magnitude", "5");
-        String period = sharedPref.getString("key_period", "Today");
-        String orderBy = sharedPref.getString("key_sort", "Time");
+        String filterMag = sharedPref.getString(KEY_FILTER_MAGNITUDE, "5");
+        String period = sharedPref.getString(KEY_PERIOD, "Today");
+        String orderBy = sharedPref.getString(KEY_SORT, "Time");
 
-        Log.i(TAG, "filterMag: " + filterMag);
-        Log.i(TAG, "period: " + period);
-        Log.i(TAG, "orderBy: " + orderBy.toLowerCase());
+//        Log.i(TAG, "filterMag: " + filterMag);
+//        Log.i(TAG, "period: " + period);
+//        Log.i(TAG, "orderBy: " + orderBy.toLowerCase());
 
 
         switch (period) {
             case "1 Hour":
                 URL = HOUR_URL;
-                Log.i(TAG, "1 hour");
+//                Log.i(TAG, "1 hour");
                 break;
 
             case "1 Day":
                 URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getTodayDate() + "T00:00&endtime=" + getTodayDate() + "T23:59";
-                Log.i(TAG, "1 day ");
+//                Log.i(TAG, "1 day ");
                 break;
 
             case "Yesterday":
                 URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getYesterdayDate() + "T00:00&endtime=" + getYesterdayDate() + "T23:59";
-                Log.i(TAG, "yesterday ");
+//                Log.i(TAG, "yesterday ");
                 break;
 
             case "Week":
                 URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getWeekDate() + "T00:00&endtime=" + getTodayDate() + "T23:59";
-                Log.i(TAG, " week");
+//                Log.i(TAG, " week");
                 break;
 
             case "Month":
                 URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getMonthDate() + "T00:00&endtime=" + getTodayDate() + "T23:59";
-                Log.i(TAG, " Month");
+//                Log.i(TAG, " Month");
                 break;
 
             default:
@@ -278,7 +233,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         StringBuilder sb = new StringBuilder(URL);
         sb.setCharAt(length, '&');
         URL = sb.toString();
-        Log.i(TAG, "url ready: " + URL);
+//        Log.i(TAG, "url ready: " + URL);
 
 
         //String url1 = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson&format=geojson&orderby=magnitude-asc";
@@ -321,7 +276,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
                 noInternetImg.setVisibility(View.VISIBLE);
 
 
-                Log.i(TAG, "OFF");
+//                Log.i(TAG, "OFF");
                 Snackbar.make(EarthquakeActivity.root, "No Internet Connection", Snackbar.LENGTH_LONG)
                         .setAction("Turn on Wifi", new View.OnClickListener() {
                             @Override
@@ -335,7 +290,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
             }
         } else if (data.isEmpty()) {
 
-            Log.i(TAG, "data List empty: No Data fetch check your filter");
+//            Log.i(TAG, "data List empty: No Data fetch check your filter");
 
             //hide the progressbar
             displayProgressBar(false);
@@ -349,7 +304,9 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 
         }
 
-        //TODO: earthListAdapter clear method what actually it do
+        //CheckedTODO: earthListAdapter clear method what actually it do
+        //remvoe all the data and addAll add data at then end of the list
+
         // Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());
         earthListAdapter.clear();
         // Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());
@@ -367,7 +324,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoaderReset(Loader<List<EarthQuakes>> loader) {
 
-        Log.d(TAG, "onLoaderReset: ");
+//        Log.d(TAG, "onLoaderReset: ");
 
         //CheckdTODO: Check when the onLoaderReset call and clear adapter and set the new arraylist
         //CheckdTODO: Find this solution in loader after much effor but Honestly figure out what the problem facing how why I did this
@@ -383,7 +340,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, -1);
         Date yesterdayDate = calendar.getTime();
-        Log.i(TAG, "Yesterday Date Ready: " + yesterdayDate);
+//        Log.i(TAG, "Yesterday Date Ready: " + yesterdayDate);
 
         return DataProvider.getformateDate(yesterdayDate);
     }
