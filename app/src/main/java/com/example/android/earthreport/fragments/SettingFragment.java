@@ -35,6 +35,7 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
 
         //Fragment protect from destroy and recreate and retain
         // the current instance of the fragment when the activity is recreated.
+        // CheckedTodo: The retaininstance helping me on activity orientation change
         setRetainInstance(true);
 //        Log.i(TAG, "onCreate: ");
     }
