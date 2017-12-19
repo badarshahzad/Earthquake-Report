@@ -22,17 +22,14 @@ import android.widget.TextView;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.ShowEarthquakeDetails;
 import com.example.android.earthreport.model.DataProvider;
-import com.example.android.earthreport.model.EarthQuakes;
 import com.example.android.earthreport.network.EarthquakeLoader;
 import com.example.android.earthreport.notifications.NotificationsUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -58,7 +55,7 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         }
     };
-    private List<EarthQuakes> earthQuakesList;
+
     private String[] countURLS = new String[3];
     private ProgressBar progressBar;
     //This hour earthQuakes url (query to get values) | Below I concatenate the date for todady
@@ -122,12 +119,6 @@ public class HomeFragment extends Fragment {
 
         //Find a reference to the {@link Progressbar} int the layout
         progressBar = view.findViewById(R.id.progress_bar);
-
-
-        // Data replicate in listview due to creation of activity
-        // I added for just when view appear listview
-        // instance recereate and assigned (check):
-        earthQuakesList = new ArrayList<>();
 
 
         // java.util.calender class

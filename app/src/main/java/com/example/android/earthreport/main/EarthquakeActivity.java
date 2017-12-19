@@ -87,13 +87,13 @@ public class EarthquakeActivity extends AppCompatActivity {
         //when menu click the fragment again place into the containter fragment so
         // just one time place if user click same menu again and again (Setting click multiple
         // time but just once placed)
-//        if (existTag!=null) {
-//            return;
-//        } else {
+        if (existTag != null) {
+            return;
+        } else {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.containerForFragments, fragment, TAG);
             fragmentTransaction.commit();
-//        }
+        }
 
     }
 
