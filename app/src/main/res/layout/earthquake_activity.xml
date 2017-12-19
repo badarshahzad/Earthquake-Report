@@ -13,8 +13,8 @@
     tools:layout_editor_absoluteY="81dp">
 
 
-    <FrameLayout
-        android:id="@+id/containerForFragments"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="0dp"
@@ -24,7 +24,7 @@
         app:layout_constraintHorizontal_bias="0.564"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-    </FrameLayout>
+    </android.support.v4.view.ViewPager>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navBottom"
