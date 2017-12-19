@@ -58,7 +58,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             double longitude = bundle.getDouble(TimelineFragment.LONGITUDE);
             double latitude = bundle.getDouble(TimelineFragment.LATITUDE);
             String magnitude = bundle.getString(TimelineFragment.MAGNITUDE);
-            String date = bundle.getString(TimelineFragment.DATA);
+            String date = bundle.getString(TimelineFragment.DATE);
             String cityName = bundle.getString(TimelineFragment.CITY);
 
             // Add the marker city, country

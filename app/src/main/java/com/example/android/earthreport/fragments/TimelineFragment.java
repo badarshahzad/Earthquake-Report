@@ -104,6 +104,8 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 
         emptyText = view.findViewById(R.id.empty);
         noInternetImg = view.findViewById(R.id.noInternet);
+
+        //TODO: Add swipe listener
         earthquakeListView = view.findViewById(R.id.list);
         progressBar = view.findViewById(R.id.progress_bar);
         //CheckedTODO:Add like a material design view
@@ -390,5 +392,41 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         return DataProvider.getformateDate(newDateForMonth);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume: ");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop: ");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart: ");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause: ");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy: ");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "onSaveInstanceState: ");
+    }
+    
 }
 

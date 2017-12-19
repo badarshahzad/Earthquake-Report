@@ -22,7 +22,6 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +32,7 @@ import com.example.android.earthreport.R;
 import com.example.android.earthreport.fragments.HomeFragment;
 import com.example.android.earthreport.fragments.SettingFragment;
 import com.example.android.earthreport.fragments.TimelineFragment;
+import com.example.android.earthreport.fragments.ViewPagerAdapter;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
@@ -48,36 +48,10 @@ public class EarthquakeActivity extends AppCompatActivity {
     private TimelineFragment timelineFragment;
     private SettingFragment settingFragment;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
+    private ViewPager viewPager;
 
-                //TODO:whenever the menu item click the fragment replace again and
-                // life cycle its not good try to check befor going to replace the fragment
-                //TODO:Add viewpager to navigate with swap
-                case R.id.home:
-                    setTitle("Home");
-                    homeFragment = new HomeFragment();
-                    fragmentTransactionCommit(homeFragment, HOME_FRAGMENT);
-                    return true;
+    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener;
 
-                case R.id.timeline:
-                    setTitle("Earthquake List");
-                    timelineFragment = new TimelineFragment();
-                    fragmentTransactionCommit(timelineFragment, TIMELINE_FRAGMENT);
-                    return true;
-
-                case R.id.setting:
-                    setTitle("Setting");
-                    settingFragment = new SettingFragment();
-                    fragmentTransactionCommit(settingFragment, SETTING_FRAGMENT);
-                    return true;
-            }
-            return false;
-        }
-    };
 
     //TODO: Check this method working or not yet I don't have usb cable
     public void fragmentTransactionCommit(Fragment fragment, String TAG) {
@@ -92,16 +66,25 @@ public class EarthquakeActivity extends AppCompatActivity {
             return;
         } else {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.containerForFragments, fragment, TAG);
+            // fragmentTransaction.replace(R.id.containerForFragments, fragment, TAG);
             fragmentTransaction.commit();
         }
 
     }
 
-    private void setupViewPager(ViewPager viewPager){
-        
+    private void setupViewPager(ViewPager viewPager) {
+
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        homeFragment = new HomeFragment();
+        timelineFragment = new TimelineFragment();
+        settingFragment = new SettingFragment();
+        viewPagerAdapter.addFragment(homeFragment);
+        viewPagerAdapter.addFragment(timelineFragment);
+        viewPagerAdapter.addFragment(settingFragment);
+        viewPager.setAdapter(viewPagerAdapter);
 
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,21 +93,84 @@ public class EarthquakeActivity extends AppCompatActivity {
         //get the root referance
         root = findViewById(R.id.root);
 
-        BottomNavigationView navigationView = findViewById(R.id.navBottom);
-        navigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        //The purpose of using viewpager is to mantain the instance of fragment
+        // I figure it our the viewpage don't throw away the instance whent the
+        // view change as it mantain it in memory so I don't have to add extra code for
+        // fragment mantain on each time menu click and load the fragment ag&ag& (again and again)
+        viewPager = findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        final BottomNavigationView bottomNavg = findViewById(R.id.navBottom);
+        bottomNavg.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+
+                    //CheckedTODO:whenever the menu item click the fragment replace again and
+                    // life cycle its not good try to check befor going to replace the fragment
+                    //CheckedTODO:Add viewpager to navigate with swap
+                    case R.id.home:
+                        setTitle("Home");
+                        viewPager.setCurrentItem(0);
+//                    homeFragment = new HomeFragment();
+//                    fragmentTransactionCommit(homeFragment, HOME_FRAGMENT);
+                        return true;
+
+                    case R.id.timeline:
+                        setTitle("Earthquake List");
+                        viewPager.setCurrentItem(1);
+//                    timelineFragment = new TimelineFragment();
+//                    fragmentTransactionCommit(timelineFragment, TIMELINE_FRAGMENT);
+                        return true;
+
+                    case R.id.setting:
+                        setTitle("Setting");
+                        viewPager.setCurrentItem(2);
+//                    settingFragment = new SettingFragment();
+//                    fragmentTransactionCommit(settingFragment, SETTING_FRAGMENT);
+                        return true;
+                }
+                return false;
+            }
+
+        });
+
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+//                Log.i(TAG, "onPageSelected: "+position+"\n B id: "+bottomNavg.getSelectedItemId()
+//                        + " \nId1 " +bottomNavg.getId()+" \nid2: "+bottomNavg.getChildCount()
+//                        + " \nid3 " + bottomNavg.getMenu().getItem(position)
+//                        + " \nid4 "+ bottomNavg.getMenu());
+                bottomNavg.getMenu().getItem(position).setChecked(true);
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         //TODO:Does these tags are working or not
         //Find the retain fragment on activity restarts
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        homeFragment = (HomeFragment) fragmentManager.findFragmentByTag(HOME_FRAGMENT);
-        Log.i(TAG, "onCreate: " + homeFragment);
-        timelineFragment = (TimelineFragment) fragmentManager.findFragmentByTag(TIMELINE_FRAGMENT);
-        settingFragment = (SettingFragment) fragmentManager.findFragmentByTag(SETTING_FRAGMENT);
+        //  FragmentManager fragmentManager = getSupportFragmentManager();
+        //  homeFragment = (HomeFragment) fragmentManager.findFragmentByTag(HOME_FRAGMENT);
+        //  Log.i(TAG, "onCreate: " + homeFragment);
+        //  timelineFragment = (TimelineFragment) fragmentManager.findFragmentByTag(TIMELINE_FRAGMENT);
+        //   settingFragment = (SettingFragment) fragmentManager.findFragmentByTag(SETTING_FRAGMENT);
 
         //TODO:Check the fragments or retaining or not
 
         //when the app starts fragment will be null so
-        if (homeFragment == null && timelineFragment == null && settingFragment == null) {
+  /*      if (homeFragment == null && timelineFragment == null && settingFragment == null) {
             setTitle("Home");
             homeFragment = new HomeFragment();
             //fragmenttransaction is the api for performing a set of fragment
@@ -133,7 +179,7 @@ public class EarthquakeActivity extends AppCompatActivity {
             fragmentManager.beginTransaction()
                     .replace(R.id.containerForFragments, homeFragment, "Home text")
                     .commit();
-        }
+        }*/
 
         //Go and fetch Today, Yesterday, Week, and Month Earthquakes Now
         //  String month = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
@@ -150,7 +196,6 @@ public class EarthquakeActivity extends AppCompatActivity {
         //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(1).size(),Toast.LENGTH_LONG).show();
         //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(2).size(),Toast.LENGTH_LONG).show();
         //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(3).size(),Toast.LENGTH_LONG).show();
-
 
     }
 /*

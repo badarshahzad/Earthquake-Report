@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.example.android.earthreport.R;
 import com.github.machinarius.preferencefragment.PreferenceFragment;
@@ -32,24 +33,59 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.setting);
 
-
         //Fragment protect from destroy and recreate and retain
         // the current instance of the fragment when the activity is recreated.
         // CheckedTodo: The retaininstance helping me on activity orientation change
         setRetainInstance(true);
-//        Log.i(TAG, "onCreate: ");
+        Log.i(TAG, "onCreate: ");
     }
+
 
     //Called when a Preference has been changed by the user. This is called before the state
     //of the Preference is about to be updated and before the state is persisted.
     @Override
     public boolean onPreferenceChange(Preference preference, Object o) {
         String value = o.toString();
-//        Log.i(TAG, "onPreferenceChange: string "+o.toString());
+        Log.i(TAG, "onPreferenceChange: string " + o.toString());
         preference.setSummary(value);
         return true;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "onSaveInstanceState: ");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart: ");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop: ");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy: ");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause: ");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume: ");
+    }
 
     //Couple of testing to make Xml preference to Fragment and at the end I found something new
     //That is not available in android support libraries
