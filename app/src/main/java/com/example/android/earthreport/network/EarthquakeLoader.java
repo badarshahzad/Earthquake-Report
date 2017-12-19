@@ -193,6 +193,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
         return earthQuakesArrayList;
     }
 
+
     public static class HttpHandler {
 
         public static String TAG = HttpHandler.class.getSimpleName();
