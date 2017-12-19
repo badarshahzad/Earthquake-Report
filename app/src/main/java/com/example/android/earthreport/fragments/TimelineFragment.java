@@ -16,6 +16,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import android.os.Handler;
 
 
 /**
@@ -58,6 +60,10 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     public static final String MAGNITUDE = "MAGNITUDE";
     public static final String DATE = "DATE";
     public static final String DATA = "DATA";
+    public static final int NO_DATA_ERROR = R.drawable.ic_error_colored_24dp;
+    public static final int NO_INTERNET_ERROR = R.drawable.ic_cloud_off_black_24dp;
+    public static final String NO_DATA_TEXT = "No data retrieve check filter in setting.";
+    public static final String NO_INTERNET_TEXT = "No Internet Connection";
 
     private final String TAG = TimelineFragment.class.getSimpleName();
     private List<EarthQuakes> earthQuakesArrayList;
@@ -69,13 +75,14 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 
 
     private View view;
-    private TextView emptyText;
-    private ImageView noInternetImg;
+    private TextView emptyStateText;
+    private ImageView emptyStateImagView;
 
-    private ProgressBar progressBar;
     private ListView earthquakeListView;
     private FloatingActionButton fabButton;
     private EarthQuakeAdapter earthListAdapter;
+
+    private SwipeRefreshLayout swipeRefresh;
 
 
     public TimelineFragment() {
@@ -102,14 +109,30 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         //test the one list only
         view = inflater.inflate(R.layout.fragment_timeline, container, false);
 
-        emptyText = view.findViewById(R.id.empty);
-        noInternetImg = view.findViewById(R.id.noInternet);
+        emptyStateText = view.findViewById(R.id.empty);
+        emptyStateImagView = view.findViewById(R.id.noInternet);
 
         //TODO: Add swipe listener
         earthquakeListView = view.findViewById(R.id.list);
-        progressBar = view.findViewById(R.id.progress_bar);
+
         //CheckedTODO:Add like a material design view
         fabButton = view.findViewById(R.id.fabButton);
+
+        swipeRefresh = view.findViewById(R.id.swipeRefresh);
+        swipeRefresh.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Log.i(TAG, "onRefresh: ");
+                        new Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadData();
+                            }
+                        });
+                    }
+                }
+        );
 
         earthQuakesArrayList = new ArrayList<>();
         earthListAdapter = new EarthQuakeAdapter(getContext(), R.layout.earthquake_item, earthQuakesArrayList);
@@ -119,7 +142,8 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         //I added in onStartLoading method of AyscnLoader class the correct way
         //getLoaderManager().initLoader(1, null, this).forceLoad();
         //Log.d(TAG, "getLoaderManger init: ");
-        getLoaderManager().initLoader(1, null, this);
+
+        loadData();
         //Log.d(TAG, "getLoaderManger created: ");
 
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -167,23 +191,24 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         return view;
     }
 
+    private void loadData() {
 
-    public void displayProgressBar(boolean display) {
-        if (display) {
-            progressBar.setVisibility(View.VISIBLE);
-        } else {
-            progressBar.setVisibility(View.INVISIBLE);
-        }
+//        Log.i(TAG, "loadData: ");
+        //Http requet to fetch jason data at that time
+        //getLoaderManager().initLoader(0, null, this);
+
+        LoaderManager loaderManager = getLoaderManager();
+        loaderManager.restartLoader(1, null, this);
+//        Log.i(TAG, "loadData: init called");
     }
 
 
     //Return a new loader instance that is ready to start loading
     @Override
     public Loader<List<EarthQuakes>> onCreateLoader(int id, Bundle args) {
-//        Log.d(TAG, "onCreateLoader: ");
+        Log.i(TAG, "onCreateLoader: ");
 
         //CheckedTODO: Sharedpreferances to store the filter
-
         //SharefPreferences
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
@@ -249,6 +274,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 //        Log.i(TAG, "url ready: " + URL);
 
 
+        Log.i(TAG, "onCreateLoader: going to finish");
         //String url1 = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson&format=geojson&orderby=magnitude-asc";
         return new EarthquakeLoader(getContext(), URL);
     }
@@ -256,7 +282,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     //Called when the previously created loader has finished its load
     //This work on a main thread
     @Override
-    public void onLoadFinished(Loader<List<EarthQuakes>> loader, List<EarthQuakes> data) {
+    public void onLoadFinished(Loader<List<EarthQuakes>> loader, final List<EarthQuakes> data) {
 
         //CheckdTODO: Handle the empty list
 
@@ -281,13 +307,9 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 
             if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
 
-
-                emptyText.setText("No Internet Connection");
-                emptyText.setVisibility(View.VISIBLE);
-
-                noInternetImg.setImageResource(R.drawable.ic_cloud_off_black_24dp);
-                noInternetImg.setVisibility(View.VISIBLE);
-
+                //set the text and image when no internet
+                showState(NO_INTERNET_TEXT, NO_INTERNET_ERROR);
+                visibleState();
 
 //                Log.i(TAG, "OFF");
                 Snackbar.make(EarthquakeActivity.root, "No Internet Connection", Snackbar.LENGTH_LONG)
@@ -299,36 +321,77 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
                             }
                         })
                         .show();
-
+                return;
             }
-        } else if (data.isEmpty()) {
+        } /*else if (data.isEmpty()) {
 
 //            Log.i(TAG, "data List empty: No Data fetch check your filter");
+//            set the text and image when the filter data fetch empty list
+            showState(NO_DATA_TEXT, NO_DATA_ERROR);
+            visibleState();
 
-            //hide the progressbar
-            displayProgressBar(false);
+        }*/
 
-            //show the text if the filter data is empty
-            emptyText.setText("No data is found due to filter or period setting.");
-            emptyText.setVisibility(View.VISIBLE);
+//        CheckedTODO: earthListAdapter clear method what actually it do
+//        remvoe all the data and addAll add data at then end of the list
 
-            noInternetImg.setImageResource(R.drawable.ic_error_colored_24dp);
-            noInternetImg.setVisibility(View.VISIBLE);
 
+        if(data.size()==0){
+
+                    Log.i(TAG, "onLoadFinished: in 0");
+
+                    /*emptyStateText.setText(NO_DATA_TEXT);
+                    emptyStateImagView.setImageResource(NO_DATA_ERROR);
+                    //Hide the refresh icon
+                    swipeRefresh.setRefreshing(false);
+
+                    emptyStateText.setVisibility(View.VISIBLE);
+                    emptyStateImagView.setVisibility(View.VISIBLE);
+
+                    earthquakeListView.setEmptyView(emptyStateText);
+                    earthquakeListView.setEmptyView(emptyStateImagView);
+                    Log.i(TAG, "onLoadFinished: finish 0");
+                    earthListAdapter.clear();
+//         Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());*/
+            earthListAdapter.clear();
+            earthListAdapter.addAll(data);
+            showState(NO_DATA_TEXT, NO_DATA_ERROR);
+            visibleState();
+
+            return;
         }
 
-        //CheckedTODO: earthListAdapter clear method what actually it do
-        //remvoe all the data and addAll add data at then end of the list
 
-        // Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());
+        emptyStateText.setVisibility(View.INVISIBLE);
+        emptyStateImagView.setVisibility(View.INVISIBLE);
+
+        swipeRefresh.setRefreshing(false);
+//         Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());
         earthListAdapter.clear();
-        // Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());
+//         Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());
         earthListAdapter.addAll(data);
-        // Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());
+//         Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());
 
-        //hdie the progressbar but just invisible it will not show during the scrolling
-        progressBar.setVisibility(View.GONE);
+    }
 
+    //Invisible the text and Icon
+    private void invisibleState() {
+        emptyStateText.setVisibility(View.INVISIBLE);
+        emptyStateImagView.setVisibility(View.INVISIBLE);
+    }
+
+    //Visible the text and Icon
+    private void visibleState() {
+        emptyStateText.setVisibility(View.VISIBLE);
+        emptyStateImagView.setVisibility(View.VISIBLE);
+    }
+
+    private void showState(String text, int img_src) {
+
+        emptyStateText.setText(text);
+        emptyStateImagView.setImageResource(img_src);
+        //Hide the refresh icon
+        swipeRefresh.setRefreshing(false);
     }
 
     //This is called when the last data provided to onLoadFinished()
@@ -344,6 +407,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 
         //Remove all elementes from arrayadapter
         earthListAdapter.clear();
+        swipeRefresh.setRefreshing(false);
         // earthListAdapter.setEarthQuakesList(new ArrayList<EarthQuakes>());
 
     }
@@ -427,6 +491,17 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         super.onSaveInstanceState(outState);
         Log.i(TAG, "onSaveInstanceState: ");
     }
-    
+
+    // The below override method may be have bug as its not work
+    // when I implement the SwipeListenerLayout and give implementation in this method
+    /*@Override
+    public void onRefresh() {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                loadData();
+            }
+        });
+    }*/
 }
 
