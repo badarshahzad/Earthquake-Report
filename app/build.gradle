@@ -26,7 +26,7 @@ dependencies {
     
     testCompile 'junit:junit:4.12'
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support.constraint:constraint-layout:1.1.0-beta3'
     compile 'com.android.support:support-v4:26.0.2'
     compile 'com.android.support:appcompat-v7:26.0.2'
     compile 'com.google.android.gms:play-services-maps:11.6.0'

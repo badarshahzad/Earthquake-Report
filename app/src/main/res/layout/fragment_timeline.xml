@@ -4,17 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".main.EarthquakeActivity">
+    tools:context=".main.EarthquakeActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
 
             android:dividerHeight="0sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -24,43 +29,49 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <!--No Internet Connection Imageview -->
-    <ImageView
-        android:id="@+id/noInternet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_cloud_off_black_24dp"
-
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <!--Empty Listview text-->
     <TextView
         android:id="@+id/empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginBottom="250dp"
         android:gravity="center"
-        android:text="No Internet Connection"
 
+        android:text="No Internet Connection"
         android:textSize="16sp"
+
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/noInternet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_cloud_off_black_24dp"
+
+
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@+id/noInternet"
-        app:layout_constraintStart_toStartOf="@+id/noInternet"
-        app:layout_constraintTop_toBottomOf="@id/noInternet" />
+        app:layout_constraintBottom_toTopOf="@+id/empty"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:src="@drawable/ic_map_white_24dp"
 
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_map_white_24dp"
         app:backgroundTint="@color/magnitude4"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="16dp" />
+
 
 </android.support.constraint.ConstraintLayout>

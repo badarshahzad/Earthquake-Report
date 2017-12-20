@@ -19,6 +19,9 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -93,11 +96,37 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Yes it has the menu item
+        setHasOptionsMenu(true);
+
         //Fragment protect from destroy and recreate and retain
         // the current instance of the fragment when the activity is recreated.
         // CheckedTodo: The retaininstance helping me on activity orientation change
         setRetainInstance(true);
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        //Firstly clear the existed menu & and add my own menu
+        menu.clear();
+        inflater.inflate(R.menu.menu_home, menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        //Referesh will update the earthquakes count and hourly earthquakes list
+        if (itemId == R.id.action_refresh) {
+            loadData();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     //Always add adapter first! Always add adapter first! Always add adapter first!
     @Override
@@ -130,6 +159,8 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
                                 loadData();
                             }
                         });
+
+                        invisibleState();
                     }
                 }
         );

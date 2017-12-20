@@ -1,5 +1,6 @@
 package com.example.android.earthreport;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -27,20 +29,25 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
     public static String TAG = Map.class.getSimpleName();
 
+    private  SupportMapFragment mapFragment;
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // getSupportActionBar().setHomeButtonEnabled(true);
-
 
         //Retrieve the content view theat renders the map
         setContentView(R.layout.map_activity);
 
         //Get the SupportMapFragment and request notification
         // when the map is ready to be used
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Log.i(TAG, "onCreate: ");
     }
 
     @Override

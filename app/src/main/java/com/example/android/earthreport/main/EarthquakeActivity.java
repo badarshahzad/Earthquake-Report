@@ -150,6 +150,8 @@ public class EarthquakeActivity extends AppCompatActivity {
 //                        + " \nid3 " + bottomNavg.getMenu().getItem(position)
 //                        + " \nid4 "+ bottomNavg.getMenu());
                 bottomNavg.getMenu().getItem(position).setChecked(true);
+                setTitle(String.valueOf(bottomNavg.getMenu().getItem(position)));
+
 
             }
 
