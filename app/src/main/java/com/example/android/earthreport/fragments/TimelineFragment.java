@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -44,8 +45,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import android.os.Handler;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,7 +64,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     public static final String DATA = "DATA";
     public static final int NO_DATA_ERROR = R.drawable.ic_error_colored_24dp;
     public static final int NO_INTERNET_ERROR = R.drawable.ic_cloud_off_black_24dp;
-    public static final String NO_DATA_TEXT = "No data retrieve check filter in setting.";
+    public static final String NO_DATA_TEXT = "No data retrieve check Filter or Period in Setting.";
     public static final String NO_INTERNET_TEXT = "No Internet Connection";
 
     private final String TAG = TimelineFragment.class.getSimpleName();
@@ -121,6 +120,8 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         //Referesh will update the earthquakes count and hourly earthquakes list
         if (itemId == R.id.action_refresh) {
             loadData();
+            swipeRefresh.setRefreshing(true);
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -161,6 +162,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
                         });
 
                         invisibleState();
+                        earthListAdapter.clear();
                     }
                 }
         );
@@ -190,6 +192,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
                 bundle.putString(CITY, earthQuakesArrayList.get(position).getCityname());
                 bundle.putString(MAGNITUDE, earthQuakesArrayList.get(position).getMagnitude());
                 bundle.putString(DATE, earthQuakesArrayList.get(position).getDate());
+
 
                 intent.putExtras(bundle);
                 startActivity(intent);

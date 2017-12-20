@@ -152,7 +152,10 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
                     }
 
                     //filter the arraylist while data fetching and passing into arraylist
-                    if (place.contains("of") && Double.valueOf(mag) >= Double.valueOf(filterMag)) {
+                    // if the data palce is not fetch or mention
+
+                    if (place != null && mag != null && filterMag != null &&
+                            place.contains("of") && Double.valueOf(mag) >= Double.valueOf(filterMag)) {
                         earthQuakesArrayList.add(new EarthQuakes(mag, place, time, url, longitude, latitude));
                         //    Log.i(TAG, "Yes contains of");
                     }
@@ -236,15 +239,19 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+                Log.i(TAG, "makeServeiceCall: exception");
             } finally {
 
                 //disconnect the connection
                 if (connection != null) {
                     connection.disconnect();
+
+                    Log.i(TAG, "makeServeiceCall: connection close");
                 }
 
             }
 
+            Log.i(TAG, "makeServeiceCall: response back");
             return response;
         }
 

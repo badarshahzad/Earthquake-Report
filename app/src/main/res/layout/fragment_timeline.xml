@@ -24,41 +24,27 @@
             android:dividerHeight="0sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/progress_bar" />
+            app:layout_constraintStart_toStartOf="parent" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <!--No Internet Connection Imageview -->
 
     <!--Empty Listview text-->
-    <TextView
-        android:id="@+id/empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="250dp"
-        android:gravity="center"
-
-        android:text="No Internet Connection"
-        android:textSize="16sp"
-
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/noInternet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="56dp"
+
         android:src="@drawable/ic_cloud_off_black_24dp"
-
-
         android:visibility="invisible"
+
         app:layout_constraintBottom_toTopOf="@+id/empty"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/empty"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="@+id/empty" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabButton"
@@ -67,11 +53,27 @@
         android:layout_marginBottom="16dp"
 
         android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:src="@drawable/ic_map_white_24dp"
         app:backgroundTint="@color/magnitude4"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:gravity="center"
+        android:text="No Internet Connection"
+
+        android:textSize="16sp"
+        android:visibility="invisible"
+
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

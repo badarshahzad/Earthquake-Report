@@ -5,7 +5,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +30,24 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
     public EarthQuakeAdapter(@NonNull Context context, int resource, @NonNull List<EarthQuakes> objects) {
         super(context, resource, objects);
         earthQuakesQuakesValues = objects;
+    }
+
+    /**
+     * @param dateObject Take a Date type object
+     * @return return the date in human readable format e.g "Nov 11, 2017"
+     */
+    public static String formateDate(Date dateObject) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
+        return dateFormat.format(dateObject);
+    }
+
+    /**
+     * @param timeObjet Take a Date type object
+     * @return return the time in human readable format e.g "04:00 pm"
+     */
+    public static String formateTime(Date timeObjet) {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        return timeFormat.format(timeObjet);
     }
 
     /**
@@ -69,6 +86,10 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
         // and index 1 is the location
         //?<=of is the string that just pick string including 'of' also init
         // and remaining will be 2nd index
+
+        //I know that this hard coded but the USGS mantain data with that string :D
+        // So, Honesty don't know how to get the name of city  the don't have method
+        // in API to get the name of city so i'm doing like this
         String[] parseValue = earthQuakesValue.getCityname().split("(?<=of)");
 
         String distance = null;
@@ -119,7 +140,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
         //Display the date in the TextView
         dateView.setText(date);
 
-        //Find the TextView  with view ID for time 
+        //Find the TextView  with view ID for time
         TextView timeView = listView.findViewById(R.id.time);
         timeView.setText(time);
 
@@ -204,23 +225,5 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
             return 0;
         }
         return magnitudeResourceColorId;
-    }
-
-    /**
-     * @param dateObject Take a Date type object
-     * @return return the date in human readable format e.g "Nov 11, 2017"
-     */
-    public String formateDate(Date dateObject) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
-        return dateFormat.format(dateObject);
-    }
-
-    /**
-     * @param timeObjet Take a Date type object
-     * @return return the time in human readable format e.g "04:00 pm"
-     */
-    private String formateTime(Date timeObjet) {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
-        return timeFormat.format(timeObjet);
     }
 }

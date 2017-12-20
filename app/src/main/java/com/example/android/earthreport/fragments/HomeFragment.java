@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.earthreport.R;
@@ -40,29 +42,17 @@ import java.util.Date;
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = HomeFragment.class.getSimpleName();
+    private static final String COUNT_KEY = "countKey";
     public static String TODAY_COUNT_KEY = "todayCountkey";
     public static String YESTERDAY_COUNT_KEY = "yesterdayCountkey";
     public static String WEEK_COUNT_KEY = "weekCountkey";
     public static String MONTH_COUNT_KEY = "monthCountkey";
+    private static final String COUNT_KEY_ARRAY[] = {TODAY_COUNT_KEY, YESTERDAY_COUNT_KEY, WEEK_COUNT_KEY, MONTH_COUNT_KEY};
     public static Handler handler;
-
     public TextView todayEarthquakes;
     public TextView yesterdayEarthquakes;
     public TextView thisMonthEarthquakes;
     public TextView thisWeekEarthquakes;
-
-    private String[] countURLS = new String[4];
-    // private ProgressBar progressBar;
-    //This hour earthQuakes url (query to get values) | Below I concatenate the date for todady
-    private String thisHourURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
-    //Today earthquakes count
-    private String CountURL = "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=";
-    private Date dateForWeek;
-
-    public HomeFragment() {
-
-    }
-
     View.OnClickListener showDataList = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -71,6 +61,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             startActivity(intent);
         }
     };
+    private String[] countURLS = new String[4];
+    private ProgressBar progressBar;
+    //This hour earthQuakes url (query to get values) | Below I concatenate the date for todady
+    private String thisHourURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
+    //Today earthquakes count
+    private String CountURL = "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=";
+    private Date dateForWeek;
+    private SwipeRefreshLayout swipeRefresh;
+
+    public HomeFragment() {
+
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,13 +104,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
 
         //cast (TextView) is redendent
-        todayEarthquakes = view.findViewById(R.id.today);
+        todayEarthquakes = view.findViewById(R.id.magnitude);
         yesterdayEarthquakes = view.findViewById(R.id.yesterday);
         thisWeekEarthquakes = view.findViewById(R.id.week);
         thisMonthEarthquakes = view.findViewById(R.id.month);
 
         //Find a reference to the {@link Progressbar} int the layout
-        //  progressBar = view.findViewById(R.id.progress_bar);
+        progressBar = view.findViewById(R.id.progressbar);
 
         // java.util.calender class
         // REFERENCE: https://stackoverflow.com/questions/3747490/android-get-date-before-7-days-one-week
@@ -148,6 +150,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         //get the counts eathquakes
         dataFetch(countURLS);
+        displayProgressBar(true);
 
         // After fetching the number of earthquakes set in the views
         handler = new Handler(Looper.getMainLooper()) {
@@ -158,20 +161,20 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 //But progressbar issue?
 
                 Bundle bundle = msg.getData();
+                int countKey[] = bundle.getIntArray(COUNT_KEY);
 
-                String todayCount = bundle.getString(TODAY_COUNT_KEY);
-                String yesterdayCount = bundle.getString(YESTERDAY_COUNT_KEY);
-                String weekCount = bundle.getString(WEEK_COUNT_KEY);
-                String monthCount = bundle.getString(MONTH_COUNT_KEY);
+                for (int a = 0; a < countKey.length; a++) {
+                    COUNT_KEY_ARRAY[a] = String.valueOf(countKey[a]);
+                }
 
                 //set the number of earthquakes
-                todayEarthquakes.setText(todayCount);
-                yesterdayEarthquakes.setText(yesterdayCount);
-                thisWeekEarthquakes.setText(weekCount);
-                thisMonthEarthquakes.setText(monthCount);
+                todayEarthquakes.setText(COUNT_KEY_ARRAY[0]);
+                yesterdayEarthquakes.setText(COUNT_KEY_ARRAY[1]);
+                thisWeekEarthquakes.setText(COUNT_KEY_ARRAY[2]);
+                thisMonthEarthquakes.setText(COUNT_KEY_ARRAY[3]);
 
                 //Stop the progressbar and hide
-                // displayProgressBar(false);
+                displayProgressBar(false);
             }
         };
 
@@ -184,6 +187,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
+    //TODO: Data fetch time out then hide progress bar and show notificaiton
+    private void displayProgressBar(boolean visiblity) {
+        if (visiblity) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+    }
 
     //TODO: We can move datafetch method as class in network package
     //count the earthquakes
@@ -191,9 +202,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         //start the progressbar and visible
 
-        Log.i(TAG, "dataFetch: ");
-        final String keys[] = new String[]{TODAY_COUNT_KEY,YESTERDAY_COUNT_KEY,WEEK_COUNT_KEY
-        ,MONTH_COUNT_KEY};
         final int[] count = new int[URLS.length];
         Runnable runnable = new Runnable() {
             @Override
@@ -217,19 +225,21 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                             count[a] = root.getInt("count");
                             // Log.i("COUNT", count[0] + "");
 
-                            //set the text of quakes count
-                            Message message = new Message();
-                            Bundle bundle = new Bundle();
-                            bundle.putString(keys[a], String.valueOf(count[a]));
-                            message.setData(bundle);
-                            handler.sendMessage(message);
-                            Log.i(TAG, "dataFetch: send back");
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
 
                 }
+
+                //set the text of quakes count
+                Message message = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putIntArray(COUNT_KEY, count);
+                message.setData(bundle);
+                handler.sendMessage(message);
+                Log.i(TAG, "dataFetch: send back");
 //                try {
 //                    Thread.sleep(3000);
 //                } catch (InterruptedException e) {
@@ -263,6 +273,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
             //Fetch today earthquakes count
             dataFetch(countURLS);
+
+            //refresh progress bar
+            progressBar.setEnabled(true);
 
             //show notification
             NotificationsUtils.remindUser(getContext());
@@ -312,6 +325,33 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        //TODO: give user facility to set the map type check this one
+       /* googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+*/
+        //TODO: check this one
+        /*googleMap.addTileOverlay(new TileOverlayOptions()
+        .visible(true)
+        .tileProvider(new TileProvider() {
+            @Override
+            public Tile getTile(int i, int i1, int i2) {
+                return null;
+            }
+        }));*/
+
+        //This is to add image overlay source :https://developers.google.com/maps/documentation/android-api/groundoverlay
+/*
+        private GoogleMap mMap;
+        private GroundOverlay mSydneyGroundOverlay;
+
+        mSydneyGroundOverlay = mMap.addGroundOverlay(new GroundOverlayOptions()
+                .image(BitmapDescriptorFactory.fromResource(R.drawable.harbour_bridge))
+                .position(new LatLng(-33.873, 151.206))
+                .clickable(true));
+
+        mSydneyGroundOverlay.setTag("Sydney");*/
     }
 
     public Date getDate(int day) {
