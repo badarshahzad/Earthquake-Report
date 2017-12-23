@@ -37,7 +37,7 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         // the current instance of the fragment when the activity is recreated.
         // CheckedTodo: The retaininstance helping me on activity orientation change
         setRetainInstance(true);
-        Log.i(TAG, "onCreate: ");
+//        Log.i(TAG, "onCreate: ");
     }
 
 
@@ -50,67 +50,5 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         preference.setSummary(value);
         return true;
     }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.i(TAG, "onSaveInstanceState: ");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.i(TAG, "onStart: ");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.i(TAG, "onStop: ");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.i(TAG, "onDestroy: ");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.i(TAG, "onPause: ");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(TAG, "onResume: ");
-    }
-
-    //Couple of testing to make Xml preference to Fragment and at the end I found something new
-    //That is not available in android support libraries
-
-   /* @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //Fragment a = new SettingPreferenceFragment();
-
-        View view = inflater.inflate(R.layout.fragment_setting, container, false);
-        //getFragmentManager().beginTransaction().replace(android.R.id.content,new SettingPreferenceFragment()).commit();
-       // getFragmentManager().beginTransaction().replace(R.layout.fragment_setting,new SettingPreferenceFragment())
-        return null;
-    }
-
-    public static class SettingPreferenceFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.setting);
-
-        }
-    }
-
-*/
 
 }

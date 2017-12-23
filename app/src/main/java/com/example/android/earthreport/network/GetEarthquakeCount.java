@@ -16,7 +16,6 @@ public class GetEarthquakeCount {
 
     private static final String TAG = GetEarthquakeCount.class.getSimpleName();
 
-    // HomeFragment homeFragment = new HomeFragment();
     public GetEarthquakeCount() {
 
     }
@@ -24,7 +23,6 @@ public class GetEarthquakeCount {
     public void dataFetch(final String[] URLS) {
 
         //start the progressbar and visible
-
 
         final int[] count = new int[3];
         Runnable runnable = new Runnable() {

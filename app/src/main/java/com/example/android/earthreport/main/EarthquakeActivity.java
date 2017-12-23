@@ -161,27 +161,6 @@ public class EarthquakeActivity extends AppCompatActivity {
             }
         });
 
-        //TODO:Does these tags are working or not
-        //Find the retain fragment on activity restarts
-        //  FragmentManager fragmentManager = getSupportFragmentManager();
-        //  homeFragment = (HomeFragment) fragmentManager.findFragmentByTag(HOME_FRAGMENT);
-        //  Log.i(TAG, "onCreate: " + homeFragment);
-        //  timelineFragment = (TimelineFragment) fragmentManager.findFragmentByTag(TIMELINE_FRAGMENT);
-        //   settingFragment = (SettingFragment) fragmentManager.findFragmentByTag(SETTING_FRAGMENT);
-
-        //TODO:Check the fragments or retaining or not
-
-        //when the app starts fragment will be null so
-  /*      if (homeFragment == null && timelineFragment == null && settingFragment == null) {
-            setTitle("Home");
-            homeFragment = new HomeFragment();
-            //fragmenttransaction is the api for performing a set of fragment
-            // operatins such as add, remove,  replace, attach ,detach, hide , and show
-            //Optional tag name at then end for the fragment to retrive when necessery to find fragment
-            fragmentManager.beginTransaction()
-                    .replace(R.id.containerForFragments, homeFragment, "Home text")
-                    .commit();
-        }*/
 
         //Go and fetch Today, Yesterday, Week, and Month Earthquakes Now
         //  String month = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
@@ -224,47 +203,5 @@ public class EarthquakeActivity extends AppCompatActivity {
         th.start();
     }*/
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "Pause");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "Restart");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "Resume");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "Start");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "Stop");
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "Destroy");
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-        Log.d(TAG, "onSaveInstanceState: ");
-    }
 
 }

@@ -128,7 +128,6 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
 
-
     //Always add adapter first! Always add adapter first! Always add adapter first!
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -357,35 +356,10 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
                         .show();
                 return;
             }
-        } /*else if (data.isEmpty()) {
+        }
 
-//            Log.i(TAG, "data List empty: No Data fetch check your filter");
-//            set the text and image when the filter data fetch empty list
-            showState(NO_DATA_TEXT, NO_DATA_ERROR);
-            visibleState();
+        if (data.size() == 0) {
 
-        }*/
-
-//        CheckedTODO: earthListAdapter clear method what actually it do
-//        remvoe all the data and addAll add data at then end of the list
-
-
-        if(data.size()==0){
-
-                    Log.i(TAG, "onLoadFinished: in 0");
-
-                    /*emptyStateText.setText(NO_DATA_TEXT);
-                    emptyStateImagView.setImageResource(NO_DATA_ERROR);
-                    //Hide the refresh icon
-                    swipeRefresh.setRefreshing(false);
-
-                    emptyStateText.setVisibility(View.VISIBLE);
-                    emptyStateImagView.setVisibility(View.VISIBLE);
-
-                    earthquakeListView.setEmptyView(emptyStateText);
-                    earthquakeListView.setEmptyView(emptyStateImagView);
-                    Log.i(TAG, "onLoadFinished: finish 0");
-                    earthListAdapter.clear();
 //         Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());*/
             earthListAdapter.clear();
             earthListAdapter.addAll(data);
@@ -488,42 +462,6 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         Log.i(TAG, "Month date " + newDateForMonth);
 
         return DataProvider.getformateDate(newDateForMonth);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(TAG, "onResume: ");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.i(TAG, "onStop: ");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.i(TAG, "onStart: ");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.i(TAG, "onPause: ");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.i(TAG, "onDestroy: ");
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.i(TAG, "onSaveInstanceState: ");
     }
 
     // The below override method may be have bug as its not work

@@ -281,51 +281,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             NotificationsUtils.remindUser(getContext());
         }
 
+        if(itemId == R.id.action_add_alert){
+
+//            Log.i(TAG, "onOptionsItemSelected: ");
+        }
+
         return super.onOptionsItemSelected(item);
-    }
-
-    //Life Cycle
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart: ");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop: ");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause: ");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: ");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume: ");
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.d(TAG, "onSaveInstanceState: ");
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        //googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
 
         //TODO: give user facility to set the map type check this one

@@ -44,61 +44,21 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
         this.context = context;
         this.URL = URL;
         earthQuakesArrayList = new ArrayList<>();
-        Log.d(TAG, "EarthquakeLoaderConstructor: ");
+//        Log.d(TAG, "EarthquakeLoaderConstructor: ");
     }
-
-   /* @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-
-        //Give message to user the data is downloading
-        // Toast.makeText(context,
-        //         "Earth Quake Data is loading ...",
-        //         Toast.LENGTH_SHORT).show();
-
-
-        //Wifi turn off/on
-        final WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
-            Log.i("WIFI", "ON");
-            Snackbar.make(EarthquakeActivity.root, "Hello", Snackbar.LENGTH_LONG)
-                    .setAction("Turn on Wifi", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            wifiManager.setWifiEnabled(true);
-                            Toast.makeText(context, "WIFI Enabled", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .show();
-        }
-
-        //	check the internet conneccctivity
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-
-        //Test if wifi is disable turn on with snakbar click lister
-        if (networkInfo == null || !networkInfo.isConnected()) {
-
-            Toast.makeText(context, "No Internet Connection!", Toast.LENGTH_SHORT).show();
-            //to cancel the doingbackgroudn return and onCancel you don't go on post executre
-            //you don't go into do in background you just return back
-            cancel(true);
-        }
-    }
-
-*/
 
     @Override
     protected void onStartLoading() {
-        Log.d(TAG, "onStartLoading: ");
+//        Log.d(TAG, "onStartLoading: ");
         forceLoad();
 
     }
 
     @Override
-    public List<EarthQuakes> loadInBackground() { //Making a request to url and getting response
+    public List<EarthQuakes> loadInBackground() {
+        //Making a request to url and getting response
 
-        Log.d(TAG, "loadInBackground: ");
+//        Log.d(TAG, "loadInBackground: ");
         String jasonStr = HttpHandler.makeServeiceCall(URL);
 
         //if the internet available and the jason data receive in jasonStr then
@@ -138,7 +98,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
                     double longitude = Double.valueOf(coordinates.get(0) + "");
                     double latitude = Double.valueOf(coordinates.get(1) + "");
 
-                    Log.i(TAG, "loadInBackground: "+longitude +" "+ latitude);
+                    Log.i(TAG, "loadInBackground: " + longitude + " " + latitude);
 
                     //inserting values in the list of earth quakes (model) type and making objects
                     // TimelineFragment.earthQuakesArrayList.add(new EarthQuakes(mag, place, time, url, longitude, latitude));
@@ -179,22 +139,8 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
 
             //if the jason string is null that could be the case when internet is no available
         }
-        /*else {
 
-            //Log.e(TAG, "Couldn't get jason from server.");
-
-            //I get the idea of runnign below thread from Sir Sarmad example
-            ((Activity) context).runOnUiThread(new Runnable() {
-                //runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(context, "No internet connection!", Toast.LENGTH_LONG).show();
-                    //Toast.makeText(getApplicationContext(), "Couldn't get jason from server. Check your network connection!", Toast.LENGTH_LONG).show();
-                }
-            });
-        }*/
-
-        Log.d(TAG, "loadInBackground: finished ");
+//        Log.d(TAG, "loadInBackground: finished ");
         return earthQuakesArrayList;
     }
 

@@ -10,22 +10,15 @@ import java.util.Date;
 
 public class DataProvider {
 
-//        public static void addProduct(String magnitude, String cityName, String date, String url, double longitude, double latitude) {
-//        EarthQuakes value = new EarthQuakes(magnitude, cityName, date, url, longitude, latitude);
-//        valuesList.add(value);
-//    }
-
-
-    //    public static List<EarthQuakes> valuesList = new ArrayList<>();
-    //sampel data load here to call method with values in parameters
+//    sampel data load here to call method with values in parameters
     static {
 
     }
 
+    //This mehtod convert the date into standard date like : 2017-12-23
     public static String getformateDate(Date dateObject) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(dateObject);
     }
-
 
 }
