@@ -138,6 +138,8 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
                     double longitude = Double.valueOf(coordinates.get(0) + "");
                     double latitude = Double.valueOf(coordinates.get(1) + "");
 
+                    Log.i(TAG, "loadInBackground: "+longitude +" "+ latitude);
+
                     //inserting values in the list of earth quakes (model) type and making objects
                     // TimelineFragment.earthQuakesArrayList.add(new EarthQuakes(mag, place, time, url, longitude, latitude));
 

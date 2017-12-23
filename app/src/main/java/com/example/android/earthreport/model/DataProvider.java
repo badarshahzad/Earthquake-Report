@@ -15,23 +15,11 @@ public class DataProvider {
 //        valuesList.add(value);
 //    }
 
-    public static ArrayList<EarthQuakes> todayEarthQuakesList = new ArrayList<>();
-    public static ArrayList<EarthQuakes> yesterdayEarthQuakesList = new ArrayList<>();
-    public static ArrayList<EarthQuakes> weekEarthQuakesList = new ArrayList<>();
-    public static ArrayList<EarthQuakes> monthEarthQuakesList = new ArrayList<>();
-    public static ArrayList<ArrayList> arrayLists = new ArrayList<>();
 
     //    public static List<EarthQuakes> valuesList = new ArrayList<>();
     //sampel data load here to call method with values in parameters
     static {
 
-    }
-
-    public DataProvider() {
-        arrayLists.add(todayEarthQuakesList);
-        arrayLists.add(yesterdayEarthQuakesList);
-        arrayLists.add(weekEarthQuakesList);
-        arrayLists.add(monthEarthQuakesList);
     }
 
     public static String getformateDate(Date dateObject) {

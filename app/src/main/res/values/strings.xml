@@ -13,8 +13,9 @@
      limitations under the License.
 -->
 <resources>
-    <string name="app_name">Earth Quakes</string>
+    <string name="app_name">Earthquakes</string>
     <string name="google_maps_key">AIzaSyDGopBjpemhUOna5YPIIGfIhxhEjvZCByQ</string>
+    <string name="google_maps_geocoding_key">AIzaSyCCmXMDTamKyg58c1Hq2EislcQWbEhr6so </string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

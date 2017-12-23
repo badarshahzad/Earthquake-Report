@@ -3,8 +3,10 @@ package com.example.android.earthreport;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.earthreport.fragments.TimelineFragment;
@@ -37,6 +39,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private TextView longitude;
     private TextView magnitude;
 
+    private CardView cardView;
+
 
 
     @Override
@@ -60,6 +64,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         longitude = findViewById(R.id.longitude);
         title = findViewById(R.id.title);
         magnitude = findViewById(R.id.magnitude);
+        cardView = findViewById(R.id.cardForText);
 
         Log.i(TAG, "onCreate: ");
     }
@@ -76,6 +81,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         String markType = bundle.getString("MARK_TYPE");
 
         if (markType.equals("single")) {
+            cardView.setVisibility(View.VISIBLE);
             double longitude = bundle.getDouble(TimelineFragment.LONGITUDE);
             double latitude = bundle.getDouble(TimelineFragment.LATITUDE);
             String magnitude = bundle.getString(TimelineFragment.MAGNITUDE);
@@ -96,6 +102,12 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     .snippet("Magnitude:" + magnitude));
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
 
+            //TODO:Add listener and code
+           // googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+           // googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+            googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+           // googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
             //I know that this hard coded but the USGS mantain data with that string :D
             // So, Honesty don't know how to get the name of city  the don't have method
             // in API to get the name of city so i'm doing like this
@@ -107,7 +119,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             this.direction.setText(distance);
             this.longitude.setText(longitude + " , " + latitude);
             this.magnitude.setText(magnitude);
-            this.title.setText(cityName);
+            this.title.setText(title);
 
 
             Log.i(TAG, "onMapReady: " + cityName);
@@ -116,6 +128,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         }
 
         if (markType.equals("multiple")) {
+            cardView.setVisibility(View.GONE);
 
             ArrayList<EarthQuakes> earthQuakesArrayList = new ArrayList<>();
             earthQuakesArrayList = (ArrayList<EarthQuakes>) bundle.getSerializable(TimelineFragment.DATA);

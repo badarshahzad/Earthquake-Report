@@ -305,7 +305,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         StringBuilder sb = new StringBuilder(URL);
         sb.setCharAt(length, '&');
         URL = sb.toString();
-//        Log.i(TAG, "url ready: " + URL);
+        Log.i(TAG, "url ready: " + URL);
 
 
         Log.i(TAG, "onCreateLoader: going to finish");

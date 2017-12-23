@@ -325,6 +325,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+
+
         //TODO: give user facility to set the map type check this one
        /* googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
