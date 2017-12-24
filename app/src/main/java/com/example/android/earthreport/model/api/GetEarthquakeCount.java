@@ -1,9 +1,9 @@
-package com.example.android.earthreport.network;
+package com.example.android.earthreport.model.api;
 
 import android.os.Bundle;
 import android.os.Message;
 
-import com.example.android.earthreport.fragments.HomeFragment;
+import com.example.android.earthreport.view.home.HomeFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;

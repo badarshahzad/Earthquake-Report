@@ -1,8 +1,10 @@
-package com.example.android.earthreport;
+package com.example.android.earthreport.view.search;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+
+import com.example.android.earthreport.R;
 
 public class ShowEarthquakeDetails extends AppCompatActivity {
 

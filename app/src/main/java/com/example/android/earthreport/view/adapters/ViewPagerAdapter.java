@@ -1,4 +1,4 @@
-package com.example.android.earthreport.fragments;
+package com.example.android.earthreport.view.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;

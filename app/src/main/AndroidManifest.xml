@@ -28,7 +28,7 @@
 
         <!--if activity already running I don't need to relunch app : singleTop-->
         <activity
-            android:name=".main.EarthquakeActivity"
+            android:name=".view.home.EarthquakeActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,11 +37,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Map" />
+        <activity android:name=".view.map.Map" />
 
         <activity
-            android:name=".ShowEarthquakeDetails"
-            android:parentActivityName=".main.EarthquakeActivity" />
+            android:name=".view.search.ShowEarthquakeDetails"
+            android:parentActivityName=".view.home.EarthquakeActivity" />
     </application>
 
 </manifest>

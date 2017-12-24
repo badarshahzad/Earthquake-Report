@@ -1,4 +1,4 @@
-package com.example.android.earthreport;
+package com.example.android.earthreport.view.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
@@ -11,7 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.android.earthreport.model.EarthQuakes;
+import com.example.android.earthreport.R;
+import com.example.android.earthreport.model.pojos.EarthQuakes;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

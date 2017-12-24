@@ -1,4 +1,4 @@
-package com.example.android.earthreport.network;
+package com.example.android.earthreport.model.api;
 
 
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
-import com.example.android.earthreport.model.EarthQuakes;
+import com.example.android.earthreport.model.pojos.EarthQuakes;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -126,7 +126,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
 
                     //if (Double.valueOf(mag) >= Double.valueOf(filterMag)) {
                     //}
-                    //DataProvider.addProduct(mag, place, time, url, longitude, latitude);
+                    //DataProviderFormat.addProduct(mag, place, time, url, longitude, latitude);
                     Log.i(TAG, "data added " + mag + " " + place + " " + time);
 
                 }

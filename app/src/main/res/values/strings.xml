@@ -207,4 +207,7 @@
     <string name="notificaiton_title">Earthquake Notification</string>
     <string name="notification_summary">Earthquake occur near your left and right side but the quake is never occur in the sky. Do you know why?</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

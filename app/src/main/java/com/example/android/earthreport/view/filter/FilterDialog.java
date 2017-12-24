@@ -1,4 +1,4 @@
-package com.example.android.earthreport;
+package com.example.android.earthreport.view.filter;
 
 
 import android.os.Bundle;
@@ -11,7 +11,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.android.earthreport.fragments.TimelineFragment;
+import com.example.android.earthreport.R;
+import com.example.android.earthreport.view.timeline.TimelineFragment;
 
 
 /**
@@ -24,13 +25,11 @@ public class FilterDialog extends DialogFragment {
 
     private String selectedPeriod;
     private String selectedMin;
-    private String selectedMax;
     private String selectedregion;
 
 
     private Spinner period ;
     private Spinner minMagnitude ;
-    private Spinner maxMagnitude ;
     private Spinner region ;
 
     View.OnClickListener donefilterAction = new View.OnClickListener() {
@@ -40,11 +39,14 @@ public class FilterDialog extends DialogFragment {
 
             selectedPeriod =  String.valueOf(period.getSelectedItem());
             selectedMin = String.valueOf(minMagnitude.getSelectedItem());
-            selectedMax = String.valueOf(maxMagnitude.getSelectedItem());
             selectedregion  = String.valueOf(region.getSelectedItem());
 
+            setSelectedPeriod(selectedPeriod);
+            setSelectedMin(selectedMin);
+            setSelectedregion(selectedregion);
+
             TimelineFragment timelineFragment = new TimelineFragment();
-           // timelineFragment.filterRefreshList(selectedPeriod,selectedMin,selectedMax,selectedregion);
+            timelineFragment.filterRefreshList(selectedPeriod,selectedMin,selectedregion);
 
             getDialog().dismiss();
         }
@@ -72,7 +74,6 @@ public class FilterDialog extends DialogFragment {
 
         period = view.findViewById(R.id.period);
         minMagnitude = view.findViewById(R.id.min_of);
-        maxMagnitude = view.findViewById(R.id.max_of);
         region = view.findViewById(R.id.region_of);
 
 
@@ -81,16 +82,25 @@ public class FilterDialog extends DialogFragment {
 
 
 
+    public void setSelectedPeriod(String selectedPeriod) {
+        this.selectedPeriod = selectedPeriod;
+    }
+
+    public void setSelectedMin(String selectedMin) {
+        this.selectedMin = selectedMin;
+    }
+
+
+    public void setSelectedregion(String selectedregion) {
+        this.selectedregion = selectedregion;
+    }
+
     public String getSelectedPeriod() {
         return selectedPeriod;
     }
 
     public String getSelectedMin() {
         return selectedMin;
-    }
-
-    public String getSelectedMax() {
-        return selectedMax;
     }
 
     public String getSelectedregion() {

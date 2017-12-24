@@ -3,6 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.earthreport.ShowEarthquakeDetails">
+    tools:context="com.example.android.earthreport.view.search.ShowEarthquakeDetails">
 
 </android.support.constraint.ConstraintLayout>

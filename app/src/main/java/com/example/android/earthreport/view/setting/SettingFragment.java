@@ -1,4 +1,4 @@
-package com.example.android.earthreport.fragments;
+package com.example.android.earthreport.view.setting;
 
 
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.example.android.earthreport.model;
+package com.example.android.earthreport.model.format;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by root on 11/10/17.
  */
 
-public class DataProvider {
+public class DataProviderFormat {
 
 //    sampel data load here to call method with values in parameters
     static {

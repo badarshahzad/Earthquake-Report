@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="com.example.android.earthreport.fragments.HomeFragment"
+    tools:context="com.example.android.earthreport.view.home.HomeFragment"
     tools:layout_editor_absoluteX="8dp"
     tools:layout_editor_absoluteY="81dp">
 
@@ -18,6 +18,7 @@
             android:id="@+id/progressbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
 
             app:layout_constraintBottom_toTopOf="@+id/magnitude"
             app:layout_constraintEnd_toEndOf="parent"

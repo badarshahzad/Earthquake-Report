@@ -1,4 +1,4 @@
-package com.example.android.earthreport.model;
+package com.example.android.earthreport.model.pojos;
 
 import java.io.Serializable;
 

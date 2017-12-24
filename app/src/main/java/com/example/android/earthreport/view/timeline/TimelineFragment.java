@@ -1,4 +1,4 @@
-package com.example.android.earthreport.fragments;
+package com.example.android.earthreport.view.timeline;
 
 
 import android.content.Context;
@@ -31,13 +31,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.earthreport.EarthQuakeAdapter;
-import com.example.android.earthreport.Map;
+import com.example.android.earthreport.view.adapters.EarthQuakeAdapter;
+import com.example.android.earthreport.view.map.Map;
 import com.example.android.earthreport.R;
-import com.example.android.earthreport.main.EarthquakeActivity;
-import com.example.android.earthreport.model.DataProvider;
-import com.example.android.earthreport.model.EarthQuakes;
-import com.example.android.earthreport.network.EarthquakeLoader;
+import com.example.android.earthreport.view.filter.FilterDialog;
+import com.example.android.earthreport.view.home.EarthquakeActivity;
+import com.example.android.earthreport.model.format.DataProviderFormat;
+import com.example.android.earthreport.model.pojos.EarthQuakes;
+import com.example.android.earthreport.model.api.EarthquakeLoader;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -109,7 +110,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //Firstly clear the existed menu & and add my own menu
         menu.clear();
-        inflater.inflate(R.menu.menu_home, menu);
+        inflater.inflate(R.menu.menu_timline, menu);
 
     }
 
@@ -122,6 +123,11 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
             loadData();
             swipeRefresh.setRefreshing(true);
 
+        }
+        //TODO:Add the action filter in the timeline also to get user quick access to the filter
+        if (itemId == R.id.action_filter){
+            FilterDialog filterDialog = new FilterDialog();
+            filterDialog.show(getFragmentManager(),"action_filter");
         }
 
         return super.onOptionsItemSelected(item);
@@ -427,7 +433,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         Date yesterdayDate = calendar.getTime();
 //        Log.i(TAG, "Yesterday Date Ready: " + yesterdayDate);
 
-        return DataProvider.getformateDate(yesterdayDate);
+        return DataProviderFormat.getformateDate(yesterdayDate);
     }
 
     public String getTodayDate() {
@@ -438,7 +444,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         Date yesterdayDate = calendar.getTime();
         Log.i(TAG, "Yesterday Date Ready: " + yesterdayDate);
 
-        return DataProvider.getformateDate(yesterdayDate);
+        return DataProviderFormat.getformateDate(yesterdayDate);
     }
 
     public String getWeekDate() {
@@ -449,7 +455,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         Date newDateForWeek = calendar.getTime();
         Log.i(TAG, "Seven day back " + newDateForWeek);
 
-        return DataProvider.getformateDate(newDateForWeek);
+        return DataProviderFormat.getformateDate(newDateForWeek);
 
     }
 
@@ -461,7 +467,13 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         Date newDateForMonth = calendar1.getTime();
         Log.i(TAG, "Month date " + newDateForMonth);
 
-        return DataProvider.getformateDate(newDateForMonth);
+        return DataProviderFormat.getformateDate(newDateForMonth);
+    }
+
+    public void filterRefreshList(String selectedPeriod, String selectedMin, String selectedregion) {
+
+        Log.i(TAG, "filterRefreshList: "+selectedPeriod);
+        Log.i(TAG, "filterRefreshList: "+selectedMin);
     }
 
     // The below override method may be have bug as its not work

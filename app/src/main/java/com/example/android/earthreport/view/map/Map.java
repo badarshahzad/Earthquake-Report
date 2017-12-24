@@ -1,4 +1,4 @@
-package com.example.android.earthreport;
+package com.example.android.earthreport.view.map;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,9 +9,11 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.android.earthreport.fragments.TimelineFragment;
-import com.example.android.earthreport.model.DataProvider;
-import com.example.android.earthreport.model.EarthQuakes;
+import com.example.android.earthreport.R;
+import com.example.android.earthreport.view.timeline.TimelineFragment;
+import com.example.android.earthreport.model.format.DataProviderFormat;
+import com.example.android.earthreport.model.pojos.EarthQuakes;
+import com.example.android.earthreport.view.adapters.EarthQuakeAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -140,7 +142,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         .position(location)
                         .title(earthQuakesArrayList.get(a).getCityname())
                         .snippet("Magnitude:" + earthQuakesArrayList.get(a).getMagnitude() +
-                                " Date:" + DataProvider.getformateDate(
+                                " Date:" + DataProviderFormat.getformateDate(
                                 new Date(
                                         Long.valueOf(earthQuakesArrayList.get(a).getDate())
                                 ))

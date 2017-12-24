@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.earthreport.main;
+package com.example.android.earthreport.view.home;
 
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
@@ -29,10 +28,9 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.android.earthreport.R;
-import com.example.android.earthreport.fragments.HomeFragment;
-import com.example.android.earthreport.fragments.SettingFragment;
-import com.example.android.earthreport.fragments.TimelineFragment;
-import com.example.android.earthreport.fragments.ViewPagerAdapter;
+import com.example.android.earthreport.view.setting.SettingFragment;
+import com.example.android.earthreport.view.timeline.TimelineFragment;
+import com.example.android.earthreport.view.adapters.ViewPagerAdapter;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
@@ -171,7 +169,7 @@ public class EarthquakeActivity extends AppCompatActivity {
         //    String []dataFetchURLS = {day};
         //    gogogo(dataFetchURLS);
 
-        //   DataProvider dataProvider = new DataProvider();
+        //   DataProviderFormat dataProvider = new DataProviderFormat();
         //Show the size of list data was enter
         //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(0).size(),Toast.LENGTH_LONG).show();
         //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(1).size(),Toast.LENGTH_LONG).show();
@@ -190,7 +188,7 @@ public class EarthquakeActivity extends AppCompatActivity {
                 // Get data from web
                 for (int a = 0; a < URLS.length; a++) {
 
-//                    DownloadData getEarthquakeData = new DownloadData(DataProvider.arrayLists.get(a));
+//                    DownloadData getEarthquakeData = new DownloadData(DataProviderFormat.arrayLists.get(a));
                     DownloadData getEarthquakeData = new DownloadData();
 
                     getEarthquakeData.execute(URLS);

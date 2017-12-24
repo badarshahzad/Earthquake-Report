@@ -1,4 +1,4 @@
-package com.example.android.earthreport.notifications;
+package com.example.android.earthreport.view.notifications;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -11,14 +11,12 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.preference.SwitchPreference;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
 import com.example.android.earthreport.R;
-import com.example.android.earthreport.main.EarthquakeActivity;
+import com.example.android.earthreport.view.home.EarthquakeActivity;
 
 /**
  * Created by root on 12/17/17.

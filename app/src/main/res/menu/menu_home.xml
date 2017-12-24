@@ -8,9 +8,18 @@
         android:icon="@drawable/ic_refresh_black_24dp"
         android:title="Refresh"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_bookmark"
+        android:icon="@drawable/ic_bookmark_border_white_24dp"
+        android:title="Add Alert"
+        app:showAsAction="always"/>
+
     <item
         android:id="@+id/action_add_alert"
         android:icon="@drawable/ic_add_alert_white_24dp"
         android:title="Add Alert"
         app:showAsAction="always"/>
+
+
 </menu>

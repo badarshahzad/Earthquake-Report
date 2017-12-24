@@ -1,4 +1,4 @@
-package com.example.android.earthreport.fragments;
+package com.example.android.earthreport.view.home;
 
 
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,10 +20,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.earthreport.R;
-import com.example.android.earthreport.ShowEarthquakeDetails;
-import com.example.android.earthreport.model.DataProvider;
-import com.example.android.earthreport.network.EarthquakeLoader;
-import com.example.android.earthreport.notifications.NotificationsUtils;
+import com.example.android.earthreport.view.search.ShowEarthquakeDetails;
+import com.example.android.earthreport.model.format.DataProviderFormat;
+import com.example.android.earthreport.view.addalert.AddAlertDialog;
+import com.example.android.earthreport.model.api.EarthquakeLoader;
+import com.example.android.earthreport.view.notifications.NotificationsUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -89,6 +89,40 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        //Firstly clear the existed menu & and add my own menu
+        menu.clear();
+        inflater.inflate(R.menu.menu_home, menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        //Referesh will update the earthquakes count and hourly earthquakes list
+        if (itemId == R.id.action_refresh) {
+
+            //Fetch today earthquakes count
+            dataFetch(countURLS);
+
+            //refresh progress bar
+            progressBar.setEnabled(true);
+
+            //show notification
+            NotificationsUtils.remindUser(getContext());
+        }
+
+        if(itemId == R.id.action_add_alert){
+
+            AddAlertDialog alertDialog = new AddAlertDialog();
+            alertDialog.show(getFragmentManager(),"action_alert");
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -129,10 +163,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         Date newDateForYesterday = getDate(1);
         Log.i(TAG, "newDateForYesterday: " + newDateForYesterday);
 
-        String todayDate = DataProvider.getformateDate(new Date());
-        String yesterdayDate = DataProvider.getformateDate(newDateForYesterday);
-        String weekDate = DataProvider.getformateDate(newDateForWeek);
-        String monthDate = DataProvider.getformateDate(newDateForMonth);
+        String todayDate = DataProviderFormat.getformateDate(new Date());
+        String yesterdayDate = DataProviderFormat.getformateDate(newDateForYesterday);
+        String weekDate = DataProviderFormat.getformateDate(newDateForWeek);
+        String monthDate = DataProviderFormat.getformateDate(newDateForMonth);
 
         Log.i(TAG, "newDateForYesterday  in Format: " + yesterdayDate);
 
@@ -257,59 +291,29 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //Firstly clear the existed menu & and add my own menu
-        menu.clear();
-        inflater.inflate(R.menu.menu_home, menu);
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-
-        //Referesh will update the earthquakes count and hourly earthquakes list
-        if (itemId == R.id.action_refresh) {
-
-            //Fetch today earthquakes count
-            dataFetch(countURLS);
-
-            //refresh progress bar
-            progressBar.setEnabled(true);
-
-            //show notification
-            NotificationsUtils.remindUser(getContext());
-        }
-
-        if(itemId == R.id.action_add_alert){
-
-//            Log.i(TAG, "onOptionsItemSelected: ");
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
 
         //googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
+       /* LatLng latLng = new LatLng(69.3451,30.3753);
+        googleMap.addCircle(new CircleOptions()
+        .visible(true)
+        .center(latLng)
+        .radius(1000)
+        .fillColor(Color.parseColor("#FF2343"))
+        );
+
+*/
 
         //TODO: give user facility to set the map type check this one
        /* googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+
 */
-        //TODO: check this one
-        /*googleMap.addTileOverlay(new TileOverlayOptions()
-        .visible(true)
-        .tileProvider(new TileProvider() {
-            @Override
-            public Tile getTile(int i, int i1, int i2) {
-                return null;
-            }
-        }));*/
+
 
         //This is to add image overlay source :https://developers.google.com/maps/documentation/android-api/groundoverlay
 /*
@@ -330,4 +334,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         Date newDateForWeek = calendar.getTime();
         return newDateForWeek;
     }
+
+
 }
