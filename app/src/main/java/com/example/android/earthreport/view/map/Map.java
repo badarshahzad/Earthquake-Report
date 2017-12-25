@@ -10,10 +10,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.earthreport.R;
-import com.example.android.earthreport.view.timeline.TimelineFragment;
-import com.example.android.earthreport.model.format.DataProviderFormat;
 import com.example.android.earthreport.model.pojos.EarthQuakes;
+import com.example.android.earthreport.model.utilties.DataProviderFormat;
 import com.example.android.earthreport.view.adapters.EarthQuakeAdapter;
+import com.example.android.earthreport.view.timeline.TimelineFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

@@ -1,7 +1,6 @@
-package com.example.android.earthreport.model.format;
+package com.example.android.earthreport.model.utilties;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**

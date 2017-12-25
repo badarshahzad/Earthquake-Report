@@ -4,14 +4,7 @@
 
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/ic_refresh_black_24dp"
+        android:icon="@drawable/ic_search_black_24dp"
         android:title="Refresh"
         app:showAsAction="always" />
-
-    <item
-        android:id="@+id/action_filter"
-        android:icon="@drawable/ic_filter_list_black_24dp"
-        android:title="Refresh"
-        app:showAsAction="always" />
-
 </menu>

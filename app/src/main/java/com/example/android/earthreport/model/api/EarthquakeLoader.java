@@ -140,7 +140,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
             //if the jason string is null that could be the case when internet is no available
         }
 
-//        Log.d(TAG, "loadInBackground: finished ");
+        Log.d(TAG, "loadInBackground: finished ");
         return earthQuakesArrayList;
     }
 

@@ -31,14 +31,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.earthreport.view.adapters.EarthQuakeAdapter;
-import com.example.android.earthreport.view.map.Map;
 import com.example.android.earthreport.R;
+import com.example.android.earthreport.model.api.EarthquakeLoader;
+import com.example.android.earthreport.model.pojos.EarthQuakes;
+import com.example.android.earthreport.model.utilties.DataProviderFormat;
+import com.example.android.earthreport.view.adapters.EarthQuakeAdapter;
 import com.example.android.earthreport.view.filter.FilterDialog;
 import com.example.android.earthreport.view.home.EarthquakeActivity;
-import com.example.android.earthreport.model.format.DataProviderFormat;
-import com.example.android.earthreport.model.pojos.EarthQuakes;
-import com.example.android.earthreport.model.api.EarthquakeLoader;
+import com.example.android.earthreport.view.map.Map;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -76,7 +76,6 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     private String HOUR_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
     private String TODAY_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
 
-
     private View view;
     private TextView emptyStateText;
     private ImageView emptyStateImagView;
@@ -86,7 +85,6 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     private EarthQuakeAdapter earthListAdapter;
 
     private SwipeRefreshLayout swipeRefresh;
-
 
     public TimelineFragment() {
         // Required empty public constructor
@@ -119,10 +117,9 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         int itemId = item.getItemId();
 
         //Referesh will update the earthquakes count and hourly earthquakes list
-        if (itemId == R.id.action_refresh) {
+        if (itemId == R.id.action_search) {
             loadData();
             swipeRefresh.setRefreshing(true);
-
         }
         //TODO:Add the action filter in the timeline also to get user quick access to the filter
         if (itemId == R.id.action_filter){
@@ -226,6 +223,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
                 startActivity(intent);
             }
         });
+
 
         return view;
     }

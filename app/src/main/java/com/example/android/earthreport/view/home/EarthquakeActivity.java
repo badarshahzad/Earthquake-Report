@@ -28,18 +28,13 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.android.earthreport.R;
+import com.example.android.earthreport.view.adapters.ViewPagerAdapter;
 import com.example.android.earthreport.view.setting.SettingFragment;
 import com.example.android.earthreport.view.timeline.TimelineFragment;
-import com.example.android.earthreport.view.adapters.ViewPagerAdapter;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
-    public static final String HOME_FRAGMENT = "home_fragment";
-    public static final String TIMELINE_FRAGMENT = "timeline_fragment";
-    public static final String SETTING_FRAGMENT = "setting_fragment";
     private static final String TAG = EarthquakeActivity.class.getSimpleName();
-    private static final int MENU_ITEM_ABOUT = 1000;
-    private static final int REFRESH = 0;
     public static ConstraintLayout root;
 
     private HomeFragment homeFragment;
@@ -177,6 +172,8 @@ public class EarthquakeActivity extends AppCompatActivity {
         //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(3).size(),Toast.LENGTH_LONG).show();
 
     }
+
+
 /*
     private void gogogo(final String[] URLS) {
 

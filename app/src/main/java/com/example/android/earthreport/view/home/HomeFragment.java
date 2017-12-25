@@ -20,11 +20,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.earthreport.R;
-import com.example.android.earthreport.view.search.ShowEarthquakeDetails;
-import com.example.android.earthreport.model.format.DataProviderFormat;
-import com.example.android.earthreport.view.addalert.AddAlertDialog;
 import com.example.android.earthreport.model.api.EarthquakeLoader;
-import com.example.android.earthreport.view.notifications.NotificationsUtils;
+import com.example.android.earthreport.model.utilties.DataProviderFormat;
+import com.example.android.earthreport.view.addalert.AddAlertDialog;
+import com.example.android.earthreport.view.search.SearchEarthquakeActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -57,7 +56,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         @Override
         public void onClick(View view) {
 
-            Intent intent = new Intent(getContext(), ShowEarthquakeDetails.class);
+            Intent intent = new Intent(getContext(), SearchEarthquakeActivity.class);
             startActivity(intent);
         }
     };
@@ -99,7 +98,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-
+/*
         //Referesh will update the earthquakes count and hourly earthquakes list
         if (itemId == R.id.action_refresh) {
 
@@ -111,6 +110,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
             //show notification
             NotificationsUtils.remindUser(getContext());
+        }*/
+
+        if (itemId == R.id.action_search) {
+            Intent intent = new Intent(getContext(), SearchEarthquakeActivity.class);
+            startActivity(intent);
         }
 
         if(itemId == R.id.action_add_alert){
@@ -213,10 +217,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         };
 
         //Add listeners to the Circles and Textviews
-        todayEarthquakes.setOnClickListener(showDataList);
-        yesterdayEarthquakes.setOnClickListener(showDataList);
-        thisWeekEarthquakes.setOnClickListener(showDataList);
-        thisMonthEarthquakes.setOnClickListener(showDataList);
+        //TODO:If time allow me I will add some more information on click the circles
+//        todayEarthquakes.setOnClickListener(showDataList);
+//        yesterdayEarthquakes.setOnClickListener(showDataList);
+//        thisWeekEarthquakes.setOnClickListener(showDataList);
+//        thisMonthEarthquakes.setOnClickListener(showDataList);
 
         return view;
     }
