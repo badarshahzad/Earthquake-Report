@@ -60,14 +60,14 @@
         android:layout_marginTop="24dp"
         android:entries="@array/region"
         android:spinnerMode="dialog"
-        app:layout_constraintBottom_toTopOf="@+id/done_filter"
+        app:layout_constraintBottom_toTopOf="@+id/done_alert"
         app:layout_constraintEnd_toEndOf="@+id/min_of"
         app:layout_constraintStart_toStartOf="@+id/min_of"
         app:layout_constraintTop_toBottomOf="@+id/min_of" />
 
     <!--Done-->
     <Button
-        android:id="@+id/done_filter"
+        android:id="@+id/done_alert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 

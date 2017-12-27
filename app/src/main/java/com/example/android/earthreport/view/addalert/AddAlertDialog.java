@@ -68,7 +68,7 @@ public class AddAlertDialog  extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_add_alert, container, false);
         getDialog().setTitle("Filter Earthquakes");
 
-        Button donefilter = view.findViewById(R.id.done_filter);
+        Button donefilter = view.findViewById(R.id.done_alert);
         donefilter.setOnClickListener(donefilterAction);
 
         minMagnitudeSpinner = view.findViewById(R.id.min_of);

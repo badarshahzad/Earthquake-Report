@@ -474,16 +474,5 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         Log.i(TAG, "filterRefreshList: "+selectedMin);
     }
 
-    // The below override method may be have bug as its not work
-    // when I implement the SwipeListenerLayout and give implementation in this method
-    /*@Override
-    public void onRefresh() {
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                loadData();
-            }
-        });
-    }*/
 }
 

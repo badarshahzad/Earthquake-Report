@@ -63,7 +63,7 @@ public class FilterDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_filter, container, false);
         getDialog().setTitle("Filter Earthquakes");
 
-        Button donefilter = view.findViewById(R.id.done_filter);
+        Button donefilter = view.findViewById(R.id.done_alert);
         donefilter.setOnClickListener(donefilterAction);
 
 
