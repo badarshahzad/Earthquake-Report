@@ -90,10 +90,12 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
                     JSONObject geometry = indexes.getJSONObject("geometry");
                     JSONArray coordinates = geometry.getJSONArray("coordinates");
 
-                    //I test on 5 different devices but on QMobile Android version 4.3 this error occure
-                    //double longitude = (double) coordinates.get(0);
-                    //Honestly just one device show an error don't cast Integer while other didn't give error?
-                    //So, i simply with concatenate a string with interger and parse it into double :)
+                    /***
+                     * I test on 5 different devices but on QMobile Android version 4.3 this error occure
+                     * double longitude = (double) coordinates.get(0);
+                     * Honestly just one device show an error don't cast Integer while other didn't give error?
+                     *So, i simply with concatenate a string with interger and parse it into double :)
+                     * **/
                     double longitude = Double.valueOf(coordinates.get(0) + "");
                     double latitude = Double.valueOf(coordinates.get(1) + "");
 

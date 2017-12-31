@@ -433,19 +433,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Locati
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        //TODO:My location
-            /*LatLng location = new LatLng(locationChangeLatitude, locationChangeLongitude);
-//        Log.i(TAG, "onMapReady: map mark"+locationChangeLongitude +"  "+locationChangeLongitude);
-            googleMap.addMarker(new MarkerOptions()
-                    .position(location)
-                    .title("Your Location!")
-                    .snippet("Your Location!"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-
-            Log.i(TAG, "onMapReady: locaiton working");
-
-
-        Log.i(TAG, "onMapReady: call me but sorry ");*/
+//        Log.i(TAG, "onMapReady: call me but sorry ");
         //googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
        /* LatLng latLng = new LatLng(69.3451,30.3753);
@@ -466,19 +454,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Locati
 
 
 */
-
-
-        //This is to add image overlay source :https://developers.google.com/maps/documentation/android-api/groundoverlay
-/*
-        private GoogleMap mMap;
-        private GroundOverlay mSydneyGroundOverlay;
-
-        mSydneyGroundOverlay = mMap.addGroundOverlay(new GroundOverlayOptions()
-                .image(BitmapDescriptorFactory.fromResource(R.drawable.harbour_bridge))
-                .position(new LatLng(-33.873, 151.206))
-                .clickable(true));
-
-        mSydneyGroundOverlay.setTag("Sydney");*/
     }
 
     public Date getDate(int day) {

@@ -83,14 +83,14 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
 
         //Log.i(TAG, "city name: "+earthQuakesValue.getCityname());
 
-        //Here the distance and location is separated by reges index 0 in Km distance
-        // and index 1 is the location
-        //?<=of is the string that just pick string including 'of' also init
-        // and remaining will be 2nd index
+//        Here the distance and location is separated by reges index 0 in Km distance
+//         and index 1 is the location
+//        ?<=of is the string that just pick string including 'of' also init
+//         and remaining will be 2nd index
+//        I know that this hard coded but the USGS mantain data with that string :D
+//         So, Honesty don't know how to get the name of city  the don't have method
+//         in API to get the name of city so i'm doing like this
 
-        //I know that this hard coded but the USGS mantain data with that string :D
-        // So, Honesty don't know how to get the name of city  the don't have method
-        // in API to get the name of city so i'm doing like this
         String[] parseValue = earthQuakesValue.getCityname().split("(?<=of)");
 
         String distance = null;
