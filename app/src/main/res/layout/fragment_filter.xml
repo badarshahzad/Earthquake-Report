@@ -4,17 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="com.example.android.earthreport.view.filter.FilterDialog"
     tools:layout_editor_absoluteY="81dp">
 
-    <!--Period Text-->
-
-    <!--Period-->
-
-
-    <!--Max Text-->
-
-    <!--Max Spinner-->
 
     <!--Min Text-->
     <TextView
@@ -27,25 +18,25 @@
         android:layout_marginTop="8dp"
         android:text="Min"
         app:layout_constraintBottom_toTopOf="@+id/textView9"
-        app:layout_constraintEnd_toStartOf="@+id/min_of"
+        app:layout_constraintEnd_toStartOf="@+id/minOfSpinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--Min Spinner-->
     <Spinner
-        android:id="@+id/min_of"
+        android:id="@+id/minOfSpinner"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_height="42dp"
 
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:entries="@array/min_earthquakes"
-        app:layout_constraintBottom_toBottomOf="@+id/textView6"
+        app:layout_constraintBottom_toTopOf="@+id/countryOfSpinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="@+id/textView6" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <!--Region Text-->
@@ -53,49 +44,31 @@
         android:id="@+id/textView9"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Country"
-        app:layout_constraintBottom_toTopOf="@+id/done_alert"
-        app:layout_constraintEnd_toStartOf="@+id/country_of"
-        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/countryOfSpinner"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <!---Region -->
     <Spinner
-        android:id="@+id/country_of"
+        android:id="@+id/countryOfSpinner"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_height="42dp"
 
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:entries="@array/region"
-        app:layout_constraintBottom_toBottomOf="@+id/textView9"
-        app:layout_constraintEnd_toEndOf="@+id/min_of"
-        app:layout_constraintStart_toStartOf="@+id/min_of"
-        app:layout_constraintTop_toTopOf="@+id/textView9" />
-
-    <!--Done-->
-    <Button
-        android:id="@+id/done_alert"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:elevation="0dp"
-        android:gravity="center"
-        android:text="Done"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/country_of" />
+        app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/minOfSpinner" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.earthreport">
 
@@ -7,13 +6,13 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
-    <!-- To add the vibration on notification-->
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <!-- To add the vibration on notification -->
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <!-- To access the internet we need -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- My location access permission-->
+    <!-- My location access permission -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
 
@@ -30,7 +29,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <!--if activity already running I don't need to relunch app : singleTop-->
+        <!-- if activity already running I don't need to relunch app : singleTop -->
         <activity
             android:name=".view.main.EarthquakeActivity"
             android:launchMode="singleTop">
@@ -46,6 +45,7 @@
         <activity
             android:name=".view.search.SearchEarthquakeActivity"
             android:parentActivityName=".view.main.EarthquakeActivity" />
+
     </application>
 
 </manifest>

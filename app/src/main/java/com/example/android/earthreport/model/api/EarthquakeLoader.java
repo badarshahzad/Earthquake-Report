@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
 import com.example.android.earthreport.model.pojos.EarthQuakes;
 
@@ -98,7 +97,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
                     double longitude = Double.valueOf(coordinates.get(0) + "");
                     double latitude = Double.valueOf(coordinates.get(1) + "");
 
-                    Log.i(TAG, "loadInBackground: " + longitude + " " + latitude);
+//                    Log.i(TAG, "loadInBackground: " + longitude + " " + latitude);
 
                     //inserting values in the list of earth quakes (model) type and making objects
                     // TimelineFragment.earthQuakesArrayList.add(new EarthQuakes(mag, place, time, url, longitude, latitude));
@@ -106,7 +105,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
                     //SharefPreferences filter Setting
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
                     String filterMag = sharedPref.getString("key_filter_magnitude", "5");
-                    Log.d(TAG, "filterValue: " + filterMag);
+//                    Log.d(TAG, "filterValue: " + filterMag);
 
                     //in case user want all magnitudes
                     if (filterMag.equalsIgnoreCase("All")) {
@@ -122,12 +121,8 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
                         //    Log.i(TAG, "Yes contains of");
                     }
 
-                    Log.i(TAG, "loadInBackground: size " + earthQuakesArrayList.size());
-
-                    //if (Double.valueOf(mag) >= Double.valueOf(filterMag)) {
-                    //}
-                    //DataProviderFormat.addProduct(mag, place, time, url, longitude, latitude);
-                    Log.i(TAG, "data added " + mag + " " + place + " " + time);
+//                    Log.i(TAG, "loadInBackground: size " + earthQuakesArrayList.size());
+//                    Log.i(TAG, "data added " + mag + " " + place + " " + time);
 
                 }
 
@@ -140,7 +135,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
             //if the jason string is null that could be the case when internet is no available
         }
 
-        Log.d(TAG, "loadInBackground: finished ");
+//        Log.d(TAG, "loadInBackground: finished ");
         return earthQuakesArrayList;
     }
 
@@ -168,7 +163,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
                 connection.setConnectTimeout(15000);
                 connection.connect();
 
-                Log.i(TAG, "makeServeiceCall Response code: " + connection.getResponseCode());
+//                Log.i(TAG, "makeServeiceCall Response code: " + connection.getResponseCode());
 
                 //if the request is successfull
                 if (connection.getResponseCode() == 200) {
@@ -187,19 +182,19 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-                Log.i(TAG, "makeServeiceCall: exception");
+//                Log.i(TAG, "makeServeiceCall: exception");
             } finally {
 
                 //disconnect the connection
                 if (connection != null) {
                     connection.disconnect();
 
-                    Log.i(TAG, "makeServeiceCall: connection close");
+//                    Log.i(TAG, "makeServeiceCall: connection close");
                 }
 
             }
 
-            Log.i(TAG, "makeServeiceCall: response back");
+//            Log.i(TAG, "makeServeiceCall: response back");
             return response;
         }
 

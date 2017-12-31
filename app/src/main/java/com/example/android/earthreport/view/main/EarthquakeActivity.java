@@ -20,11 +20,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.android.earthreport.R;
@@ -44,26 +41,6 @@ public class EarthquakeActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener;
-
-
-    public void fragmentTransactionCommit(Fragment fragment, String TAG) {
-
-        Fragment existTag = getSupportFragmentManager().findFragmentByTag(TAG);
-        Log.i(EarthquakeActivity.TAG, "fragmentTransactionCommit: " + existTag);
-
-        //when menu click the fragment again place into the containter fragment so
-        // just one time place if user click same menu again and again (Setting click multiple
-        // time but just once placed)
-        if (existTag != null) {
-            return;
-        } else {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            // fragmentTransaction.replace(R.id.containerForFragments, fragment, TAG);
-            fragmentTransaction.commit();
-        }
-
-    }
 
     private void setupViewPager(ViewPager viewPager) {
 
@@ -105,22 +82,16 @@ public class EarthquakeActivity extends AppCompatActivity {
                     case R.id.home:
                         setTitle("Home");
                         viewPager.setCurrentItem(0);
-//                    homeFragment = new HomeFragment();
-//                    fragmentTransactionCommit(homeFragment, HOME_FRAGMENT);
                         return true;
 
                     case R.id.timeline:
                         setTitle("Earthquake List");
                         viewPager.setCurrentItem(1);
-//                    timelineFragment = new TimelineFragment();
-//                    fragmentTransactionCommit(timelineFragment, TIMELINE_FRAGMENT);
                         return true;
 
                     case R.id.setting:
                         setTitle("Setting");
                         viewPager.setCurrentItem(2);
-//                    settingFragment = new SettingFragment();
-//                    fragmentTransactionCommit(settingFragment, SETTING_FRAGMENT);
                         return true;
                 }
                 return false;
@@ -137,15 +108,8 @@ public class EarthquakeActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-
-//                Log.i(TAG, "onPageSelected: "+position+"\n B id: "+bottomNavg.getSelectedItemId()
-//                        + " \nId1 " +bottomNavg.getId()+" \nid2: "+bottomNavg.getChildCount()
-//                        + " \nid3 " + bottomNavg.getMenu().getItem(position)
-//                        + " \nid4 "+ bottomNavg.getMenu());
                 bottomNavg.getMenu().getItem(position).setChecked(true);
                 setTitle(String.valueOf(bottomNavg.getMenu().getItem(position)));
-
-
             }
 
             @Override
@@ -154,49 +118,6 @@ public class EarthquakeActivity extends AppCompatActivity {
             }
         });
 
-
-        //Go and fetch Today, Yesterday, Week, and Month Earthquakes Now
-        //  String month = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
-        //   String week = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
-        //  String day = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
-
-        // String []dataFetchURLS = {day,day,week,month};
-        //    String []dataFetchURLS = {day};
-        //    gogogo(dataFetchURLS);
-
-        //   DataProviderFormat dataProvider = new DataProviderFormat();
-        //Show the size of list data was enter
-        //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(0).size(),Toast.LENGTH_LONG).show();
-        //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(1).size(),Toast.LENGTH_LONG).show();
-        //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(2).size(),Toast.LENGTH_LONG).show();
-        //  Toast.makeText(EarthquakeActivity.this,"Home: "+dataProvider.arrayLists.get(3).size(),Toast.LENGTH_LONG).show();
-
     }
-
-
-/*
-    private void gogogo(final String[] URLS) {
-
-
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-
-                // Get data from web
-                for (int a = 0; a < URLS.length; a++) {
-
-//                    DownloadData getEarthquakeData = new DownloadData(DataProviderFormat.arrayLists.get(a));
-                    DownloadData getEarthquakeData = new DownloadData();
-
-                    getEarthquakeData.execute(URLS);
-                }
-
-            }
-        };
-
-        Thread th = new Thread(runnable);
-        th.start();
-    }*/
-
 
 }

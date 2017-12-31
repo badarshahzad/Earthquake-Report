@@ -1,7 +1,9 @@
 package com.example.android.earthreport.view.timeline;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -26,8 +28,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,13 +40,14 @@ import com.example.android.earthreport.model.api.EarthquakeLoader;
 import com.example.android.earthreport.model.pojos.EarthQuakes;
 import com.example.android.earthreport.model.utilties.DataProviderFormat;
 import com.example.android.earthreport.view.adapters.EarthQuakeAdapter;
-import com.example.android.earthreport.view.filter.FilterDialog;
+import com.example.android.earthreport.view.home.HomeFragment;
 import com.example.android.earthreport.view.main.EarthquakeActivity;
 import com.example.android.earthreport.view.map.Map;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -76,10 +81,14 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     private String HOUR_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
     private String TODAY_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
 
+    private String selectedMin;
+    private String selectedCountry;
+
     private View view;
     private TextView emptyStateText;
     private ImageView emptyStateImagView;
-
+    private Spinner minMagnitudeSpinner;
+    private Spinner counterySpinner;
     private ListView earthquakeListView;
     private FloatingActionButton fabButton;
     private EarthQuakeAdapter earthListAdapter;
@@ -121,10 +130,57 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
             loadData();
             swipeRefresh.setRefreshing(true);
         }
+
         //TODO:Add the action filter in the timeline also to get user quick access to the filter
         if (itemId == R.id.action_filter){
-            FilterDialog filterDialog = new FilterDialog();
-            filterDialog.show(getFragmentManager(),"action_filter");
+//            FilterDialog filterDialog = new FilterDialog();
+//            filterDialog.show(getFragmentManager(),"action_filter");
+            LayoutInflater inflater = getLayoutInflater();
+            View view = inflater.inflate(R.layout.fragment_filter, null);
+
+            minMagnitudeSpinner = view.findViewById(R.id.minOfSpinner);
+            counterySpinner = view.findViewById(R.id.countryOfSpinner);
+
+            List<String> countries = HomeFragment.getCountriesName();
+            //sort the countries name to show in spinner a-z
+            Collections.sort(countries);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    getActivity(),
+                    android.R.layout.simple_spinner_item,
+                    countries
+            );
+
+            counterySpinner.setAdapter(adapter);
+
+            AlertDialog.Builder addAlert = new AlertDialog.Builder(getContext());
+            addAlert.setTitle("Filter Results");
+            addAlert.setView(view);
+            addAlert.setCancelable(false);
+            addAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+//                    Toast.makeText(getContext(),"Cancel",Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            addAlert.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    //TODO: filter the data exist in the listview
+                    selectedMin = String.valueOf(minMagnitudeSpinner.getSelectedItem());
+                    selectedCountry = String.valueOf(counterySpinner.getSelectedItem());
+
+//                    Toast.makeText(getContext(),"Done",Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+            AlertDialog dialog = addAlert.create();
+            dialog.show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -232,8 +288,6 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 
 //        Log.i(TAG, "loadData: ");
         //Http requet to fetch jason data at that time
-        //getLoaderManager().initLoader(0, null, this);
-
         LoaderManager loaderManager = getLoaderManager();
         loaderManager.restartLoader(1, null, this);
 //        Log.i(TAG, "loadData: init called");

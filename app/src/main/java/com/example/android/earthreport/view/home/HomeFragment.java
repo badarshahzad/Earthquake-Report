@@ -1,7 +1,12 @@
 package com.example.android.earthreport.view.home;
 
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -17,14 +22,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.api.EarthquakeLoader;
 import com.example.android.earthreport.model.utilties.DataProviderFormat;
-import com.example.android.earthreport.view.addalert.AddAlertDialog;
-import com.example.android.earthreport.view.notifications.NotificationsUtils;
 import com.example.android.earthreport.view.search.SearchEarthquakeActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,8 +38,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -48,13 +58,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Locati
     public static String YESTERDAY_COUNT_KEY = "yesterdayCountkey";
     public static String WEEK_COUNT_KEY = "weekCountkey";
     public static String MONTH_COUNT_KEY = "monthCountkey";
+
     private static final String COUNT_KEY_ARRAY[] = {TODAY_COUNT_KEY, YESTERDAY_COUNT_KEY, WEEK_COUNT_KEY, MONTH_COUNT_KEY};
     public static Handler handler;
-    public TextView todayEarthquakes;
-    public TextView yesterdayEarthquakes;
-    public TextView thisMonthEarthquakes;
-    public TextView thisWeekEarthquakes;
-    public TextView todayMapStatus;
+    public String selectedMin;
+    public String selectedCountery;
     public double locationChangeLatitude;
     public double locationChangeLongitude;
     public Location myLocation;
@@ -66,6 +74,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Locati
             startActivity(intent);
         }
     };
+    private TextView todayEarthquakes;
+    private TextView yesterdayEarthquakes;
+    private TextView thisMonthEarthquakes;
+    private TextView thisWeekEarthquakes;
+    private TextView todayMapStatus;
+    private Spinner minMagnitudeSpinner;
+    private Spinner counteryOfSpinner;
     private String[] countURLS = new String[4];
     private ProgressBar progressBar;
     //This hour earthQuakes url (query to get values) | Below I concatenate the date for todady
@@ -75,6 +90,72 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Locati
 
     public HomeFragment() {
 
+    }
+
+    //Get the all countries name
+    public static ArrayList<String> getCountriesName() {
+        ArrayList<String> list = new ArrayList<String>();
+
+        String[] locales = Locale.getISOCountries();
+
+        for (String countryCode : locales) {
+
+            Locale obj = new Locale("", countryCode);
+
+            //Log.i(TAG, "Country Name = " + obj.getDisplayCountry());
+            list.add(obj.getDisplayCountry());
+
+        }
+        return list;
+    }
+
+    //Does the Lati&Longi is equale to someone countery?
+    public static boolean isCounteryExist(Context context, double latitude, double longitude) {
+        String counteryName = null;
+        try {
+            counteryName = getCountryName(context, latitude, longitude);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<String> list = new ArrayList<String>();
+
+        String[] locales = Locale.getISOCountries();
+
+        for (String countryCode : locales) {
+
+            Locale obj = new Locale("", countryCode);
+
+            //Log.i(TAG, "Country Name = " + obj.getDisplayCountry());
+            list.add(obj.getDisplayCountry());
+
+
+            if (counteryName != null && counteryName.equals(obj.getDisplayCountry())) {
+                Log.i(TAG, "Get Display Countery" + obj.getDisplayCountry());
+                Log.i(TAG, "Countery Name: " + obj.getDisplayCountry());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //if name exist then tell me the name
+    public static String getCountryName(Context context, double latitude, double longitude) throws IOException {
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+
+        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+        if (addresses.isEmpty()) {
+            return null;
+        }
+        //Log.i(TAG, "getCountryName:1 "+addresses.get(0).getCountryName());
+        Address result;
+
+        if (addresses != null && !addresses.isEmpty()) {
+            //  Log.i(TAG, "getCountryName:2 "+addresses.get(0).getCountryName());
+            return addresses.get(0).getCountryName();
+        }
+        return null;
     }
 
     @Override
@@ -101,31 +182,78 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Locati
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-/*
-        //Referesh will update the earthquakes count and hourly earthquakes list
-        if (itemId == R.id.action_refresh) {
-
-            //Fetch today earthquakes count
-            dataFetch(countURLS);
-
-            //refresh progress bar
-            progressBar.setEnabled(true);
-
-            //show notification
-            NotificationsUtils.remindUser(getContext());
-        }*/
 
         if (itemId == R.id.action_search) {
             Intent intent = new Intent(getContext(), SearchEarthquakeActivity.class);
             startActivity(intent);
         }
 
+
+        //Reference:https://materialdoc.com/components/dialogs/
         if (itemId == R.id.action_add_alert) {
 
-            AddAlertDialog alertDialog = new AddAlertDialog();
-            alertDialog.show(getFragmentManager(), "action_alert");
+            //TODO:Countery name with longitude and latitude have be doen more
+            // have to do with service and data comparison and give notification
+/*
+            if(isCounteryExist(getContext(), -4.3777,101.9364)){
+                Log.i(TAG, "onCreate: Now you are ready!");
+            }
+            if(isCounteryExist(getContext(), 36.9294,71.3741)){
+                Log.i(TAG, "onCreate: Now you are ready!");
+            }
+            if(isCounteryExist(getContext(), -5.4215,-80.4563)){
+                Log.i(TAG, "onCreate: Now you are ready!");
+            }
+*/
 
-            NotificationsUtils.remindUser(getContext());
+            LayoutInflater inflater = getLayoutInflater();
+            View view = inflater.inflate(R.layout.fragment_add_alert, null);
+
+            minMagnitudeSpinner = view.findViewById(R.id.minOfSpinner);
+            counteryOfSpinner = view.findViewById(R.id.countryOfSpinner);
+
+
+            List<String> countries = getCountriesName();
+            //sort the countries name to show in spinner a-z
+            Collections.sort(countries);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    getActivity(),
+                    android.R.layout.simple_spinner_item,
+                    countries
+            );
+
+            counteryOfSpinner.setAdapter(adapter);
+
+            AlertDialog.Builder addAlert = new AlertDialog.Builder(getContext());
+            addAlert.setTitle("Add Alert");
+            addAlert.setView(view);
+            addAlert.setCancelable(false);
+            addAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+//                    Toast.makeText(getContext(),"Cancel",Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            addAlert.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    //TODO: make a list of favorit countery to get notificaiton
+                    selectedMin = String.valueOf(minMagnitudeSpinner.getSelectedItem());
+                    selectedCountery = String.valueOf(counteryOfSpinner.getSelectedItem());
+
+//                    Toast.makeText(getContext(),"Done",Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+            AlertDialog dialog = addAlert.create();
+            dialog.show();
+            // NotificationsUtils.remindUser(getContext());
         }
 
         return super.onOptionsItemSelected(item);
@@ -380,4 +508,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Locati
     public void onProviderDisabled(String provider) {
 
     }
+
+
 }
