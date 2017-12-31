@@ -32,7 +32,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
     public static String TAG = Map.class.getSimpleName();
 
-    private  SupportMapFragment mapFragment;
+    private SupportMapFragment mapFragment;
 
     private TextView time;
     private TextView city;
@@ -40,7 +40,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private TextView direction;
     private TextView longitude;
     private TextView magnitude;
-
     private CardView cardView;
 
 
@@ -69,6 +68,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         cardView = findViewById(R.id.cardForText);
 
         Log.i(TAG, "onCreate: ");
+
+
     }
 
     @Override
@@ -81,6 +82,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
         Bundle bundle = getIntent().getExtras();
         String markType = bundle.getString("MARK_TYPE");
+
 
         if (markType.equals("single")) {
             cardView.setVisibility(View.VISIBLE);
@@ -107,7 +109,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             //TODO:Add listener and code
            // googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
            // googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-            googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            // googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
            // googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
             //I know that this hard coded but the USGS mantain data with that string :D
@@ -150,6 +152,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 );
 
             }
+
 
             Log.i(TAG, "onMapReady: " + earthQuakesArrayList.size());
 

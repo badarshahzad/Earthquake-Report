@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="com.example.android.earthreport.view.filter.FilterDialog"
-    tools:layout_editor_absoluteY="81dp">
+    tools:context="com.example.android.earthreport.view.filter.FilterDialog">
 
     <!--Min Text-->
     <TextView
@@ -16,28 +15,33 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:text="Minimum Magnitude"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/textView9"
         app:layout_constraintEnd_toStartOf="@+id/min_of"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--Min Spinner-->
     <Spinner
         android:id="@+id/min_of"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
 
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:entries="@array/magnitude_entries_values"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/textView6"
-        android:layout_marginRight="8dp" />
+        app:layout_constraintVertical_bias="0.6" />
 
 
     <!--Region Text-->
@@ -45,25 +49,29 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
         android:text="Region"
-        app:layout_constraintBaseline_toBaselineOf="@+id/region_of"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/done_alert"
         app:layout_constraintEnd_toEndOf="@+id/textView6"
-        app:layout_constraintStart_toStartOf="@+id/textView6" />
+        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <!---Region -->
     <Spinner
-        android:id="@+id/region_of"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/country_of"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
 
-        android:layout_marginBottom="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:entries="@array/region"
         android:spinnerMode="dialog"
-        app:layout_constraintBottom_toTopOf="@+id/done_alert"
+        app:layout_constraintBottom_toBottomOf="@+id/textView9"
         app:layout_constraintEnd_toEndOf="@+id/min_of"
         app:layout_constraintStart_toStartOf="@+id/min_of"
-        app:layout_constraintTop_toBottomOf="@+id/min_of" />
+        app:layout_constraintTop_toTopOf="@+id/textView9" />
 
     <!--Done-->
     <Button
@@ -74,12 +82,14 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:elevation="0dp"
         android:gravity="center"
         android:text="Done"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 

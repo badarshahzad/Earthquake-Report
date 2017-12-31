@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.home.EarthquakeActivity"
+    tools:context=".view.main.EarthquakeActivity"
     tools:layout_editor_absoluteY="81dp">
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -21,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
+            android:divider="@null"
             android:dividerHeight="0sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

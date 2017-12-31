@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.example.android.earthreport.R;
+import com.example.android.earthreport.view.main.EarthquakeActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -41,6 +42,36 @@ public class EarthquakeActivityTest {
     @Rule
     public ActivityTestRule<EarthquakeActivity> mActivityTestRule = new ActivityTestRule<>(EarthquakeActivity.class);
 
+    //This test is not working and effecting other test
+    /*
+        @Test
+        public void settingNotificaitonToneTest() {
+        settingTest();
+        DataInteraction linearLayout6 = onData(anything())
+                .inAdapterView(allOf(withId(android.R.id.list)))
+                .atPosition(7);
+        linearLayout6.perform(click());
+
+    }*/
+    private static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
+
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + position + " in parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
+    }
+
     //Home Test
     @Test
     public void clickHomeTest() {
@@ -64,6 +95,7 @@ public class EarthquakeActivityTest {
         bottomNavigationItemView.perform(click());
 
     }
+
     @Test
     public void clickTimelineTest() {
         ViewInteraction bottomNavigationItemView3 = onView(
@@ -77,6 +109,7 @@ public class EarthquakeActivityTest {
         bottomNavigationItemView3.perform(click());
 
     }
+
     @Test
     public void settingClickTest() {
         ViewInteraction bottomNavigationItemView4 = onView(
@@ -89,6 +122,7 @@ public class EarthquakeActivityTest {
                         isDisplayed()));
         bottomNavigationItemView4.perform(click());
     }
+
     @Test
     public void swipeRightLeftTest() {
         ViewInteraction viewPager = onView(
@@ -105,6 +139,7 @@ public class EarthquakeActivityTest {
 
 
     }
+
     @Test
     public void swipeLeftRightTest() {
         ViewInteraction viewPager2 = onView(
@@ -356,7 +391,6 @@ public class EarthquakeActivityTest {
         }
     }
 
-
     @Test
     public void earthquakeAllValuesMapViewTest() {
 
@@ -394,6 +428,9 @@ public class EarthquakeActivityTest {
         actionMenuItemView.perform(click());
     }
 
+
+    //Setting Test
+
     @Test
     public void earthquakeListFilterTest() {
         earthquakeListTest();
@@ -417,10 +454,6 @@ public class EarthquakeActivityTest {
                         isDisplayed()));
         appCompatButton.perform(click());
     }
-
-
-
-    //Setting Test
 
     @Test
     public void settingTest() {
@@ -511,7 +544,6 @@ public class EarthquakeActivityTest {
                 click());
     }
 
-
     @Test
     public void settingVibrteTest() {
         settingTest();
@@ -522,35 +554,5 @@ public class EarthquakeActivityTest {
 
                 click());
 
-    }
-
-    //This test is not working and effecting other test
-    /*
-        @Test
-        public void settingNotificaitonToneTest() {
-        settingTest();
-        DataInteraction linearLayout6 = onData(anything())
-                .inAdapterView(allOf(withId(android.R.id.list)))
-                .atPosition(7);
-        linearLayout6.perform(click());
-
-    }*/
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
     }
 }

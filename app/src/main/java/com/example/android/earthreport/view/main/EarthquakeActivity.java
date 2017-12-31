@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.earthreport.view.home;
+package com.example.android.earthreport.view.main;
 
 
 import android.os.Bundle;
@@ -29,6 +29,7 @@ import android.view.MenuItem;
 
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.view.adapters.ViewPagerAdapter;
+import com.example.android.earthreport.view.home.HomeFragment;
 import com.example.android.earthreport.view.setting.SettingFragment;
 import com.example.android.earthreport.view.timeline.TimelineFragment;
 
@@ -46,7 +47,6 @@ public class EarthquakeActivity extends AppCompatActivity {
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener;
 
 
-    //TODO: Check this method working or not yet I don't have usb cable
     public void fragmentTransactionCommit(Fragment fragment, String TAG) {
 
         Fragment existTag = getSupportFragmentManager().findFragmentByTag(TAG);

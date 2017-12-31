@@ -37,7 +37,7 @@ import com.example.android.earthreport.model.pojos.EarthQuakes;
 import com.example.android.earthreport.model.utilties.DataProviderFormat;
 import com.example.android.earthreport.view.adapters.EarthQuakeAdapter;
 import com.example.android.earthreport.view.filter.FilterDialog;
-import com.example.android.earthreport.view.home.EarthquakeActivity;
+import com.example.android.earthreport.view.main.EarthquakeActivity;
 import com.example.android.earthreport.view.map.Map;
 
 import java.io.Serializable;
@@ -468,9 +468,9 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         return DataProviderFormat.getformateDate(newDateForMonth);
     }
 
-    public void filterRefreshList(String selectedPeriod, String selectedMin, String selectedregion) {
+    public void filterRefreshList(String selectedMin, String selectedCountry) {
 
-        Log.i(TAG, "filterRefreshList: "+selectedPeriod);
+        Log.i(TAG, "filterRefreshList: " + selectedCountry);
         Log.i(TAG, "filterRefreshList: "+selectedMin);
     }
 

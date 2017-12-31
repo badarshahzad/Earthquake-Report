@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.example.android.earthreport.R;
+import com.example.android.earthreport.view.main.EarthquakeActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -21,7 +22,6 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -37,6 +37,25 @@ public class SettingTest {
 
     @Rule
     public ActivityTestRule<EarthquakeActivity> mActivityTestRule = new ActivityTestRule<>(EarthquakeActivity.class);
+
+    private static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
+
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + position + " in parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
+    }
 
     @Test
     public void settingTest() {
@@ -127,19 +146,6 @@ public class SettingTest {
     click());
     }
 
-
-    @Test
-    public void settingVibrteTest() {
-        settingTest();
-        DataInteraction linearLayout5 = onData(anything())
-                .inAdapterView(allOf(withId(android.R.id.list)))
-                .atPosition(8);
-        linearLayout5.perform(
-
-                click());
-
-    }
-
     //This test is not working and effecting other test
     /*
         @Test
@@ -152,22 +158,15 @@ public class SettingTest {
 
     }*/
 
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
+    @Test
+    public void settingVibrteTest() {
+        settingTest();
+        DataInteraction linearLayout5 = onData(anything())
+                .inAdapterView(allOf(withId(android.R.id.list)))
+                .atPosition(8);
+        linearLayout5.perform(
 
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
+                click());
 
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
     }
 }

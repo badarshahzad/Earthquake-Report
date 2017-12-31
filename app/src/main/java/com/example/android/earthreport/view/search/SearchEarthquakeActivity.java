@@ -19,8 +19,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -64,8 +64,8 @@ public class SearchEarthquakeActivity extends AppCompatActivity implements Loade
     private Spinner orderBySpinner;
     private TextView emptyStateText;
     private ImageView emptyStateImagView;
-    private ImageButton startDate;
-    private ImageButton endDate;
+    private Button startDate;
+    private Button endDate;
     private ListView listView;
     private List<EarthQuakes> earthQuakesArrayList;
     private EarthQuakeAdapter earthListAdapter;
@@ -90,6 +90,7 @@ public class SearchEarthquakeActivity extends AppCompatActivity implements Loade
         minMagnitudeSpinner = findViewById(R.id.minMagnitudeSpinner);
         maxMagnitudeSpinner = findViewById(R.id.maxMagnitudeSpinner);
         orderBySpinner = findViewById(R.id.orderBy);
+
         emptyStateText = findViewById(R.id.empty);
         emptyStateImagView = findViewById(R.id.noInternet);
 

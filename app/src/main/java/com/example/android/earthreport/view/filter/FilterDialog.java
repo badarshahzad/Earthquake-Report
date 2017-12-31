@@ -23,30 +23,26 @@ public class FilterDialog extends DialogFragment {
 
     //TODO: Convert this filter class to search class
 
-    private String selectedPeriod;
     private String selectedMin;
-    private String selectedregion;
+    private String selectedCountry;
 
 
-    private Spinner period ;
     private Spinner minMagnitude ;
-    private Spinner region ;
+    private Spinner countery;
 
     View.OnClickListener donefilterAction = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Toast.makeText(getActivity(), "Test", Toast.LENGTH_LONG).show();
 
-            selectedPeriod =  String.valueOf(period.getSelectedItem());
             selectedMin = String.valueOf(minMagnitude.getSelectedItem());
-            selectedregion  = String.valueOf(region.getSelectedItem());
+            selectedCountry = String.valueOf(countery.getSelectedItem());
 
-            setSelectedPeriod(selectedPeriod);
             setSelectedMin(selectedMin);
-            setSelectedregion(selectedregion);
+            setSelectedCountry(selectedCountry);
 
             TimelineFragment timelineFragment = new TimelineFragment();
-            timelineFragment.filterRefreshList(selectedPeriod,selectedMin,selectedregion);
+            timelineFragment.filterRefreshList(selectedMin, selectedCountry);
 
             getDialog().dismiss();
         }
@@ -70,41 +66,29 @@ public class FilterDialog extends DialogFragment {
         //TODO: Add
         // This hour , Yesterday, weeek, month ,
         // min and max magnitude
-        // region
+        // countery
 
-        period = view.findViewById(R.id.period);
         minMagnitude = view.findViewById(R.id.min_of);
-        region = view.findViewById(R.id.region_of);
+        countery = view.findViewById(R.id.country_of);
 
 
         return view;
-    }
-
-
-
-    public void setSelectedPeriod(String selectedPeriod) {
-        this.selectedPeriod = selectedPeriod;
-    }
-
-    public void setSelectedMin(String selectedMin) {
-        this.selectedMin = selectedMin;
-    }
-
-
-    public void setSelectedregion(String selectedregion) {
-        this.selectedregion = selectedregion;
-    }
-
-    public String getSelectedPeriod() {
-        return selectedPeriod;
     }
 
     public String getSelectedMin() {
         return selectedMin;
     }
 
-    public String getSelectedregion() {
-        return selectedregion;
+    public void setSelectedMin(String selectedMin) {
+        this.selectedMin = selectedMin;
+    }
+
+    public String getSelectedCountry() {
+        return selectedCountry;
+    }
+
+    public void setSelectedCountry(String selectedCountry) {
+        this.selectedCountry = selectedCountry;
     }
 
 }

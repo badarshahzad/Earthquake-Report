@@ -2,13 +2,14 @@ package com.example.android.earthreport.view.home;
 
 
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,6 +24,7 @@ import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.api.EarthquakeLoader;
 import com.example.android.earthreport.model.utilties.DataProviderFormat;
 import com.example.android.earthreport.view.addalert.AddAlertDialog;
+import com.example.android.earthreport.view.notifications.NotificationsUtils;
 import com.example.android.earthreport.view.search.SearchEarthquakeActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,7 +40,7 @@ import java.util.Date;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements OnMapReadyCallback {
+public class HomeFragment extends Fragment implements OnMapReadyCallback, LocationListener {
 
     private static final String TAG = HomeFragment.class.getSimpleName();
     private static final String COUNT_KEY = "countKey";
@@ -52,6 +54,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     public TextView yesterdayEarthquakes;
     public TextView thisMonthEarthquakes;
     public TextView thisWeekEarthquakes;
+    public TextView todayMapStatus;
+    public double locationChangeLatitude;
+    public double locationChangeLongitude;
+    public Location myLocation;
     View.OnClickListener showDataList = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -66,8 +72,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private String thisHourURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
     //Today earthquakes count
     private String CountURL = "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=";
-    private Date dateForWeek;
-    private SwipeRefreshLayout swipeRefresh;
 
     public HomeFragment() {
 
@@ -84,7 +88,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         // the current instance of the fragment when the activity is recreated.
         // CheckedTodo: The retaininstance helping me on activity orientation change
         setRetainInstance(true);
-
     }
 
     @Override
@@ -117,10 +120,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             startActivity(intent);
         }
 
-        if(itemId == R.id.action_add_alert){
+        if (itemId == R.id.action_add_alert) {
 
             AddAlertDialog alertDialog = new AddAlertDialog();
-            alertDialog.show(getFragmentManager(),"action_alert");
+            alertDialog.show(getFragmentManager(), "action_alert");
+
+            NotificationsUtils.remindUser(getContext());
         }
 
         return super.onOptionsItemSelected(item);
@@ -146,6 +151,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         yesterdayEarthquakes = view.findViewById(R.id.yesterday);
         thisWeekEarthquakes = view.findViewById(R.id.week);
         thisMonthEarthquakes = view.findViewById(R.id.month);
+        todayMapStatus = view.findViewById(R.id.today_mapStatus);
 
         //Find a reference to the {@link Progressbar} int the layout
         progressBar = view.findViewById(R.id.progressbar);
@@ -155,13 +161,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         // Date of 7 days back
         Date newDateForWeek = getDate(7);
-         Log.i(TAG, "Seven day back " + newDateForWeek);
+        Log.i(TAG, "Seven day back " + newDateForWeek);
 
         //Made the 1st date of this month
         Calendar calendar1 = Calendar.getInstance();
         calendar1.set(Calendar.DAY_OF_MONTH, 1);
         Date newDateForMonth = calendar1.getTime();
-         Log.i(TAG, "Month date " + newDateForMonth);
+        Log.i(TAG, "Month date " + newDateForMonth);
 
         //Date for previous day
         Date newDateForYesterday = getDate(1);
@@ -211,6 +217,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 thisWeekEarthquakes.setText(COUNT_KEY_ARRAY[2]);
                 thisMonthEarthquakes.setText(COUNT_KEY_ARRAY[3]);
 
+                todayMapStatus.setText("Today " + COUNT_KEY_ARRAY[0] + " Earthquakes occure");
                 //Stop the progressbar and hide
                 displayProgressBar(false);
             }
@@ -298,6 +305,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        //TODO:My location
+            /*LatLng location = new LatLng(locationChangeLatitude, locationChangeLongitude);
+//        Log.i(TAG, "onMapReady: map mark"+locationChangeLongitude +"  "+locationChangeLongitude);
+            googleMap.addMarker(new MarkerOptions()
+                    .position(location)
+                    .title("Your Location!")
+                    .snippet("Your Location!"));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+
+            Log.i(TAG, "onMapReady: locaiton working");
+
+
+        Log.i(TAG, "onMapReady: call me but sorry ");*/
         //googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
        /* LatLng latLng = new LatLng(69.3451,30.3753);
@@ -341,4 +361,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.i(TAG, "onLocationChanged: lati" + location.getLongitude() + " longi" + location.getLatitude());
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 }

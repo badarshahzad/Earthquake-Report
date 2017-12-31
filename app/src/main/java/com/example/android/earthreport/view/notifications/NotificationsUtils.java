@@ -16,7 +16,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
 import com.example.android.earthreport.R;
-import com.example.android.earthreport.view.home.EarthquakeActivity;
+import com.example.android.earthreport.view.main.EarthquakeActivity;
 
 /**
  * Created by root on 12/17/17.
@@ -73,9 +73,9 @@ public class NotificationsUtils {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
                 context,NEW_EARTHQUAKE_NOTIFICATION_CHANNEL_ID)
                 .setColor(ContextCompat.getColor(context,R.color.magnitude4))
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setSmallIcon(R.drawable.ic_add_alert_white_24dp)
                 .setContentTitle(context.getString(R.string.notificaiton_title))
-                .setContentText(context.getString(R.string.notification_summary))
+                .setContentText("85 km SES of Namie, Japan")
 
                 .setDefaults(value)
                 .setContentIntent(contentIntent(context))

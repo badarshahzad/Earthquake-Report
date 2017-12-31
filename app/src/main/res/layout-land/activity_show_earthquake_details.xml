@@ -13,15 +13,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginBottom="56dp"
+        android:layout_marginTop="16dp"
 
         android:src="@drawable/ic_cloud_off_black_24dp"
-
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/empty"
         app:layout_constraintEnd_toEndOf="@+id/empty"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="@+id/empty" />
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/empty"
+        app:layout_constraintTop_toBottomOf="@+id/orderBy" />
 
     <TextView
         android:id="@+id/empty"
@@ -29,7 +28,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
 
         android:gravity="center"
         android:text="No Internet Connection"
@@ -38,62 +37,63 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/noInternet" />
 
     <!--Start Date-->
     <Button
         android:id="@+id/startDate"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
-
         android:drawableLeft="@drawable/ic_date_range_black_24dp"
         android:drawablePadding="8dp"
         android:gravity="left|center"
         android:text="Start Date"
-        app:layout_constraintBottom_toBottomOf="@+id/orderBy"
+        app:layout_constraintBottom_toBottomOf="@+id/endDate"
         app:layout_constraintEnd_toStartOf="@+id/endDate"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/orderBy" />
+        app:layout_constraintStart_toEndOf="@+id/orderBy"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--End Date-->
     <Button
         android:id="@+id/endDate"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
 
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:drawableLeft="@drawable/ic_date_range_black_24dp"
         android:drawablePadding="8dp"
         android:gravity="left|center"
         android:text="End Date"
-        app:layout_constraintBottom_toBottomOf="@+id/orderBy"
-        app:layout_constraintEnd_toStartOf="@+id/orderBy"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/startDate"
-        app:layout_constraintTop_toTopOf="@+id/orderBy" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/maxMagnitudeSpinner"
         android:layout_width="0dp"
         android:layout_height="42dp"
 
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:entries="@array/max_earthquakes_entries"
-        app:layout_constraintBottom_toTopOf="@+id/orderBy"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/endDate"
+        app:layout_constraintEnd_toStartOf="@+id/orderBy"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/minMagnitudeSpinner"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/minMagnitudeSpinner"
@@ -102,27 +102,27 @@
 
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:entries="@array/min_earthquakes_entries"
-        app:layout_constraintBottom_toBottomOf="@+id/maxMagnitudeSpinner"
+        app:layout_constraintBottom_toBottomOf="@+id/endDate"
         app:layout_constraintEnd_toStartOf="@+id/maxMagnitudeSpinner"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/maxMagnitudeSpinner" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/orderBy"
         android:layout_width="0dp"
         android:layout_height="42dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:entries="@array/sort_array"
-        app:layout_constraintBottom_toTopOf="@+id/listView"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/endDate"
+        app:layout_constraintEnd_toStartOf="@+id/startDate"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/endDate"
-        app:layout_constraintTop_toBottomOf="@+id/maxMagnitudeSpinner" />
+        app:layout_constraintStart_toEndOf="@+id/maxMagnitudeSpinner"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ListView
@@ -134,7 +134,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/endDate"
+        app:layout_constraintTop_toTopOf="@+id/noInternet"
         app:layout_constraintVertical_weight="2" />
 
     <android.support.constraint.Barrier
@@ -148,29 +148,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.83" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Maximum Magnitude"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Minimum Magnitude"
-        app:layout_constraintEnd_toStartOf="@+id/textView"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
 </android.support.constraint.ConstraintLayout>
 

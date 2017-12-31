@@ -61,18 +61,67 @@ public class AddAlertDialog  extends DialogFragment {
     public AddAlertDialog(){
 
     }
+
+    public static boolean isCounteryExist(Context context, double latitude, double longitude) {
+        String counteryName = null;
+        try {
+            counteryName = getCountryName(context, latitude, longitude);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<String> list = new ArrayList<String>();
+
+        String[] locales = Locale.getISOCountries();
+
+        for (String countryCode : locales) {
+
+            Locale obj = new Locale("", countryCode);
+
+            //Log.i(TAG, "Country Name = " + obj.getDisplayCountry());
+            list.add(obj.getDisplayCountry());
+
+
+            if (counteryName != null && counteryName.equals(obj.getDisplayCountry())) {
+                Log.i(TAG, "Get Display Countery" + obj.getDisplayCountry());
+                Log.i(TAG, "Countery Name: " + obj.getDisplayCountry());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static String getCountryName(Context context, double latitude, double longitude) throws IOException {
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+
+        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+        if (addresses.isEmpty()) {
+            return null;
+        }
+
+        //Log.i(TAG, "getCountryName:1 "+addresses.get(0).getCountryName());
+        Address result;
+
+        if (addresses != null && !addresses.isEmpty()) {
+            //  Log.i(TAG, "getCountryName:2 "+addresses.get(0).getCountryName());
+            return addresses.get(0).getCountryName();
+        }
+        return null;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_alert, container, false);
-        getDialog().setTitle("Filter Earthquakes");
+        getDialog().setTitle("Add Alert Earthquake");
 
         Button donefilter = view.findViewById(R.id.done_alert);
         donefilter.setOnClickListener(donefilterAction);
 
         minMagnitudeSpinner = view.findViewById(R.id.min_of);
-        regionSpinner = view.findViewById(R.id.region_of);
+        regionSpinner = view.findViewById(R.id.country_of);
 
 
          if(isCounteryExist(getContext(), -4.3777,101.9364)){
@@ -114,52 +163,6 @@ public class AddAlertDialog  extends DialogFragment {
 
         }
         return list;
-    }
-
-    public static boolean isCounteryExist(Context context, double latitude, double longitude){
-        String counteryName = null;
-        try {
-            counteryName = getCountryName(context,latitude,longitude);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        ArrayList<String> list=new ArrayList<String>();
-
-        String[] locales = Locale.getISOCountries();
-
-        for (String countryCode : locales) {
-
-            Locale obj = new Locale("", countryCode);
-
-            //Log.i(TAG, "Country Name = " + obj.getDisplayCountry());
-            list.add(obj.getDisplayCountry());
-
-
-            if(counteryName!=null && counteryName.equals(obj.getDisplayCountry())){
-                Log.i(TAG, "Get Display Countery"+obj.getDisplayCountry());
-                Log.i(TAG, "Countery Name: "+obj.getDisplayCountry());
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static String getCountryName(Context context, double latitude, double longitude) throws IOException {
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-
-        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-
-        if(addresses.isEmpty()){return null; }
-
-        //Log.i(TAG, "getCountryName:1 "+addresses.get(0).getCountryName());
-        Address result;
-
-        if (addresses != null && !addresses.isEmpty()) {
-            //  Log.i(TAG, "getCountryName:2 "+addresses.get(0).getCountryName());
-            return addresses.get(0).getCountryName();
-        }
-        return null;
     }
 
 }

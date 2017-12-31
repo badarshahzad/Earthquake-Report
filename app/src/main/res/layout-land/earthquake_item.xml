@@ -9,26 +9,19 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="73dp">
 
-
     <android.support.v7.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-
-        android:layout_marginTop="8dp"
-
-
-        app:cardCornerRadius="8dp"
-        app:cardElevation="8dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteY="0dp">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/itemContainer"
@@ -42,12 +35,14 @@
 
             <TextView
                 android:id="@+id/magnitude"
-                android:layout_width="37dp"
-                android:layout_height="36dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
 
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/magnitude_circle"
-                android:padding="8dp"
-                android:text="6.635"
+                android:paddingTop="14dp"
+                android:text="6.63"
                 android:textAlignment="center"
                 android:textColor="@android:color/background_dark"
                 android:textSize="14sp"
@@ -57,36 +52,32 @@
                 app:layout_constraintTop_toTopOf="@+id/itemContainer" />
 
             <TextView
-                android:id="@+id/distance"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-
-                android:paddingLeft="18dp"
-                android:text="37 km SSW of"
-                app:layout_constraintBaseline_toBaselineOf="@+id/time"
-                app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/magnitude" />
-
-            <TextView
                 android:id="@+id/cityName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:paddingLeft="16dp"
-                android:text="Mianwali"
-                android:textSize="18sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/date"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="N/A"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toEndOf="@+id/magnitude"
+                app:layout_constraintTop_toBottomOf="@+id/distance"
                 tools:fontFamily="cursive" />
 
             <TextView
                 android:id="@+id/date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:text="TextView"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="N/A"
+                android:textAlignment="center"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/itemContainer"
                 app:layout_constraintEnd_toEndOf="@+id/itemContainer"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -105,21 +96,38 @@
                 android:id="@+id/guideline2"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginBottom="9dp"
                 android:orientation="vertical"
 
-                app:layout_constraintGuide_percent="0.69"
+                app:layout_constraintGuide_percent="0.7"
                 app:layout_constraintTop_toBottomOf="@+id/guideline" />
 
+            <TextView
+                android:id="@+id/distance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="N/A"
+                app:layout_constraintBottom_toTopOf="@+id/cityName"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/magnitude"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:padding="0dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:paddingLeft="0dp"
-                android:text="TextView"
+                android:text="N/A"
+                android:textAlignment="center"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/date"
                 app:layout_constraintEnd_toEndOf="@+id/itemContainer"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
