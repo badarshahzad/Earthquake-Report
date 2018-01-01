@@ -1,4 +1,4 @@
-package com.example.android.earthreport.view.notifications;
+package com.example.android.earthreport.model.utilties;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -7,16 +7,18 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.example.android.earthreport.R;
-import com.example.android.earthreport.view.main.EarthquakeActivity;
+import com.example.android.earthreport.model.pojos.EarthQuakes;
+import com.example.android.earthreport.view.map.Map;
+import com.example.android.earthreport.view.timeline.TimelineFragment;
+import com.google.gson.Gson;
 
 /**
  * Created by root on 12/17/17.
@@ -24,6 +26,8 @@ import com.example.android.earthreport.view.main.EarthquakeActivity;
 
 public class NotificationsUtils {
 
+    public static final String TAG = NotificationsUtils.class.getSimpleName();
+    public static EarthQuakes earthQuakes;
     /**
      * Title: Notifications
      * Author: classroom.udacity.com
@@ -35,20 +39,21 @@ public class NotificationsUtils {
     //this notificaiton id help me to access  our notification after displayed it.
     //This will be handy when I need to cancel the notificaiton
     private static int NEW_EARTHQUAKE_NOTIFICATION_ID = 1110;
-
     private static int NEW_EARTHQUAKE_PENDING_INTENT_ID =1111;
-
     private static String NEW_EARTHQUAKE_NOTIFICATION_CHANNEL_ID = "earthquake_notification_channel";
 
+    public static void remindUser(Context context, EarthQuakes earthQuakesList) {
 
-    public static void remindUser(Context context){
-
+        if (earthQuakesList != null) {
+            earthQuakes = earthQuakesList;
+        }
+        // earthQuakes = earthQuakes;
         //get the notification manager from context.getSystemService
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         //create a notification channel for Android devices
         NotificationChannel notificationChannel = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             notificationChannel = new NotificationChannel(
                     NEW_EARTHQUAKE_NOTIFICATION_CHANNEL_ID,context.getString(R.string.main_notification_channel),
@@ -63,6 +68,8 @@ public class NotificationsUtils {
         // To check the Vibrate and Notification turn ON/OFF
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String earthQuakesListString = sharedPreferences.getString(PreferenceUtilities.KEY_EARTHQUAKES, null);
+        EarthQuakes earthquake = new Gson().fromJson(earthQuakesListString, EarthQuakes.class);
         boolean vibrateOnOff = sharedPreferences.getBoolean("key_vibrate",false);
         boolean alertNotificaitonOnOff = sharedPreferences.getBoolean("key_alert_notification",true);
         int value = 0;
@@ -75,8 +82,11 @@ public class NotificationsUtils {
                 .setColor(ContextCompat.getColor(context,R.color.magnitude4))
                 .setSmallIcon(R.drawable.ic_add_alert_white_24dp)
                 .setContentTitle(context.getString(R.string.notificaiton_title))
-                .setContentText("85 km SES of Namie, Japan")
+                //TODO:Set the text title with kilometer, city and counter of earthuaqe here
+                .setContentText("Magnitude of " + earthQuakesList.getMagnitude() + "earthquake occur in "
+                        + earthQuakes.getCityname())
 
+                //.setContentText("Wa g wa la bhai")
                 .setDefaults(value)
                 .setContentIntent(contentIntent(context))
                 .setAutoCancel(true);
@@ -93,23 +103,34 @@ public class NotificationsUtils {
             notificationManager.notify(NEW_EARTHQUAKE_NOTIFICATION_ID, notificationBuilder.build());
         }
 
+        Log.i(TAG, "remindUser: ");
     }
+
 
     public static PendingIntent contentIntent(Context context){
 
-        //intent that will open the   Earthquake Main activity
-        Intent startActivityIntent = new Intent(context, EarthquakeActivity.class);
+        //intent that will open and show the Map activity
+        Intent startActivityIntent = new Intent(context, Map.class);
 
+        Bundle bundle = new Bundle();
+        bundle.putString(TimelineFragment.MARK_TYPE, TimelineFragment.SINGLE);
+        bundle.putDouble(TimelineFragment.LONGITUDE, earthQuakes.getLongitude());
+        bundle.putDouble(TimelineFragment.LATITUDE, earthQuakes.getLatitude());
+        bundle.putString(TimelineFragment.CITY, earthQuakes.getCityname());
+        bundle.putString(TimelineFragment.MAGNITUDE, earthQuakes.getMagnitude());
+        bundle.putString(TimelineFragment.DATE, earthQuakes.getDate());
+
+        startActivityIntent.putExtras(bundle);
+
+        Log.i(TAG, "contentIntent: ");
         //when the intent again created it will keep the intent and update it
         return  PendingIntent.getActivity(context, NEW_EARTHQUAKE_NOTIFICATION_ID,startActivityIntent,PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    //this method return a bitmap necessery to decode a bitmap needed for the notification
-    private  static Bitmap largIcon(Context context){
-
-        Resources res = context.getResources();
-        Bitmap icon = BitmapFactory.decodeResource(res, R.drawable.ic_notifications_black_24dp);
-
-        return icon;
+    public static void clearAllNotifications(Context context) {
+        NotificationManager notificationManager = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
     }
+
 }

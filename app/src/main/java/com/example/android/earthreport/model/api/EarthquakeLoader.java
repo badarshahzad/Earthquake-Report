@@ -27,8 +27,6 @@ import java.util.List;
 /**
  * Created by root on 12/16/17.
  */
-
-//This url handling and getting data learn from www.tutorialspoint.com/android/android_json_parser.htm
 public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
 
 
@@ -46,19 +44,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
 //        Log.d(TAG, "EarthquakeLoaderConstructor: ");
     }
 
-    @Override
-    protected void onStartLoading() {
-//        Log.d(TAG, "onStartLoading: ");
-        forceLoad();
-
-    }
-
-    @Override
-    public List<EarthQuakes> loadInBackground() {
-        //Making a request to url and getting response
-
-//        Log.d(TAG, "loadInBackground: ");
-        String jasonStr = HttpHandler.makeServeiceCall(URL);
+    public static List<EarthQuakes> parseJsonIntoData(List<EarthQuakes> earthQuakesArrayList, String jasonStr, Context context) {
 
         //if the internet available and the jason data receive in jasonStr then
         if (jasonStr != null) {
@@ -105,7 +91,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
                     // TimelineFragment.earthQuakesArrayList.add(new EarthQuakes(mag, place, time, url, longitude, latitude));
 
                     //SharefPreferences filter Setting
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
                     String filterMag = sharedPref.getString("key_filter_magnitude", "5");
 //                    Log.d(TAG, "filterValue: " + filterMag);
 
@@ -136,11 +122,25 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<EarthQuakes>> {
 
             //if the jason string is null that could be the case when internet is no available
         }
-
-//        Log.d(TAG, "loadInBackground: finished ");
         return earthQuakesArrayList;
     }
 
+    @Override
+    protected void onStartLoading() {
+//        Log.d(TAG, "onStartLoading: ");
+        forceLoad();
+    }
+
+    @Override
+    public List<EarthQuakes> loadInBackground() {
+
+        //Making a request to url and getting response
+//        Log.d(TAG, "loadInBackground: ");
+        String jasonStr = HttpHandler.makeServeiceCall(URL);
+        earthQuakesArrayList = parseJsonIntoData(earthQuakesArrayList, jasonStr, getContext());
+//        Log.d(TAG, "loadInBackground: finished ");
+        return earthQuakesArrayList;
+    }
 
     public static class HttpHandler {
 

@@ -7,6 +7,7 @@
     tools:context=".view.main.EarthquakeActivity"
     tools:layout_editor_absoluteY="81dp">
 
+    <!--Swap layout to refresh-->
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
@@ -16,6 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <!--List view of timeline-->
         <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
@@ -62,6 +64,7 @@
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="@+id/empty" />
 
+    <!--TO view all values on the map-->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabButton"
         android:layout_width="wrap_content"

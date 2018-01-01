@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
+    <!--Cardview for Map-->
     <android.support.v7.widget.CardView
         android:id="@+id/cardForMap"
         android:layout_width="0dp"
@@ -146,6 +146,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!--Location-->
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
@@ -160,6 +161,7 @@
                 app:srcCompat="@drawable/ic_location_on_black_24dp"
                 tools:ignore="VectorDrawableCompat" />
 
+            <!--Place-->
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
@@ -175,6 +177,7 @@
                 app:srcCompat="@drawable/ic_location_city_black_24dp"
                 tools:ignore="MissingConstraints,VectorDrawableCompat" />
 
+            <!--Time-->
             <ImageView
                 android:id="@+id/imageView4"
                 android:layout_width="wrap_content"
@@ -189,6 +192,7 @@
                 app:srcCompat="@drawable/ic_access_time_black_24dp"
                 tools:ignore="VectorDrawableCompat" />
 
+            <!--Direction and Distance-->
             <ImageView
                 android:id="@+id/imageView5"
                 android:layout_width="wrap_content"
@@ -205,6 +209,7 @@
                 app:srcCompat="@drawable/ic_directions_black_24dp"
                 tools:ignore="VectorDrawableCompat" />
 
+            <!--Time Text-->
             <TextView
                 android:id="@+id/time"
                 android:layout_width="0dp"
@@ -218,7 +223,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
                 app:layout_constraintTop_toTopOf="@+id/imageView4" />
-
+            <!--Longitude Text-->
             <TextView
                 android:id="@+id/longitude"
                 android:layout_width="0dp"
@@ -233,6 +238,7 @@
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
+            <!--City Text-->
             <TextView
                 android:id="@+id/city"
                 android:layout_width="0dp"
@@ -246,6 +252,7 @@
                 app:layout_constraintStart_toEndOf="@+id/imageView3"
                 app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
+            <!--Direction Text-->
             <TextView
                 android:id="@+id/directionDistance"
                 android:layout_width="0dp"
@@ -260,6 +267,7 @@
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
                 app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
+            <!--Title Text-->
             <TextView
                 android:id="@+id/title"
                 android:layout_width="0dp"

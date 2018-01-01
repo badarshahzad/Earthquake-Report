@@ -122,7 +122,6 @@
     <!--- Setting Preferences -->
 
     <string-array name="magnitude_entries">
-        <item>All</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -132,7 +131,6 @@
         <item>7</item>
     </string-array>
     <string-array name="magnitude_entries_values">
-        <item>All</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>

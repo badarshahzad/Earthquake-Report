@@ -13,7 +13,7 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="81dp">
 
-
+    <!--View Pager For bottom navigation-->
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="0dp"
@@ -27,6 +27,7 @@
         app:layout_constraintTop_toTopOf="parent">
     </android.support.v4.view.ViewPager>
 
+    <!--Bottom Navigation-->
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navBottom"
         android:layout_width="0dp"

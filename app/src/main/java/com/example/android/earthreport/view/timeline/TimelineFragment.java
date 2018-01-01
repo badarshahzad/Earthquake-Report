@@ -72,6 +72,8 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     public static final int NO_INTERNET_ERROR = R.drawable.ic_cloud_off_black_24dp;
     public static final String NO_DATA_TEXT = "No data retrieve check Filter or Period in Setting.";
     public static final String NO_INTERNET_TEXT = "No Internet Connection";
+    public static final String SINGLE = "single";
+    public static final String MULTIPLE = "multiple";
 
     private final String TAG = TimelineFragment.class.getSimpleName();
     private List<EarthQuakes> earthQuakesArrayList;
@@ -244,7 +246,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
                 Intent intent = new Intent(getContext(), Map.class);
 
                 Bundle bundle = new Bundle();
-                bundle.putString(MARK_TYPE, "single");
+                bundle.putString(MARK_TYPE, SINGLE);
                 bundle.putDouble(LONGITUDE, earthQuakesArrayList.get(position).getLongitude());
                 bundle.putDouble(LATITUDE, earthQuakesArrayList.get(position).getLatitude());
                 bundle.putString(CITY, earthQuakesArrayList.get(position).getCityname());
@@ -273,7 +275,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 
                 Intent intent = new Intent(getContext(), Map.class);
                 Bundle bundle = new Bundle();
-                bundle.putString(MARK_TYPE, "multiple");
+                bundle.putString(MARK_TYPE, MULTIPLE);
                 bundle.putSerializable(DATA, (Serializable) earthQuakesArrayList);
                 intent.putExtras(bundle);
                 startActivity(intent);

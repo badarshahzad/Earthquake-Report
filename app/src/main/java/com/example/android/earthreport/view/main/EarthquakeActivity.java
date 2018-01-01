@@ -16,19 +16,35 @@
 package com.example.android.earthreport.view.main;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.android.earthreport.R;
+import com.example.android.earthreport.model.sync.EarthquakeReminderFirebaseJobService;
+import com.example.android.earthreport.model.sync.ReminderUtilities;
 import com.example.android.earthreport.view.adapters.ViewPagerAdapter;
 import com.example.android.earthreport.view.home.HomeFragment;
 import com.example.android.earthreport.view.setting.SettingFragment;
 import com.example.android.earthreport.view.timeline.TimelineFragment;
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
+import com.firebase.jobdispatcher.Trigger;
+
+//what is context This is an abstract class whose implementation is provided by
+// the Android system. It allows access to application-specific resources and
+//  classes, as well as up-calls for application-level
+// operations such as launching activities, broadcasting and receiving intents
 
 public class EarthquakeActivity extends AppCompatActivity {
 
@@ -41,6 +57,18 @@ public class EarthquakeActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
 
+    public static Job updateJob(FirebaseJobDispatcher dispatcher) {
+        Job newJob = dispatcher.newJobBuilder()
+                //update if any task with the given tag exists.
+                .setReplaceCurrent(true)
+                //Integrate the job you want to start.
+                .setService(EarthquakeReminderFirebaseJobService.class)
+                .setTag("UniqueTagForYourJob")
+                // Run between 30 - 60 seconds from now.
+                .setTrigger(Trigger.executionWindow(5, 10))
+                .build();
+        return newJob;
+    }
 
     private void setupViewPager(ViewPager viewPager) {
 
@@ -118,6 +146,45 @@ public class EarthquakeActivity extends AppCompatActivity {
             }
         });
 
+        scheduleJob(this);
+
     }
+
+    private void scheduleJob(Context context) {
+
+
+        Log.i(TAG, "scheduleJob: ");
+        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+        //creating new job and adding it with dispatcher
+        Job job = createJob(dispatcher);
+        dispatcher.mustSchedule(job);
+        ReminderUtilities.scheduleEarthquakeReminder(this);
+    }
+
+    private Job createJob(FirebaseJobDispatcher dispatcher) {
+
+        Job job = dispatcher.newJobBuilder()
+                //persist the task across boots
+                .setLifetime(Lifetime.FOREVER)
+                //.setLifetime(Lifetime.UNTIL_NEXT_BOOT)
+                //call this service when the criteria are met.
+                .setService(EarthquakeReminderFirebaseJobService.class)
+                //unique id of the task
+                .setTag("UniqueTagForYourJob")
+                //don't overwrite an existing job with the same tag
+                .setReplaceCurrent(false)
+                // We are mentioning that the job is periodic.
+                .setRecurring(true)
+                // Run between 30 - 60 seconds from now.
+                .setTrigger(Trigger.executionWindow(5, 10))
+                // retry with exponential backoff
+                .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
+                //.setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
+                //Run this job only when the network is available.
+                .setConstraints(Constraint.ON_ANY_NETWORK, Constraint.DEVICE_CHARGING)
+                .build();
+        return job;
+    }
+
 
 }

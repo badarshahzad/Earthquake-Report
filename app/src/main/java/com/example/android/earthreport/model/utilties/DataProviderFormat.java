@@ -20,4 +20,7 @@ public class DataProviderFormat {
         return dateFormat.format(dateObject);
     }
 
+    //[{"country":"Austria","magnitude":3.0}]
+
+
 }

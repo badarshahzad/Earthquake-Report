@@ -39,7 +39,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <!--Region Text-->
+    <!--Country Text-->
     <TextView
         android:id="@+id/textView9"
         android:layout_width="0dp"
@@ -54,7 +54,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-    <!---Region -->
+    <!---Country -->
     <Spinner
         android:id="@+id/countryOfSpinner"
         android:layout_width="0dp"

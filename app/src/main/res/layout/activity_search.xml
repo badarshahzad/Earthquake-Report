@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.android.earthreport.view.search.SearchEarthquakeActivity">
 
+    <!--Search Fragment-->
     <fragment
         android:id="@+id/fragment"
         android:name="com.example.android.earthreport.view.search.SearchFragment"

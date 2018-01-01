@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
@@ -47,7 +46,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // getSupportActionBar().setHomeButtonEnabled(true);
 
         //Retrieve the content view theat renders the map
         setContentView(R.layout.map_activity);
@@ -67,7 +65,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         magnitude = findViewById(R.id.magnitude);
         cardView = findViewById(R.id.cardForText);
 
-        Log.i(TAG, "onCreate: ");
+//        Log.i(TAG, "onCreate: ");
 
 
     }
@@ -126,16 +124,15 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             this.title.setText(title);
 
 
-            Log.i(TAG, "onMapReady: " + cityName);
-            Log.i(TAG, "onMapReady: " + date);
+//            Log.i(TAG, "onMapReady: " + cityName);
+//            Log.i(TAG, "onMapReady: " + date);
 
         }
 
         if (markType.equals("multiple")) {
             cardView.setVisibility(View.GONE);
 
-            ArrayList<EarthQuakes> earthQuakesArrayList = new ArrayList<>();
-            earthQuakesArrayList = (ArrayList<EarthQuakes>) bundle.getSerializable(TimelineFragment.DATA);
+            ArrayList<EarthQuakes> earthQuakesArrayList = earthQuakesArrayList = (ArrayList<EarthQuakes>) bundle.getSerializable(TimelineFragment.DATA);
 
             for (int a = 0; a < earthQuakesArrayList.size(); a++) {
                 LatLng location = new LatLng(earthQuakesArrayList.get(a).getLatitude(), earthQuakesArrayList.get(a).getLongitude());
@@ -154,7 +151,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             }
 
 
-            Log.i(TAG, "onMapReady: " + earthQuakesArrayList.size());
+//            Log.i(TAG, "onMapReady: " + earthQuakesArrayList.size());
 
 
         }

@@ -5,14 +5,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -29,11 +30,17 @@ import android.widget.TextView;
 
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.api.EarthquakeLoader;
+import com.example.android.earthreport.model.pojos.EarthQuakes;
+import com.example.android.earthreport.model.pojos.FavoriteCountries;
 import com.example.android.earthreport.model.utilties.DataProviderFormat;
+import com.example.android.earthreport.model.utilties.FavoritCountriesUtilties;
 import com.example.android.earthreport.view.search.SearchEarthquakeActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,37 +50,30 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements OnMapReadyCallback, LocationListener {
+public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
+    public static final String FAVOURIT_LIST = "favouritList";
     private static final String TAG = HomeFragment.class.getSimpleName();
     private static final String COUNT_KEY = "countKey";
     public static String TODAY_COUNT_KEY = "todayCountkey";
     public static String YESTERDAY_COUNT_KEY = "yesterdayCountkey";
     public static String WEEK_COUNT_KEY = "weekCountkey";
     public static String MONTH_COUNT_KEY = "monthCountkey";
-
     private static final String COUNT_KEY_ARRAY[] = {TODAY_COUNT_KEY, YESTERDAY_COUNT_KEY, WEEK_COUNT_KEY, MONTH_COUNT_KEY};
+    public static String ALL_DAY_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
     public static Handler handler;
     public String selectedMin;
     public String selectedCountery;
-    public double locationChangeLatitude;
-    public double locationChangeLongitude;
-    public Location myLocation;
-    View.OnClickListener showDataList = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
 
-            Intent intent = new Intent(getContext(), SearchEarthquakeActivity.class);
-            startActivity(intent);
-        }
-    };
     private TextView todayEarthquakes;
     private TextView yesterdayEarthquakes;
     private TextView thisMonthEarthquakes;
@@ -83,6 +83,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Locati
     private Spinner counteryOfSpinner;
     private String[] countURLS = new String[4];
     private ProgressBar progressBar;
+    private List<FavoriteCountries> favoriteCountries;
+    private List<EarthQuakes> alldayList;
+
+
     //This hour earthQuakes url (query to get values) | Below I concatenate the date for todady
     private String thisHourURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
     //Today earthquakes count
@@ -243,9 +247,65 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Locati
                 public void onClick(DialogInterface dialog, int which) {
 
                     //TODO: make a list of favorit countery to get notificaiton
+                    //TODO: then CRUD operation will be necessery (Right Badi ! Yeah why not?)
+
                     selectedMin = String.valueOf(minMagnitudeSpinner.getSelectedItem());
                     selectedCountery = String.valueOf(counteryOfSpinner.getSelectedItem());
 
+                    SharedPreferences shPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    SharedPreferences.Editor editor = shPref.edit();
+
+
+                    //Log.i(TAG, "onClick: 1 "+shPref.getString(FAVOURIT_LIST,"null"));
+                    if (shPref.getString(FAVOURIT_LIST, "null").equals(null)) {
+
+                        favoriteCountries = new ArrayList<>();
+
+
+                        favoriteCountries.add(new FavoriteCountries(selectedCountery, Double.valueOf(selectedMin)));
+                        editor.putString(FAVOURIT_LIST, new Gson().toJson(favoriteCountries).toString());
+                        editor.apply();
+
+                        Log.i(TAG, "onClick: 2 " + new Gson().toJson(favoriteCountries).toString());
+
+                    } else {
+
+                        favoriteCountries = new ArrayList<>();
+
+                        String favouritListString = shPref.getString(FAVOURIT_LIST, "null");
+                        //This will return the list of objects of favrit countries
+                        favoriteCountries = FavoritCountriesUtilties.parseJsonInToList(favouritListString);
+                        favoriteCountries.add(new FavoriteCountries(selectedCountery, Double.valueOf(selectedMin)));
+
+                        /**
+                         * Title: How do I remove repeated elements from ArrayList?
+                         * Author: jonathan-stafford
+                         * Date: 2017-12-20
+                         * Code version: N/A
+                         * Availability: https://stackoverflow.com/questions/203984/how-do-i-remove-repeated-elements-from-arraylist
+                         //Remove the duplicaties entries
+                         */
+
+                        List<FavoriteCountries> al = favoriteCountries;
+                        Set<FavoriteCountries> hs = new HashSet<>();
+
+                        hs.addAll(al);
+                        al.clear();
+                        al.addAll(hs);
+
+                        favoriteCountries = al;
+                        editor.putString(FAVOURIT_LIST, new Gson().toJson(favoriteCountries).toString());
+                        editor.apply();
+                        Log.i(TAG, "onClick: 3 " + new Gson().toJson(favoriteCountries).toString());
+
+                    }
+
+
+                    //String countary = shPref.getString("favouritList",null);
+                    // List<FavoriteCountries> list =
+
+//                    Log.i(TAG, "onClick: "+selectedMin);
+//                    Log.i(TAG, "onClick: "+selectedCountery);
 //                    Toast.makeText(getContext(),"Done",Toast.LENGTH_SHORT).show();
 
                 }
@@ -323,6 +383,30 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Locati
         //get the counts eathquakes
         dataFetch(countURLS);
         displayProgressBar(true);
+
+
+        alldayList = new ArrayList<>();
+        //Show today Earthqukes on the home map
+
+
+        AsyncTask background;
+
+        background = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                String jsonResponse = EarthquakeLoader.HttpHandler.makeServeiceCall(ALL_DAY_URL);
+                Log.i(TAG, "doInBackground: json " + jsonResponse.toString());
+                alldayList = EarthquakeLoader.parseJsonIntoData(alldayList, jsonResponse, getContext());
+                Log.i(TAG, "doInBackground: " + alldayList.size());
+
+                return null;
+            }
+        };
+
+        background.execute();
+        
+
+
 
         // After fetching the number of earthquakes set in the views
         handler = new Handler(Looper.getMainLooper()) {
@@ -413,13 +497,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Locati
                 bundle.putIntArray(COUNT_KEY, count);
                 message.setData(bundle);
                 handler.sendMessage(message);
-                Log.i(TAG, "dataFetch: send back");
-//                try {
-//                    Thread.sleep(3000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
 
+//                Log.i(TAG, "dataFetch: send back");
 
             }
         };
@@ -433,27 +512,33 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Locati
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-//        Log.i(TAG, "onMapReady: call me but sorry ");
-        //googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        Log.i(TAG, "onMapReady: ");
+        if (alldayList != null) {
+            for (int a = 0; a < alldayList.size(); a++) {
+                LatLng location = new LatLng(alldayList.get(a).getLatitude(), alldayList.get(a).getLongitude());
 
-       /* LatLng latLng = new LatLng(69.3451,30.3753);
-        googleMap.addCircle(new CircleOptions()
-        .visible(true)
-        .center(latLng)
-        .radius(1000)
-        .fillColor(Color.parseColor("#FF2343"))
-        );
+                googleMap.addMarker(new MarkerOptions()
+                        .position(location)
+                        .title(alldayList.get(a).getCityname())
+                        .snippet("Magnitude:" + alldayList.get(a).getMagnitude() +
+                                " Date:" + DataProviderFormat.getformateDate(
+                                new Date(
+                                        Long.valueOf(alldayList.get(a).getDate())
+                                ))
+                        )
+                );
+                Log.i(TAG, "onMapReady: calling");
+            }
+        }
 
-*/
+        //TODO: give user facility in the future to set differen to check different maps
 
-        //TODO: give user facility to set the map type check this one
-       /* googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        /* googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-
-*/
+        */
     }
 
     public Date getDate(int day) {
@@ -461,27 +546,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Locati
         calendar.add(Calendar.DAY_OF_YEAR, -day);
         Date newDateForWeek = calendar.getTime();
         return newDateForWeek;
-    }
-
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.i(TAG, "onLocationChanged: lati" + location.getLongitude() + " longi" + location.getLatitude());
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
     }
 
 

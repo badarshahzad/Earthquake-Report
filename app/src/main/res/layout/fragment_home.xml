@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!--Progressbar for home-->
         <ProgressBar
             android:id="@+id/progressbar"
             android:layout_width="match_parent"
@@ -187,7 +188,7 @@
             app:layout_constraintStart_toStartOf="@+id/month"
             app:layout_constraintTop_toBottomOf="@+id/month" />
 
-
+        <!--Card For Map-->
         <android.support.v7.widget.CardView
             android:id="@+id/cardForMap"
             android:layout_width="0dp"

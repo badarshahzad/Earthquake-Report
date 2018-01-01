@@ -10,6 +10,7 @@
     tools:layout_editor_absoluteY="81dp">
 
 
+    <!--Cardview to list item-->
     <android.support.v7.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="0dp"
@@ -24,6 +25,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteY="0dp">
 
+        <!--Root of cardview-->
         <android.support.constraint.ConstraintLayout
             android:id="@+id/itemContainer"
             android:layout_width="match_parent"
@@ -34,6 +36,7 @@
             app:layout_constraintStart_toStartOf="@+id/cardView"
             app:layout_constraintTop_toTopOf="@+id/cardView">
 
+            <!--Magnitude-->
             <TextView
                 android:id="@+id/magnitude"
                 android:layout_width="48dp"
@@ -52,6 +55,7 @@
                 app:layout_constraintStart_toStartOf="@+id/itemContainer"
                 app:layout_constraintTop_toTopOf="@+id/itemContainer" />
 
+            <!--City Name-->
             <TextView
                 android:id="@+id/cityName"
                 android:layout_width="0dp"
@@ -68,6 +72,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/distance"
                 tools:fontFamily="cursive" />
 
+            <!--Date-->
             <TextView
                 android:id="@+id/date"
                 android:layout_width="0dp"
@@ -102,6 +107,7 @@
                 app:layout_constraintGuide_percent="0.6"
                 app:layout_constraintTop_toBottomOf="@+id/guideline" />
 
+            <!--Distance-->
             <TextView
                 android:id="@+id/distance"
                 android:layout_width="0dp"
@@ -117,6 +123,7 @@
                 app:layout_constraintStart_toEndOf="@+id/magnitude"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!--Time-->
             <TextView
                 android:id="@+id/time"
                 android:layout_width="0dp"

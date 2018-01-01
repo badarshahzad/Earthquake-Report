@@ -46,6 +46,16 @@
             android:name=".view.search.SearchEarthquakeActivity"
             android:parentActivityName=".view.main.EarthquakeActivity" />
 
+        <!--This is required for immediate syncs -->
+
+        <service
+            android:name=".model.sync.EarthquakeReminderFirebaseJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
