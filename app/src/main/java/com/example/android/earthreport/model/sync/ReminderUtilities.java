@@ -37,7 +37,7 @@ public class ReminderUtilities {
                 .setConstraints(Constraint.DEVICE_IDLE)
                 .setLifetime(Lifetime.FOREVER) //if reboot
                 .setRecurring(true) //occure periodically
-                .setTrigger(Trigger.executionWindow(5, 10))
+                .setTrigger(Trigger.executionWindow(30, 60+60))
                 .setReplaceCurrent(true) //if the job ever remade replace job with the new one
                 .build();
         dispatcher.schedule(constraintReminderJob);
