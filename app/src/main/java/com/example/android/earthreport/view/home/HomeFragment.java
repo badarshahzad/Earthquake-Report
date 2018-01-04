@@ -1,6 +1,7 @@
 package com.example.android.earthreport.view.home;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,14 +34,16 @@ import com.example.android.earthreport.model.api.EarthquakeLoader;
 import com.example.android.earthreport.model.pojos.EarthQuakes;
 import com.example.android.earthreport.model.pojos.FavoriteCountries;
 import com.example.android.earthreport.model.utilties.DataProviderFormat;
-import com.example.android.earthreport.model.utilties.FavoritCountriesUtilties;
+import com.example.android.earthreport.model.utilties.ParseFavoritCountriesJsonUtils;
+import com.example.android.earthreport.model.utilties.ParseUSGSJsonUtils;
 import com.example.android.earthreport.view.search.SearchEarthquakeActivity;
+import com.example.android.earthreport.view.timeline.TimelineFragment;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,10 +53,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 
 /**
@@ -63,15 +64,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     public static final String FAVOURIT_LIST = "favouritList";
     private static final String TAG = HomeFragment.class.getSimpleName();
-    private static final String COUNT_KEY = "countKey";
+    private static String COUNT_KEY = "countKey";
     public static String TODAY_COUNT_KEY = "todayCountkey";
     public static String YESTERDAY_COUNT_KEY = "yesterdayCountkey";
     public static String WEEK_COUNT_KEY = "weekCountkey";
     public static String MONTH_COUNT_KEY = "monthCountkey";
-    private static final String COUNT_KEY_ARRAY[] = {TODAY_COUNT_KEY, YESTERDAY_COUNT_KEY, WEEK_COUNT_KEY, MONTH_COUNT_KEY};
-    public static String ALL_DAY_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+    public static final String COUNT_KEY_ARRAY[] = {TODAY_COUNT_KEY, YESTERDAY_COUNT_KEY, WEEK_COUNT_KEY, MONTH_COUNT_KEY};
     public static Handler handler;
-    public String selectedMin;
+    public static String todayDate = DataProviderFormat.getformateDate(new Date());
+    public String selectedMinMagnitude;
     public String selectedCountery;
 
     private TextView todayEarthquakes;
@@ -85,10 +86,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private ProgressBar progressBar;
     private List<FavoriteCountries> favoriteCountries;
     private List<EarthQuakes> alldayList;
+    private SharedPreferences shPref;
+    private SharedPreferences.Editor editor;
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
-
-    //This hour earthQuakes url (query to get values) | Below I concatenate the date for todady
-    private String thisHourURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
     //Today earthquakes count
     private String CountURL = "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=";
 
@@ -202,9 +203,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             if(isCounteryExist(getContext(), -4.3777,101.9364)){
                 Log.i(TAG, "onCreate: Now you are ready!");
             }
-            if(isCounteryExist(getContext(), 36.9294,71.3741)){
-                Log.i(TAG, "onCreate: Now you are ready!");
-            }
+
             if(isCounteryExist(getContext(), -5.4215,-80.4563)){
                 Log.i(TAG, "onCreate: Now you are ready!");
             }
@@ -233,6 +232,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             addAlert.setTitle("Add Alert");
             addAlert.setView(view);
             addAlert.setCancelable(false);
+
             addAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
                 @Override
@@ -249,64 +249,41 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                     //TODO: make a list of favorit countery to get notificaiton
                     //TODO: then CRUD operation will be necessery (Right Badi ! Yeah why not?)
 
-                    selectedMin = String.valueOf(minMagnitudeSpinner.getSelectedItem());
+                    shPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    editor = shPref.edit();
+                    selectedMinMagnitude = String.valueOf(minMagnitudeSpinner.getSelectedItem());
                     selectedCountery = String.valueOf(counteryOfSpinner.getSelectedItem());
 
-                    SharedPreferences shPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-                    SharedPreferences.Editor editor = shPref.edit();
 
+                    Log.i(TAG, "onClick: store values" + shPref.getString(FAVOURIT_LIST, "null"));
 
+                    int index = 0;
                     //Log.i(TAG, "onClick: 1 "+shPref.getString(FAVOURIT_LIST,"null"));
-                    if (shPref.getString(FAVOURIT_LIST, "null").equals(null)) {
-
+                    if (shPref.getString(FAVOURIT_LIST, "null").equals("null")) {
                         favoriteCountries = new ArrayList<>();
-
-
-                        favoriteCountries.add(new FavoriteCountries(selectedCountery, Double.valueOf(selectedMin)));
-                        editor.putString(FAVOURIT_LIST, new Gson().toJson(favoriteCountries).toString());
-                        editor.apply();
-
-                        Log.i(TAG, "onClick: 2 " + new Gson().toJson(favoriteCountries).toString());
-
+                        favoriteCountries.add(new FavoriteCountries(selectedCountery, Double.valueOf(selectedMinMagnitude)));
                     } else {
 
-                        favoriteCountries = new ArrayList<>();
-
                         String favouritListString = shPref.getString(FAVOURIT_LIST, "null");
-                        //This will return the list of objects of favrit countries
-                        favoriteCountries = FavoritCountriesUtilties.parseJsonInToList(favouritListString);
-                        favoriteCountries.add(new FavoriteCountries(selectedCountery, Double.valueOf(selectedMin)));
+                        favoriteCountries = ParseFavoritCountriesJsonUtils.parseJsonInToList(favouritListString);
+                        //check if already exist country then don't add country
+                        // if magnitude change then udpate index
+                        if ((index = isExistInList(selectedCountery, favoriteCountries)) != -1) {
+                            if (favoriteCountries.get(index).getMagnitude() != Double.valueOf(selectedMinMagnitude)) {
 
-                        /**
-                         * Title: How do I remove repeated elements from ArrayList?
-                         * Author: jonathan-stafford
-                         * Date: 2017-12-20
-                         * Code version: N/A
-                         * Availability: https://stackoverflow.com/questions/203984/how-do-i-remove-repeated-elements-from-arraylist
-                         //Remove the duplicaties entries
-                         */
+                                favoriteCountries.get(index).setMagnitude(Double.valueOf(selectedMinMagnitude));
 
-                        List<FavoriteCountries> al = favoriteCountries;
-                        Set<FavoriteCountries> hs = new HashSet<>();
+                                Log.i(TAG, "onClick: size of list" + favoriteCountries.size());
+                            }
+                        } else {
+                            favoriteCountries = new ArrayList<>();
+                            favoriteCountries.add(new FavoriteCountries(selectedCountery, Double.valueOf(selectedMinMagnitude)));
+                            Log.i(TAG, "onClick: size of list" + favoriteCountries.size());
 
-                        hs.addAll(al);
-                        al.clear();
-                        al.addAll(hs);
-
-                        favoriteCountries = al;
-                        editor.putString(FAVOURIT_LIST, new Gson().toJson(favoriteCountries).toString());
-                        editor.apply();
-                        Log.i(TAG, "onClick: 3 " + new Gson().toJson(favoriteCountries).toString());
-
+                        }
                     }
 
-
-                    //String countary = shPref.getString("favouritList",null);
-                    // List<FavoriteCountries> list =
-
-//                    Log.i(TAG, "onClick: "+selectedMin);
-//                    Log.i(TAG, "onClick: "+selectedCountery);
-//                    Toast.makeText(getContext(),"Done",Toast.LENGTH_SHORT).show();
+                    // Log.i(TAG, "onClick: size of list"+favoriteCountries.size());
 
                 }
             });
@@ -316,7 +293,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             // NotificationsUtils.remindUser(getContext());
         }
 
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private int isExistInList(String selectedCountery, List<FavoriteCountries> country) {
+
+        for (int index = 0; index < country.size(); index++) {
+            if (selectedCountery.equals(country.get(index).getCountry())) {
+                return index;
+            }
+        }
+
+        return -1;
     }
 
     @Override
@@ -349,27 +338,46 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         // Date of 7 days back
         Date newDateForWeek = getDate(7);
-        Log.i(TAG, "Seven day back " + newDateForWeek);
+//        Log.i(TAG, "Seven day back " + newDateForWeek);
 
         //Made the 1st date of this month
         Calendar calendar1 = Calendar.getInstance();
         calendar1.set(Calendar.DAY_OF_MONTH, 1);
         Date newDateForMonth = calendar1.getTime();
-        Log.i(TAG, "Month date " + newDateForMonth);
+//        Log.i(TAG, "Month date " + newDateForMonth);
 
         //Date for previous day
         Date newDateForYesterday = getDate(1);
-        Log.i(TAG, "newDateForYesterday: " + newDateForYesterday);
+//        Log.i(TAG, "newDateForYesterday: " + newDateForYesterday);
 
-        String todayDate = DataProviderFormat.getformateDate(new Date());
         String yesterdayDate = DataProviderFormat.getformateDate(newDateForYesterday);
         String weekDate = DataProviderFormat.getformateDate(newDateForWeek);
         String monthDate = DataProviderFormat.getformateDate(newDateForMonth);
 
-        Log.i(TAG, "newDateForYesterday  in Format: " + yesterdayDate);
+//        Log.i(TAG, "newDateForYesterday  in Format: " + yesterdayDate);
+
+        /**
+         * This is very importanted to be notice why I'm just extracting dates and concatenating with this
+         * URL somthing odd right! Badi did this bcz in USA I don't know why the USGS considering the 'allday'
+         * as from 5am to 5am e.g 2017-12-12 05:00 am to 2017-12-13 05:00 am.
+         *
+         * Experiment on this link: https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson
+         * Date: 2018-01-03
+         * Website used to convert timestamp: https://www.epochconverter.com/batch#results
+         * Comparision Values: 1st index of  features-> [index 1] property -> [index 3] = time
+         *                      (Timestamp=1514956505260  Converted into  Date=2018-01-03 05:15:05)
+         *                      Last index of  features-> [index 1] property -> [index 2] = time
+         *                      Timestamp=1514870465160 Converted into 2018-01-02 05:21:05
+         *
+         * Conclusion: The purpose is to show the user today its mean 12:00 am to 12:00 am
+         *              So, the values will be get as an instance from the java class fro cell phone (correct me if
+         *              im wrong) and then it I concatenate with URL and fetch TODAY earthquakes! :)
+         * */
 
         //today date concatenate url string
         countURLS[0] = CountURL + todayDate;
+        Log.i(TAG, "onCreateView: todayCount: " + countURLS[0]);
+
 
         //yesterday date concatenate url string
         countURLS[1] = CountURL + yesterdayDate;
@@ -385,26 +393,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         displayProgressBar(true);
 
 
-        alldayList = new ArrayList<>();
         //Show today Earthqukes on the home map
 
 
-        AsyncTask background;
-
-        background = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                String jsonResponse = EarthquakeLoader.HttpHandler.makeServeiceCall(ALL_DAY_URL);
-                Log.i(TAG, "doInBackground: json " + jsonResponse.toString());
-                alldayList = EarthquakeLoader.parseJsonIntoData(alldayList, jsonResponse, getContext());
-                Log.i(TAG, "doInBackground: " + alldayList.size());
-
-                return null;
-            }
-        };
-
-        background.execute();
-        
+        //My location
+        fusedLocationProviderClient = new FusedLocationProviderClient(getContext());
 
 
 
@@ -429,6 +422,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 thisWeekEarthquakes.setText(COUNT_KEY_ARRAY[2]);
                 thisMonthEarthquakes.setText(COUNT_KEY_ARRAY[3]);
 
+                // Log.i(TAG, "month earthquakes: "+COUNT_KEY_ARRAY[3]);
                 todayMapStatus.setText("Today " + COUNT_KEY_ARRAY[0] + " Earthquakes occure");
                 //Stop the progressbar and hide
                 displayProgressBar(false);
@@ -465,13 +459,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void run() {
 
-                Log.i(TAG, "dataFetch: thread started");
+//                Log.i(TAG, "dataFetch: thread started");
 
                 for (int a = 0; a < count.length; a++) {
 
-                    Log.i(TAG, "run: counting");
+
+//                    Log.i(TAG, "run: counting");
                     String jasonStr = EarthquakeLoader.HttpHandler.makeServeiceCall(URLS[a]);
-                    Log.i(TAG, "request send");
+//                    Log.i(TAG, "request send");
                     //if the internet available and the jason data receive in jasonStr then
                     if (jasonStr != null) {
 
@@ -491,6 +486,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
                 }
 
+                //if today is and yesterday result get empty then show previous data
+                if (count[0] == 0 && count[1] == 0) {
+                    //TODO:previoud sharedpreference data
+                }
                 //set the text of quakes count
                 Message message = new Message();
                 Bundle bundle = new Bundle();
@@ -506,30 +505,106 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         Thread th = new Thread(runnable);
         th.start();
 
-        Log.i(TAG, "thread started ");
+//        Log.i(TAG, "thread started ");
     }
 
+
+    @SuppressLint("MissingPermission")
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
 
-        Log.i(TAG, "onMapReady: ");
-        if (alldayList != null) {
-            for (int a = 0; a < alldayList.size(); a++) {
-                LatLng location = new LatLng(alldayList.get(a).getLatitude(), alldayList.get(a).getLongitude());
 
-                googleMap.addMarker(new MarkerOptions()
-                        .position(location)
-                        .title(alldayList.get(a).getCityname())
-                        .snippet("Magnitude:" + alldayList.get(a).getMagnitude() +
-                                " Date:" + DataProviderFormat.getformateDate(
-                                new Date(
-                                        Long.valueOf(alldayList.get(a).getDate())
-                                ))
-                        )
-                );
-                Log.i(TAG, "onMapReady: calling");
+
+        //googleMap.setMyLocationEnabled(true);
+
+//        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
+//
+//        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return TODO;
+//        }
+//        fusedLocationProviderClient.getLastLocation().addOnSuccessListener((Activity) getContext(), new OnSuccessListener<Location>() {
+//            @Override
+//            public void onSuccess(Location location) {
+//
+//            }
+//        });
+
+        alldayList = new ArrayList<>();
+        AsyncTask background;
+
+        //Going to get the today earthquakes
+        background = new AsyncTask() {
+
+
+            @Override
+            protected Object doInBackground(Object[] objects) {
+
+
+                Log.i(TAG, "going to get home json response");
+                //Why I didn't do this to count the today earthquake give to count well it was possible but I do this way
+                String jsonResponse = EarthquakeLoader.HttpHandler.makeServeiceCall(
+
+                        //Today URL of the earthquakes
+                        //Get the today date 00:00  to today date 23:59 furthur could understand in getDateFormatedURL method
+                        TimelineFragment.getDateFormatedURL(todayDate, todayDate));
+
+                Log.i(TAG, "json response of home: "+jsonResponse);
+
+                // Log.i(TAG, "doInBackground: json " + jsonResponse.toString());
+                alldayList = new ParseUSGSJsonUtils().parseJsonIntoData(alldayList, jsonResponse, getContext());
+                // Log.i(TAG, "doInBackground: " + alldayList.size());
+
+                Log.i(TAG, "doInBackground: of maps mark working" + alldayList.size());
+                //if I return null then alldayList on main thread null
+                return null;
+
+
             }
-        }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                if (alldayList != null) {
+                    for (int a = 0; a < alldayList.size(); a++) {
+                        LatLng location = new LatLng(alldayList.get(a).getLatitude(), alldayList.get(a).getLongitude());
+
+                        googleMap.addMarker(new MarkerOptions()
+                                .position(location)
+                                .title(alldayList.get(a).getCityname())
+                                .snippet("Magnitude:" + alldayList.get(a).getMagnitude() +
+                                        " Date:" + DataProviderFormat.getformateDate(
+                                        new Date(
+                                                Long.valueOf(alldayList.get(a).getDate())
+                                        ))
+                                )
+                        );
+                        Log.i(TAG, "onMapReady: calling");
+                    }
+                }
+
+            }
+        };
+
+        background.execute();
+
+/*
+
+        googleMap.addCircle(new CircleOptions().center(new LatLng(31,72))
+                .radius(2000)
+                .fillColor(Color.RED)
+                .strokeWidth(100));
+*/
+
+        Log.i(TAG, "onMapReady: and size of alldayList: " + alldayList.size());
+
+        //Previously I got the today earthquakes now I'm gonna add marks on the map
 
         //TODO: give user facility in the future to set differen to check different maps
 
@@ -541,6 +616,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         */
     }
 
+    private void sleep(int sleepSeconds) {
+        try {
+            Thread.sleep(1000*sleepSeconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Date getDate(int day) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, -day);
@@ -548,5 +631,59 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         return newDateForWeek;
     }
 
+    //Life Cycle Methods
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Log.i(TAG, "onStart: ");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.i(TAG, "onResume: ");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+       // editor.putString(FAVOURIT_LIST, new Gson().toJson(favoriteCountries).toString());
+       // editor.apply();
+
+        Log.i(TAG, "onStop: ");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Log.i(TAG, "onDestroy: ");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Log.i(TAG, "onSaveInstanceState: ");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        Log.i(TAG, "onPause: ");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        Log.i(TAG, "onDetach: ");
+    }
+    
+    
 }

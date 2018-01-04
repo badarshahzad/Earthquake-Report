@@ -44,7 +44,9 @@ esac
 
 # Attempt to set APP_HOME
 # Resolve links: $0 may be a link
+
 PRG="$0"
+
 # Need this for relative symlinks.
 while [ -h "$PRG" ] ; do
     ls=`ls -ld "$PRG"`
@@ -151,6 +153,7 @@ if $cygwin ; then
 fi
 
 # Split up the JVM_OPTS And GRADLE_OPTS values into an array, following the shell quoting and substitution rules
+
 function splitJvmOpts() {
     JVM_OPTS=("$@")
 }

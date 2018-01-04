@@ -31,7 +31,7 @@ public class EarthquakeReminderTask {
     }
 
     private static void earthquakeReminder(Context context, EarthQuakes earthQuakesList) {
-        // PreferenceUtilities.setEartquakeList(context);
+        // PreferenceUtils.setEartquakeList(context);
         NotificationsUtils.remindUser(context, earthQuakesList);
         Log.i(TAG, "earthquakeReminder: ");
     }

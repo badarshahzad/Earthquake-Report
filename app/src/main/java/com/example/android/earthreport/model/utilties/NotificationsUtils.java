@@ -68,7 +68,7 @@ public class NotificationsUtils {
         // To check the Vibrate and Notification turn ON/OFF
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String earthQuakesListString = sharedPreferences.getString(PreferenceUtilities.KEY_EARTHQUAKES, null);
+        String earthQuakesListString = sharedPreferences.getString(PreferenceUtils.KEY_EARTHQUAKES, null);
         EarthQuakes earthquake = new Gson().fromJson(earthQuakesListString, EarthQuakes.class);
         boolean vibrateOnOff = sharedPreferences.getBoolean("key_vibrate",false);
         boolean alertNotificaitonOnOff = sharedPreferences.getBoolean("key_alert_notification",true);
@@ -88,6 +88,7 @@ public class NotificationsUtils {
 
                 //.setContentText("Wa g wa la bhai")
                 .setDefaults(value)
+                //set the pending intent to start the activity
                 .setContentIntent(contentIntent(context))
                 .setAutoCancel(true);
 

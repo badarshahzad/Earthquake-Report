@@ -13,8 +13,8 @@
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
 
-        android:layout_margin="8dp"
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp"
 
@@ -24,6 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteY="0dp">
 
+        <!--Root of cardview-->
         <android.support.constraint.ConstraintLayout
             android:id="@+id/itemContainer"
             android:layout_width="match_parent"
@@ -34,12 +35,14 @@
             app:layout_constraintStart_toStartOf="@+id/cardView"
             app:layout_constraintTop_toTopOf="@+id/cardView">
 
+            <!--Magnitude-->
             <TextView
                 android:id="@+id/magnitude"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
 
                 android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/magnitude_circle"
                 android:paddingTop="14dp"
@@ -48,35 +51,34 @@
                 android:textColor="@android:color/background_dark"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/itemContainer"
-                app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintStart_toStartOf="@+id/itemContainer"
                 app:layout_constraintTop_toTopOf="@+id/itemContainer" />
 
+            <!--City Name-->
             <TextView
                 android:id="@+id/cityName"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:text="N/A"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toEndOf="@+id/magnitude"
                 app:layout_constraintTop_toBottomOf="@+id/distance"
                 tools:fontFamily="cursive" />
 
+            <!--Date-->
             <TextView
                 android:id="@+id/date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="N/A"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Wed 17, 2018"
                 android:textAlignment="center"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/itemContainer"
@@ -102,11 +104,12 @@
                 app:layout_constraintGuide_percent="0.7"
                 app:layout_constraintTop_toBottomOf="@+id/guideline" />
 
+            <!--Distance-->
             <TextView
                 android:id="@+id/distance"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -117,13 +120,14 @@
                 app:layout_constraintStart_toEndOf="@+id/magnitude"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!--Time-->
             <TextView
                 android:id="@+id/time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:paddingLeft="0dp"
                 android:text="N/A"
@@ -131,6 +135,7 @@
                 android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/date"
                 app:layout_constraintEnd_toEndOf="@+id/itemContainer"
+                app:layout_constraintHorizontal_bias="0.4"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toTopOf="@+id/itemContainer" />
 

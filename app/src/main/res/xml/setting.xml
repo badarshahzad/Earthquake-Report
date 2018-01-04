@@ -30,7 +30,7 @@
             android:title="@string/title_period"/>
 
         <ListPreference
-            android:defaultValue="1"
+            android:defaultValue="5"
             android:entries="@array/magnitude_entries"
             android:entryValues="@array/magnitude_entries_values"
             android:icon="@drawable/ic_filter_list_black_24dp"

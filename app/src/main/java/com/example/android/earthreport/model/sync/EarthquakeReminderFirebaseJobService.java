@@ -9,7 +9,8 @@ import android.util.Log;
 
 import com.example.android.earthreport.model.api.EarthquakeLoader;
 import com.example.android.earthreport.model.pojos.EarthQuakes;
-import com.example.android.earthreport.model.utilties.PreferenceUtilities;
+import com.example.android.earthreport.model.utilties.ParseUSGSJsonUtils;
+import com.example.android.earthreport.model.utilties.PreferenceUtils;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
@@ -40,19 +41,19 @@ public class EarthquakeReminderFirebaseJobService extends JobService {
                 earthQuakesList = new ArrayList<>();
                 Context context = EarthquakeReminderFirebaseJobService.this;
                 String jsonResponse = EarthquakeLoader.HttpHandler.makeServeiceCall(HOUR_URL);
-                earthQuakesList = EarthquakeLoader.parseJsonIntoData(earthQuakesList, jsonResponse, context);
+                earthQuakesList = new ParseUSGSJsonUtils().parseJsonIntoData(earthQuakesList, jsonResponse, context);
 
                 List<EarthQuakes> checkList = new ArrayList<>();
 
                 //TODO:Check if already earhquake exist then don't give notification
                 SharedPreferences shPref = PreferenceManager.getDefaultSharedPreferences(context);
-                String json = shPref.getString(PreferenceUtilities.KEY_EARTHQUAKES, "null");
+                String json = shPref.getString(PreferenceUtils.KEY_EARTHQUAKES, "null");
 
 
                 if (json.equals("null")) {
                     Log.i(TAG, "doInBackground: string null");
 
-                    checkList = EarthquakeLoader.parseJsonIntoData(checkList, json, context);
+                    checkList = new ParseUSGSJsonUtils().parseJsonIntoData(checkList, json, context);
                     Log.i(TAG, "" + checkList);
                     //  Log.i(TAG, "doInBackground: "+checkList.get(0));
                     //  Log.i(TAG, "doInBackground: "+checkList.get(0).getCityname());

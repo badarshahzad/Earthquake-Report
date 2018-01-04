@@ -97,6 +97,7 @@ public class EarthquakeActivity extends AppCompatActivity {
         // fragment mantain on each time menu click and load the fragment ag&ag& (again and again)
         viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
+        setTitle("Home");
 
         final BottomNavigationView bottomNavg = findViewById(R.id.navBottom);
         bottomNavg.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

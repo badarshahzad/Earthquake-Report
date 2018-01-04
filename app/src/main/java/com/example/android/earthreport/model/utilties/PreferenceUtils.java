@@ -26,10 +26,10 @@ import com.google.gson.Gson;
 /**
  * This class contains utility methods which update or show the earthquake in list
  */
-public final class PreferenceUtilities {
+public final class PreferenceUtils {
 
     public static final String KEY_EARTHQUAKES = "earthquakes";
-    public static final String TAG = PreferenceUtilities.class.getSimpleName();
+    public static final String TAG = PreferenceUtils.class.getSimpleName();
 
     synchronized public static void setEartquakeList(Context context, EarthQuakes earthquakes) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

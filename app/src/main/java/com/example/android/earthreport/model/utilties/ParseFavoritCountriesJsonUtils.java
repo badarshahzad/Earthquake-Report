@@ -15,10 +15,10 @@ import java.util.List;
  * Created by root on 1/1/18.
  */
 
-public class FavoritCountriesUtilties {
+public class ParseFavoritCountriesJsonUtils {
 
 
-    public static final String TAG = FavoritCountriesUtilties.class.getSimpleName();
+    public static final String TAG = ParseFavoritCountriesJsonUtils.class.getSimpleName();
     public static List<FavoriteCountries> favritList = new ArrayList<>();
 
     public static List<FavoriteCountries> parseJsonInToList(String jsonStr) {

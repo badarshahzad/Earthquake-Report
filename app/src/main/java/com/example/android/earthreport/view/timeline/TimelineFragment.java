@@ -295,6 +295,13 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 //        Log.i(TAG, "loadData: init called");
     }
 
+    //I need this in Home to access instantly to get the formated url so that's why static
+    public static String getDateFormatedURL(String startDate, String endDate){
+
+        //This is necessery to mention the time from 00:00 to 23:59 as we have time difference country to country
+        //Say thanks to USGS so such a facility
+        return "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + startDate + "T00:00&endtime=" + endDate + "T23:59";
+    }
 
     //Return a new loader instance that is ready to start loading
     @Override
@@ -321,22 +328,23 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
                 break;
 
             case "1 Day":
-                URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getTodayDate() + "T00:00&endtime=" + getTodayDate() + "T23:59";
+                URL = getDateFormatedURL(getTodayDate(),getTodayDate());//"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getTodayDate() + "T00:00&endtime=" + getTodayDate() + "T23:59";
 //                Log.i(TAG, "1 day ");
                 break;
 
             case "Yesterday":
-                URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getYesterdayDate() + "T00:00&endtime=" + getYesterdayDate() + "T23:59";
+                URL = getDateFormatedURL(getYesterdayDate(),getYesterdayDate());//"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getYesterdayDate() + "T00:00&endtime=" + getYesterdayDate() + "T23:59";
 //                Log.i(TAG, "yesterday ");
                 break;
 
             case "Week":
-                URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getWeekDate() + "T00:00&endtime=" + getTodayDate() + "T23:59";
+                URL = getDateFormatedURL(getWeekDate(),getTodayDate());//"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getWeekDate() + "T00:00&endtime=" + getTodayDate() + "T23:59";
 //                Log.i(TAG, " week");
                 break;
 
             case "Month":
-                URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getMonthDate() + "T00:00&endtime=" + getTodayDate() + "T23:59";
+                //The month date is every month 1st date of month
+                URL = getDateFormatedURL(getMonthDate(),getTodayDate());//"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + getMonthDate() + "T00:00&endtime=" + getTodayDate() + "T23:59";
 //                Log.i(TAG, " Month");
                 break;
 
@@ -345,10 +353,10 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         }
 
         int length = URL.length();
-
-        if (filterMag.equals("All")) {
-            filterMag = "0";
-        }
+//
+//        if (filterMag.equals("All")) {
+//            filterMag = "0";
+//        }
 
         //Make the url according to to the settings of user
         Uri uri = Uri.parse(URL);
@@ -401,8 +409,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
             if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
 
                 //set the text and image when no internet
-                showState(NO_INTERNET_TEXT, NO_INTERNET_ERROR);
-                visibleState();
+                visibleState(NO_INTERNET_TEXT, NO_INTERNET_ERROR);
 
 //                Log.i(TAG, "OFF");
                 Snackbar.make(EarthquakeActivity.root, "No Internet Connection", Snackbar.LENGTH_LONG)
@@ -416,15 +423,13 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
                         .show();
                 return;
             }
-        }
-
-        if (data.size() == 0) {
+        }else if(data.size() == 0) {
 
 //         Log.i(TAG, "onLoadFinished:" + earthListAdapter.getCount());*/
             earthListAdapter.clear();
             earthListAdapter.addAll(data);
-            showState(NO_DATA_TEXT, NO_DATA_ERROR);
-            visibleState();
+
+            visibleState(NO_DATA_TEXT, NO_DATA_ERROR);
 
             return;
         }
@@ -449,18 +454,18 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     //Visible the text and Icon
-    private void visibleState() {
-        emptyStateText.setVisibility(View.VISIBLE);
-        emptyStateImagView.setVisibility(View.VISIBLE);
-    }
-
-    private void showState(String text, int img_src) {
+    private void visibleState(String text, int img_src) {
 
         emptyStateText.setText(text);
         emptyStateImagView.setImageResource(img_src);
         //Hide the refresh icon
         swipeRefresh.setRefreshing(false);
+
+        emptyStateText.setVisibility(View.VISIBLE);
+        emptyStateImagView.setVisibility(View.VISIBLE);
     }
+
+
 
     //This is called when the last data provided to onLoadFinished()
     // above is about to be closed.  We need to make sure we are no
