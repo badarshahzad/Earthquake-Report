@@ -143,7 +143,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         .snippet("Magnitude:" + earthQuakesArrayList.get(a).getMagnitude() +
                                 " Date:" + DataProviderFormat.getformateDate(
                                 new Date(
-                                        Long.valueOf(earthQuakesArrayList.get(a).getDate())
+                                        Long.valueOf(earthQuakesArrayList.get(a).getTimeStamp())
                                 ))
                         )
                 );

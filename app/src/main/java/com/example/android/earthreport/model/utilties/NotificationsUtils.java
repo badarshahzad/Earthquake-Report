@@ -119,7 +119,7 @@ public class NotificationsUtils {
         bundle.putDouble(TimelineFragment.LATITUDE, earthQuakes.getLatitude());
         bundle.putString(TimelineFragment.CITY, earthQuakes.getCityname());
         bundle.putString(TimelineFragment.MAGNITUDE, earthQuakes.getMagnitude());
-        bundle.putString(TimelineFragment.DATE, earthQuakes.getDate());
+        bundle.putString(TimelineFragment.DATE, earthQuakes.getTimeStamp());
 
         startActivityIntent.putExtras(bundle);
 

@@ -176,6 +176,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
                     selectedMin = String.valueOf(minMagnitudeSpinner.getSelectedItem());
                     selectedCountry = String.valueOf(counterySpinner.getSelectedItem());
 
+
 //                    Toast.makeText(getContext(),"Done",Toast.LENGTH_SHORT).show();
 
                 }
@@ -251,7 +252,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
                 bundle.putDouble(LATITUDE, earthQuakesArrayList.get(position).getLatitude());
                 bundle.putString(CITY, earthQuakesArrayList.get(position).getCityname());
                 bundle.putString(MAGNITUDE, earthQuakesArrayList.get(position).getMagnitude());
-                bundle.putString(DATE, earthQuakesArrayList.get(position).getDate());
+                bundle.putString(DATE, earthQuakesArrayList.get(position).getTimeStamp());
 
 
                 intent.putExtras(bundle);
@@ -290,8 +291,10 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
 
 //        Log.i(TAG, "loadData: ");
         //Http requet to fetch jason data at that time
-        LoaderManager loaderManager = getLoaderManager();
-        loaderManager.restartLoader(1, null, this);
+        //. If the loader doesn't already exist, one is created and
+        // (if the activity/fragment is currently started) starts the loader.
+        // Otherwise the last created loader is re-used.
+        getLoaderManager().initLoader(1, null, this);
 //        Log.i(TAG, "loadData: init called");
     }
 

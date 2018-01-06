@@ -38,12 +38,18 @@ import com.example.android.earthreport.model.utilties.ParseFavoritCountriesJsonU
 import com.example.android.earthreport.model.utilties.ParseUSGSJsonUtils;
 import com.example.android.earthreport.view.search.SearchEarthquakeActivity;
 import com.example.android.earthreport.view.timeline.TimelineFragment;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,6 +61,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -70,9 +79,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     public static String WEEK_COUNT_KEY = "weekCountkey";
     public static String MONTH_COUNT_KEY = "monthCountkey";
     public static final String COUNT_KEY_ARRAY[] = {TODAY_COUNT_KEY, YESTERDAY_COUNT_KEY, WEEK_COUNT_KEY, MONTH_COUNT_KEY};
+    public static int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     public static Handler handler;
     public static String todayDate = DataProviderFormat.getformateDate(new Date());
-    public String selectedMinMagnitude;
+    public Double selectedMinMagnitude;
     public String selectedCountery;
 
     private TextView todayEarthquakes;
@@ -86,8 +96,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private ProgressBar progressBar;
     private List<FavoriteCountries> favoriteCountries;
     private List<EarthQuakes> alldayList;
-    private SharedPreferences shPref;
-    private SharedPreferences.Editor editor;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     //Today earthquakes count
@@ -189,8 +197,33 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         int itemId = item.getItemId();
 
         if (itemId == R.id.action_search) {
-            Intent intent = new Intent(getContext(), SearchEarthquakeActivity.class);
-            startActivity(intent);
+             Intent intent = new Intent(getContext(), SearchEarthquakeActivity.class);
+             startActivity(intent);
+
+            /**
+             * Title: Automatic Widget
+             * Author: developer.google.com
+             * Date: 2017-12-20
+             * Code version:
+             * Availability:  https://developers.google.com/places/
+             */
+
+
+            try {
+
+                Intent searchAutoCompleteIntent = new PlaceAutocomplete.
+                        IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                        .build(getActivity());
+
+                startActivityForResult(searchAutoCompleteIntent ,PLACE_AUTOCOMPLETE_REQUEST_CODE);
+
+            } catch (GooglePlayServicesRepairableException e) {
+                e.printStackTrace();
+            } catch (GooglePlayServicesNotAvailableException e) {
+                e.printStackTrace();
+            }
+
+
         }
 
 
@@ -203,10 +236,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             if(isCounteryExist(getContext(), -4.3777,101.9364)){
                 Log.i(TAG, "onCreate: Now you are ready!");
             }
-
-            if(isCounteryExist(getContext(), -5.4215,-80.4563)){
-                Log.i(TAG, "onCreate: Now you are ready!");
-            }
 */
 
             LayoutInflater inflater = getLayoutInflater();
@@ -215,9 +244,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             minMagnitudeSpinner = view.findViewById(R.id.minOfSpinner);
             counteryOfSpinner = view.findViewById(R.id.countryOfSpinner);
 
-
             List<String> countries = getCountriesName();
-            //sort the countries name to show in spinner a-z
+
+            //sort the countries name in ascending order (This class Java 8 API Collection framework)
+            // to show countries name in spinner a-z
             Collections.sort(countries);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -249,36 +279,55 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                     //TODO: make a list of favorit countery to get notificaiton
                     //TODO: then CRUD operation will be necessery (Right Badi ! Yeah why not?)
 
-                    shPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-                    editor = shPref.edit();
-                    selectedMinMagnitude = String.valueOf(minMagnitudeSpinner.getSelectedItem());
+            SharedPreferences shPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+                    //the spinner return the object of selected index so its my duty to convert
+                    //There could another way to give spinner just double value I did this way
+                    selectedMinMagnitude = Double.valueOf(
+                            String.valueOf(minMagnitudeSpinner.getSelectedItem()));
+
                     selectedCountery = String.valueOf(counteryOfSpinner.getSelectedItem());
 
+                    Log.i(TAG, "onClick: first: "+ selectedMinMagnitude);
+                    Log.i(TAG, "onClick: first: "+ selectedCountery);
 
                     Log.i(TAG, "onClick: store values" + shPref.getString(FAVOURIT_LIST, "null"));
 
-                    int index = 0;
-                    //Log.i(TAG, "onClick: 1 "+shPref.getString(FAVOURIT_LIST,"null"));
+                    int indexOfFavritList= 0;
+
                     if (shPref.getString(FAVOURIT_LIST, "null").equals("null")) {
+
                         favoriteCountries = new ArrayList<>();
-                        favoriteCountries.add(new FavoriteCountries(selectedCountery, Double.valueOf(selectedMinMagnitude)));
+                        favoriteCountries.add(new FavoriteCountries(selectedCountery,selectedMinMagnitude));
+                        shPref.edit().remove(FAVOURIT_LIST).putString(FAVOURIT_LIST,new Gson().toJson(favoriteCountries).toString()).commit();
+
                     } else {
 
                         String favouritListString = shPref.getString(FAVOURIT_LIST, "null");
+
                         favoriteCountries = ParseFavoritCountriesJsonUtils.parseJsonInToList(favouritListString);
+
                         //check if already exist country then don't add country
                         // if magnitude change then udpate index
-                        if ((index = isExistInList(selectedCountery, favoriteCountries)) != -1) {
-                            if (favoriteCountries.get(index).getMagnitude() != Double.valueOf(selectedMinMagnitude)) {
+                        if ((indexOfFavritList = isExistInList(selectedCountery, favoriteCountries)) != -1) {
+                            if (favoriteCountries.get(indexOfFavritList).getMagnitude() != selectedMinMagnitude) {
 
-                                favoriteCountries.get(index).setMagnitude(Double.valueOf(selectedMinMagnitude));
+                                Log.i(TAG, "onClick: index: "+indexOfFavritList);
+                                Log.i(TAG, "onClick: Before Magnitude: "+favoriteCountries.get(indexOfFavritList).getMagnitude());
 
-                                Log.i(TAG, "onClick: size of list" + favoriteCountries.size());
+                                favoriteCountries.get(indexOfFavritList).setMagnitude(selectedMinMagnitude);
+
+                                Log.i(TAG, "onClick: After Magnitude: "+favoriteCountries.get(indexOfFavritList).getMagnitude());
+                                Log.i(TAG, "onClick: size of list 1: " + favoriteCountries.size());
+                                shPref.edit().remove(FAVOURIT_LIST).putString(FAVOURIT_LIST,new Gson().toJson(favoriteCountries).toString()).apply();
+
                             }
                         } else {
-                            favoriteCountries = new ArrayList<>();
+                            Log.i(TAG, "onClick: index: "+indexOfFavritList);
+
                             favoriteCountries.add(new FavoriteCountries(selectedCountery, Double.valueOf(selectedMinMagnitude)));
-                            Log.i(TAG, "onClick: size of list" + favoriteCountries.size());
+                            shPref.edit().remove(FAVOURIT_LIST).putString(FAVOURIT_LIST,new Gson().toJson(favoriteCountries).toString()).apply();
+                            Log.i(TAG, "onClick: size of list 1: " + favoriteCountries.size());
 
                         }
                     }
@@ -296,6 +345,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     private int isExistInList(String selectedCountery, List<FavoriteCountries> country) {
 
@@ -581,7 +632,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                                 .snippet("Magnitude:" + alldayList.get(a).getMagnitude() +
                                         " Date:" + DataProviderFormat.getformateDate(
                                         new Date(
-                                                Long.valueOf(alldayList.get(a).getDate())
+                                                Long.valueOf(alldayList.get(a).getTimeStamp())
                                         ))
                                 )
                         );
@@ -684,6 +735,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         Log.i(TAG, "onDetach: ");
     }
-    
-    
+
+
 }

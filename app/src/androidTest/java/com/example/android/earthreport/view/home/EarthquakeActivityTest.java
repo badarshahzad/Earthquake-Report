@@ -271,7 +271,7 @@ public class EarthquakeActivityTest {
         actionMenuItemView2.perform(click());
 
         DataInteraction constraintLayout = onData(anything())
-                .inAdapterView(allOf(withId(R.id.listView)))
+                .inAdapterView(allOf(withId(R.id.searchListView)))
                 .atPosition(0);
         constraintLayout.perform(click());
 

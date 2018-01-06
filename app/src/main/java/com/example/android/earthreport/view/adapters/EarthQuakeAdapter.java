@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,37 +63,32 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
 
         // Check if there is an existing list item view ( called convertView) that we can resuse,
         // otherwise, if convertview is null,  then inflate a new list item layout
+        View view = convertView;
 
-        View listView = convertView;
-        //Log.i("ViewBefore", "" + listView);
+        if (view == null) {
 
-        if (listView == null) {
-
-            // Log.i("ViewInIf", "null");
-            listView = LayoutInflater.from(getContext()).inflate(R.layout.earthquake_item, parent, false);
+            view = LayoutInflater.from(getContext()).inflate(R.layout.earthquake_item, parent, false);
 
         }
 
         //Find the earthquake at the given positions
         EarthQuakes earthQuakesValue = earthQuakesQuakesValues.get(position);
-        //Log.i("EarthQuakes value index", "" + position);
 
         //Here I get the values from EarthQuakes model getter
         //from EarthQuakes getter method get the value of magnitude
         String magnitude = earthQuakesValue.getMagnitude();
 
-        //Log.i(TAG, "city name: "+earthQuakesValue.getCityname());
-
-//        Here the distance and location is separated by reges index 0 in Km distance
-//         and index 1 is the location
-//        ?<=of is the string that just pick string including 'of' also init
-//         and remaining will be 2nd index
-//        I know that this hard coded but the USGS mantain data with that string :D
-//         So, Honesty don't know how to get the name of city  the don't have method
-//         in API to get the name of city so i'm doing like this
+         /* **************************************************************************
+         * Here the distance and location is separated by reges index 0 in Km distance
+         * and index 1 is the location
+         * ?<=of is the string that just pick string including 'of' also init
+         * and remaining will be 2nd index
+         * I know that this hard coded but the USGS mantain data with that string :D
+         * So, Honesty don't know how to get the name of city  the don't have method
+         * in API to get the name of city so i'm doing like this
+         *****************************************************************************/
 
         String[] parseValue = earthQuakesValue.getCityname().split("(?<=of)");
-
         String distance = null;
         String cityName = null;
 
@@ -108,42 +104,40 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
 
         //As the time we get from jason in milliseconds (Unix time format)
         // so I converted it into date and time with Date type object
-        long unixTime = Long.valueOf(earthQuakesValue.getDate());
-        //Date parameters get the unix time
-        Date dateObjet = new Date(unixTime);
-        //Date converted into human readable format
-        String date = formateDate(dateObjet);
-        //Time converted into human readable format
-        String time = formateTime(dateObjet);
+        long unixTime = Long.valueOf(earthQuakesValue.getTimeStamp());
 
+        /*****************************************************************************************
+         * Title: DateUtils
+         * Author: developer.android.com
+         * Date: 2017-12-20
+         * Code version: N/A
+         * Availability: https://developer.android.com/reference/android/text/format/DateUtils.html
+         *****************************************************************************************/
+
+        //Time converted into human readable format
+        String relavtiveTimeString = String.valueOf(DateUtils.getRelativeTimeSpanString(unixTime));
 
         //Find the TextView with view  ID magnitude
-        TextView magnitudeView = listView.findViewById(R.id.magnitude);
+        TextView magnitudeView = view.findViewById(R.id.magnitude);
         //Display  the magnitude of the current earthquake in the TextView
         magnitudeView.setText(magnitude);
 
-        TextView cityNameView = null;
         //Im not gonna show the values the place and distance is not mention
         if (distance != null && cityName != null) {
-            //Find the Textview with view ID for distance
-            TextView distanceView = listView.findViewById(R.id.distance);
-            distanceView.setText(distance);
 
+            //Find the Textview with view ID for distance
+            TextView distanceView = view.findViewById(R.id.distance);
+            distanceView.setText(distance);
             //Find the TextView with view ID cityName or Location on earth
-            cityNameView = listView.findViewById(R.id.cityName);
+            TextView cityNameView = view.findViewById(R.id.cityName);
             //Display the city name in the TextView
             cityNameView.setText(cityName);
 
         }
 
-        //Find the TextView  with view ID date
-        TextView dateView = listView.findViewById(R.id.date);
-        //Display the date in the TextView
-        dateView.setText(date);
-
         //Find the TextView  with view ID for time
-        TextView timeView = listView.findViewById(R.id.time);
-        timeView.setText(time);
+        TextView timeView = view.findViewById(R.id.timeStamp);
+        timeView.setText(relavtiveTimeString);
 
         //Find the TextView background color of magnitude
         GradientDrawable magnitudeBackground = (GradientDrawable) magnitudeView.getBackground();
@@ -155,12 +149,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
 
 
         //Return the list item that is now showing the appropriate data
-        return listView;
-    }
-
-    public void setEarthQuakesList(List<EarthQuakes> data) {
-        earthQuakesQuakesValues.addAll(data);
-        notifyDataSetChanged();
+        return view;
     }
 
     @Override
@@ -179,6 +168,15 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
         return super.getItem(position);
     }
 
+
+    /*********************************************************************************************
+     * Title: Developing Android Applications
+     * Author: classroom.udacity.com
+     * Date: 2017-11-04
+     * Code version: N/A
+     * Availability: https://classroom.udacity.com/courses/ud851
+     ********************************************************************************************/
+
     private int getMagnitudeColor(String magnitude) {
 
         //converting string into integer value
@@ -186,8 +184,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
         if (magnitude != null) {
             int magnitudeFloor = (int) Math.floor(Double.valueOf(magnitude));
 
-            //color value setting
-
+            //colors values
             switch (magnitudeFloor) {
 
                 case 0:

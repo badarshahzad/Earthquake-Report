@@ -1,0 +1,103 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:layout_editor_absoluteY="81dp">
+
+
+    <!--Min Text-->
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Minimum Magnitude"
+         />
+
+    <!--Min Spinner-->
+    <Spinner
+        android:id="@+id/minOfSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:entries="@array/min_earthquakes"
+        />
+
+
+    <!--OrderBy Text-->
+    <TextView
+        android:id="@+id/orderByText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Order By"
+        />
+
+    <!--OrderBy Magnitude Spinner-->
+    <Spinner
+        android:id="@+id/orderBy"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:entries="@array/sort_array" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+
+        android:layout_marginBottom="8dp">
+    <!--Start Date-->
+        <Button
+            android:id="@+id/startDate"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_date_range_black_24dp"
+            android:drawablePadding="8dp"
+            android:gravity="left|center"
+            android:text="Start Date"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/endDate"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/endDate" />
+
+    <!--End Date-->
+        <Button
+            android:id="@+id/endDate"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="8dp"
+
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_date_range_black_24dp"
+            android:drawablePadding="8dp"
+            android:gravity="left|center"
+            android:text="End Date" />
+
+
+    </LinearLayout>
+</LinearLayout>
+

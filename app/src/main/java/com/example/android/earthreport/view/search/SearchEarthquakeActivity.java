@@ -18,6 +18,7 @@ public class SearchEarthquakeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        setTitle("Search");
     }
 
 

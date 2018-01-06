@@ -16,7 +16,7 @@ import com.github.machinarius.preferencefragment.PreferenceFragment;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
+public class SettingFragment extends PreferenceFragment {
 
     public static final String TAG = SettingFragment.class.getSimpleName();
 
@@ -38,17 +38,6 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         // CheckedTodo: The retaininstance helping me on activity orientation change
         setRetainInstance(true);
 //        Log.i(TAG, "onCreate: ");
-    }
-
-
-    //Called when a Preference has been changed by the user. This is called before the state
-    //of the Preference is about to be updated and before the state is persisted.
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object o) {
-        String value = o.toString();
-        Log.i(TAG, "onPreferenceChange: string " + o.toString());
-        preference.setSummary(value);
-        return true;
     }
 
 }

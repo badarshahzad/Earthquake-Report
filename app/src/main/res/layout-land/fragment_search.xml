@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="@+id/empty"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="@+id/empty"
-        app:layout_constraintTop_toBottomOf="@+id/orderBy" />
+        app:layout_constraintTop_toBottomOf="@+id/orderBySpinner" />
 
     <TextView
         android:id="@+id/empty"
@@ -58,7 +58,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/endDate"
         app:layout_constraintEnd_toStartOf="@+id/endDate"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/orderBy"
+        app:layout_constraintStart_toEndOf="@+id/orderBySpinner"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--End Date-->
@@ -90,7 +90,7 @@
         android:layout_marginTop="8dp"
         android:entries="@array/max_earthquakes_entries"
         app:layout_constraintBottom_toBottomOf="@+id/endDate"
-        app:layout_constraintEnd_toStartOf="@+id/orderBy"
+        app:layout_constraintEnd_toStartOf="@+id/orderBySpinner"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/minMagnitudeSpinner"
         app:layout_constraintTop_toTopOf="parent" />
@@ -111,7 +111,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        android:id="@+id/orderBy"
+        android:id="@+id/orderBySpinner"
         android:layout_width="0dp"
         android:layout_height="42dp"
         android:layout_marginEnd="8dp"
@@ -126,7 +126,7 @@
 
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/searchListView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"

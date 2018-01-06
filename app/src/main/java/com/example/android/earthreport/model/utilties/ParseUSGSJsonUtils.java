@@ -78,7 +78,11 @@ public class ParseUSGSJsonUtils {
                      * */
                  //   Log.i(TAG, "getsharedPreferenced: "+context.getSharedPreferences("com.example.android.earthreport_preferences.xml",Context.MODE_PRIVATE));
                  //   Log.i(TAG, "getDefaultSheredPreference: "+ PreferenceManager.getDefaultSharedPreferences(context));
-                    Log.i(TAG, "package name: "+context.getPackageName());
+//                    Log.i(TAG, "package name: "+context.getPackageName());
+                    if(context==null){
+                        Log.i(TAG, "context null");
+                    }
+
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
                     String filterMag = sharedPref.getString("key_filter_magnitude", "5");
                     Log.d(TAG, "filterValue: " + filterMag);
@@ -87,6 +91,9 @@ public class ParseUSGSJsonUtils {
                     if (filterMag.equalsIgnoreCase("All")) {
                         filterMag = "0";
                     }
+
+                    //Incase the setting filter is null (08:30 am 2017-01-03)
+                    //if(filterMag==null)
 
                     //filter the arraylist while data fetching and passing into arraylist
                     // if the data palce is not fetch or mention
