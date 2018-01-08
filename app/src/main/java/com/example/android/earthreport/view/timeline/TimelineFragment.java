@@ -52,9 +52,6 @@ import java.util.Date;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class TimelineFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<EarthQuakes>>, DatePickerDialog.OnDateSetListener {
 
 

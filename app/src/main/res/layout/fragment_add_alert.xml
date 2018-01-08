@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginBottom="16dp">
 
 
   <!--Min Text-->
@@ -33,12 +33,13 @@
         android:text="Region" />
 
     <!---Region -->
-    <Spinner
-        android:id="@+id/regionSelected"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:spinnerMode="dialog" />
+  <Spinner
+      android:id="@+id/regionSelected"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="8dp"
+      android:layout_marginBottom="16dp"
+      android:spinnerMode="dialog" />
 
 
 </LinearLayout>

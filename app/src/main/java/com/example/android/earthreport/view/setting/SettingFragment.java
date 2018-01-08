@@ -10,12 +10,7 @@ import android.util.Log;
 import com.example.android.earthreport.R;
 import com.github.machinarius.preferencefragment.PreferenceFragment;
 
-//import android.preference.PreferenceFragment;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SettingFragment extends PreferenceFragment {
 
     public static final String TAG = SettingFragment.class.getSimpleName();

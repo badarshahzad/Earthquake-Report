@@ -54,7 +54,7 @@
         </service>
 
         <activity
-            android:name=".FavouirtActivity"
+            android:name=".view.favourit.FavouirtActivity"
             android:label="@string/title_activity_favouirt"
             android:parentActivityName=".view.main.EarthquakeActivity" />
     </application>

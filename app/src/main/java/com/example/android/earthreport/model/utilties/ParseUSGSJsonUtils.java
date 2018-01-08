@@ -118,6 +118,7 @@ public class ParseUSGSJsonUtils {
             }
 
 
+            Log.i(TAG, "parseJsonIntoData: size of list return : "+earthQuakesArrayList.size());
             //if the jason string is null that could be the case when internet is no available
         }
         return earthQuakesArrayList;

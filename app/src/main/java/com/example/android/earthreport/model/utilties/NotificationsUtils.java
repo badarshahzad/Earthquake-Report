@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.SharedElementCallback;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,19 +40,23 @@ public class NotificationsUtils {
     //this notificaiton id help me to access  our notification after displayed it.
     //This will be handy when I need to cancel the notificaiton
     private static int NEW_EARTHQUAKE_NOTIFICATION_ID = 1110;
-    private static int NEW_EARTHQUAKE_PENDING_INTENT_ID =1111;
     private static String NEW_EARTHQUAKE_NOTIFICATION_CHANNEL_ID = "earthquake_notification_channel";
 
-    public static void remindUser(Context context, EarthQuakes earthQuakesList) {
+    public static void remindUser(Context context, EarthQuakes newEarthQuakes) {
 
-        if (earthQuakesList != null) {
-            earthQuakes = earthQuakesList;
+        if (newEarthQuakes != null) {
+            earthQuakes = newEarthQuakes;
         }
-        // earthQuakes = earthQuakes;
-        //get the notification manager from context.getSystemService
+
+        //get the notification service from notification manager from context.getSystemService
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        //to check the setting setting user enabled notification and vibrate or not
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
         //create a notification channel for Android devices
+        //NotificaitonChannel: [A representation of settings that apply to a collection
+        // of similarly themed notifications.]
         NotificationChannel notificationChannel = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -59,20 +64,25 @@ public class NotificationsUtils {
                     NEW_EARTHQUAKE_NOTIFICATION_CHANNEL_ID,context.getString(R.string.main_notification_channel),
                     NotificationManager.IMPORTANCE_HIGH);
 
-            //notificationChannel.enableVibration(true);
+            // To check the Vibrate and Notification turn ON/OFF
+            if(sharedPreferences.getBoolean("key_vibrate",true)) {
+                notificationChannel.enableVibration(true);
+            }else{
+                notificationChannel.enableVibration(false);
+            }
 
             notificationManager.createNotificationChannel(notificationChannel);
 
         }
 
-        // To check the Vibrate and Notification turn ON/OFF
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String earthQuakesListString = sharedPreferences.getString(PreferenceUtils.KEY_EARTHQUAKES, null);
+        //fromJson  deserializes the specified Json into an object of the specified class.
         EarthQuakes earthquake = new Gson().fromJson(earthQuakesListString, EarthQuakes.class);
         boolean vibrateOnOff = sharedPreferences.getBoolean("key_vibrate",false);
         boolean alertNotificaitonOnOff = sharedPreferences.getBoolean("key_alert_notification",true);
         int value = 0;
+
+
         if(vibrateOnOff) {
             value = Notification.DEFAULT_VIBRATE;
         }
@@ -83,12 +93,12 @@ public class NotificationsUtils {
                 .setSmallIcon(R.drawable.ic_add_alert_white_24dp)
                 .setContentTitle(context.getString(R.string.notificaiton_title))
                 //TODO:Set the text title with kilometer, city and counter of earthuaqe here
-                .setContentText("Magnitude of " + earthQuakesList.getMagnitude() + "earthquake occur in "
+                .setContentText("Magnitude of " + newEarthQuakes.getMagnitude() + "earthquake occur in "
                         + earthQuakes.getCityname())
 
                 //.setContentText("Wa g wa la bhai")
                 .setDefaults(value)
-                //set the pending intent to start the activity
+                //set the pending intent to start the activity when type the notification
                 .setContentIntent(contentIntent(context))
                 .setAutoCancel(true);
 

@@ -4,8 +4,6 @@ package com.example.android.earthreport.view.home;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,7 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.android.earthreport.FavouirtActivity;
+import com.example.android.earthreport.view.favourit.FavouirtActivity;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.api.EarthquakeLoader;
 import com.example.android.earthreport.model.pojos.EarthQuakes;
@@ -41,15 +39,10 @@ import com.example.android.earthreport.model.utilties.DataProviderFormat;
 import com.example.android.earthreport.model.utilties.ParseFavoritCountriesJsonUtils;
 import com.example.android.earthreport.model.utilties.ParseUSGSJsonUtils;
 import com.example.android.earthreport.view.timeline.TimelineFragment;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -630,28 +623,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, PlaceS
     public void onMapReady(final GoogleMap googleMap) {
 
 
-
-        //googleMap.setMyLocationEnabled(true);
-
-//        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-//
-//        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return TODO;
-//        }
-//        fusedLocationProviderClient.getLastLocation().addOnSuccessListener((Activity) getContext(), new OnSuccessListener<Location>() {
-//            @Override
-//            public void onSuccess(Location location) {
-//
-//            }
-//        });
-
         alldayList = new ArrayList<>();
         AsyncTask background;
 
@@ -665,16 +636,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, PlaceS
 
                 Log.i(TAG, "going to get home json response");
                 //Why I didn't do this to count the today earthquake give to count well it was possible but I do this way
+                //Today URL of the earthquakes
+                //Get the today date 00:00  to today date 23:59 furthur could understand in getDateFormatedURL method
                 String jsonResponse = EarthquakeLoader.HttpHandler.makeServeiceCall(
-
-                        //Today URL of the earthquakes
-                        //Get the today date 00:00  to today date 23:59 furthur could understand in getDateFormatedURL method
                         TimelineFragment.getDateFormatedURL(todayDate, todayDate));
 
                 Log.i(TAG, "json response of home: "+jsonResponse);
 
                 // Log.i(TAG, "doInBackground: json " + jsonResponse.toString());
-                alldayList = new ParseUSGSJsonUtils().parseJsonIntoData(alldayList, jsonResponse, getContext());
+                ParseUSGSJsonUtils parseUSGSJsonUtils = new ParseUSGSJsonUtils();
+                alldayList = parseUSGSJsonUtils.parseJsonIntoData(alldayList, jsonResponse, getContext());
                 // Log.i(TAG, "doInBackground: " + alldayList.size());
 
                 Log.i(TAG, "doInBackground: of maps mark working" + alldayList.size());
@@ -709,6 +680,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, PlaceS
         };
 
         background.execute();
+
 
 /*
 
@@ -790,7 +762,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, PlaceS
 
         Log.i(TAG, "onDetach: ");
     }
-
 
     @Override
     public void onPlaceSelected(Place place) {

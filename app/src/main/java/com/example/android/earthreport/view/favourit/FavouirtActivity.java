@@ -1,4 +1,4 @@
-package com.example.android.earthreport;
+package com.example.android.earthreport.view.favourit;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,14 +19,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.pojos.FavoriteCountries;
 import com.example.android.earthreport.model.utilties.ParseFavoritCountriesJsonUtils;
 import com.example.android.earthreport.view.home.HomeFragment;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class FavouirtActivity extends AppCompatActivity {
