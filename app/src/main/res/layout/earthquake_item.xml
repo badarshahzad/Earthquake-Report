@@ -54,21 +54,23 @@
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/itemContainer"
                 app:layout_constraintStart_toStartOf="@+id/itemContainer"
-                app:layout_constraintTop_toTopOf="@+id/itemContainer" />
+                app:layout_constraintTop_toTopOf="@+id/itemContainer"
+                android:layout_marginLeft="8dp" />
 
             <!--City Name-->
             <TextView
                 android:id="@+id/cityName"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="24dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
                 android:text="N/A"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.4"
                 app:layout_constraintStart_toEndOf="@+id/magnitude"
                 app:layout_constraintTop_toBottomOf="@+id/distance"
                 tools:fontFamily="cursive" />
@@ -120,7 +122,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="N/A"
-                app:layout_constraintBottom_toTopOf="@+id/cityName"
+                app:layout_constraintBottom_toTopOf="@+id/country"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/magnitude"

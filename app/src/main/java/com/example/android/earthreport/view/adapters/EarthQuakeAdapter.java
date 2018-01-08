@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,10 +67,11 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
         View view = convertView;
 
         if (view == null) {
-
+            Log.i(TAG, "view is null");
             view = LayoutInflater.from(getContext()).inflate(R.layout.earthquake_item, parent, false);
 
         }
+        Log.i(TAG, "getView: null cross");
 
         //Find the earthquake at the given positions
         EarthQuakes earthQuakesValue = earthQuakesQuakesValues.get(position);
@@ -130,7 +132,8 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
             distanceView.setText(distance);
             //Find the TextView with view ID cityName or Location on earth
             TextView cityNameView = view.findViewById(R.id.cityName);
-            //Display the city name in the TextView
+            //Display the city name in the TextView (sometime city came in results
+            // and some time country the results from USGS are not so accurate)
             cityNameView.setText(cityName);
 
         }
@@ -141,12 +144,15 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
 
         //Find the TextView background color of magnitude
         GradientDrawable magnitudeBackground = (GradientDrawable) magnitudeView.getBackground();
+
         //Get the approperiate  background color based on the current earthquake magnitude
         int magnitudeColor = getMagnitudeColor(magnitude);
+
         //set the color on the magnitude value
         //when the color is not empty also like return value 0 in any trouble scenario
-        if (magnitudeColor != 0) magnitudeBackground.setColor(magnitudeColor);
-
+        if (magnitudeColor != 0) {
+            magnitudeBackground.setColor(magnitudeColor);
+        }
 
         //Return the list item that is now showing the appropriate data
         return view;

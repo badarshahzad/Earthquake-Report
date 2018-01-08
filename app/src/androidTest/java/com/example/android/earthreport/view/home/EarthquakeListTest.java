@@ -139,7 +139,7 @@ public class EarthquakeListTest {
 
         earthquakeListTest();
         ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.action_search),
+                allOf(withId(R.id.action_refresh),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.action_bar),
@@ -153,7 +153,7 @@ public class EarthquakeListTest {
     public void earthquakeListFilterTest() {
         earthquakeListTest();
         ViewInteraction actionMenuItemView2 = onView(
-                allOf(withId(R.id.action_filter),
+                allOf(withId(R.id.action_refresh),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.action_bar),

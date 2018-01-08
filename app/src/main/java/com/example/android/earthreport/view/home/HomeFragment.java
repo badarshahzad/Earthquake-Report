@@ -2,7 +2,10 @@ package com.example.android.earthreport.view.home;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,6 +32,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.android.earthreport.FavouirtActivity;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.api.EarthquakeLoader;
 import com.example.android.earthreport.model.pojos.EarthQuakes;
@@ -36,7 +40,6 @@ import com.example.android.earthreport.model.pojos.FavoriteCountries;
 import com.example.android.earthreport.model.utilties.DataProviderFormat;
 import com.example.android.earthreport.model.utilties.ParseFavoritCountriesJsonUtils;
 import com.example.android.earthreport.model.utilties.ParseUSGSJsonUtils;
-import com.example.android.earthreport.view.search.SearchEarthquakeActivity;
 import com.example.android.earthreport.view.timeline.TimelineFragment;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -44,6 +47,9 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -62,18 +68,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements OnMapReadyCallback {
+public class HomeFragment extends Fragment implements OnMapReadyCallback, PlaceSelectionListener {
 
     public static final String FAVOURIT_LIST = "favouritList";
     private static final String TAG = HomeFragment.class.getSimpleName();
-    private static String COUNT_KEY = "countKey";
     public static String TODAY_COUNT_KEY = "todayCountkey";
     public static String YESTERDAY_COUNT_KEY = "yesterdayCountkey";
     public static String WEEK_COUNT_KEY = "weekCountkey";
@@ -82,6 +84,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     public static int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     public static Handler handler;
     public static String todayDate = DataProviderFormat.getformateDate(new Date());
+    private static String COUNT_KEY = "countKey";
     public Double selectedMinMagnitude;
     public String selectedCountery;
 
@@ -90,13 +93,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private TextView thisMonthEarthquakes;
     private TextView thisWeekEarthquakes;
     private TextView todayMapStatus;
-    private Spinner minMagnitudeSpinner;
-    private Spinner counteryOfSpinner;
     private String[] countURLS = new String[4];
     private ProgressBar progressBar;
-    private List<FavoriteCountries> favoriteCountries;
     private List<EarthQuakes> alldayList;
+    private String selectedSearchPlaceName;
+    private LatLng selectedSearchPlaceLatLng;
     private FusedLocationProviderClient fusedLocationProviderClient;
+
+
 
     //Today earthquakes count
     private String CountURL = "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=";
@@ -144,7 +148,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
 
             if (counteryName != null && counteryName.equals(obj.getDisplayCountry())) {
-                Log.i(TAG, "Get Display Countery" + obj.getDisplayCountry());
+                Log.i(TAG, "Get Display Countery:" + obj.getDisplayCountry());
                 Log.i(TAG, "Countery Name: " + obj.getDisplayCountry());
                 return true;
             }
@@ -196,32 +200,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
 
-        if (itemId == R.id.action_search) {
-             Intent intent = new Intent(getContext(), SearchEarthquakeActivity.class);
+        if (itemId == R.id.action_bookmark) {
+             Intent intent = new Intent(getContext(), FavouirtActivity.class);
              startActivity(intent);
-
-            /**
-             * Title: Automatic Widget
-             * Author: developer.google.com
-             * Date: 2017-12-20
-             * Code version:
-             * Availability:  https://developers.google.com/places/
-             */
-
-
-            try {
-
-                Intent searchAutoCompleteIntent = new PlaceAutocomplete.
-                        IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                        .build(getActivity());
-
-                startActivityForResult(searchAutoCompleteIntent ,PLACE_AUTOCOMPLETE_REQUEST_CODE);
-
-            } catch (GooglePlayServicesRepairableException e) {
-                e.printStackTrace();
-            } catch (GooglePlayServicesNotAvailableException e) {
-                e.printStackTrace();
-            }
 
 
         }
@@ -238,114 +219,194 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             }
 */
 
-            LayoutInflater inflater = getLayoutInflater();
-            View view = inflater.inflate(R.layout.fragment_add_alert, null);
 
-            minMagnitudeSpinner = view.findViewById(R.id.minOfSpinner);
-            counteryOfSpinner = view.findViewById(R.id.countryOfSpinner);
+            /**
+             * Title: Override the onActivityResult callback
+             * Author: developers.google.com
+             * Date: 2018-01-05
+             * Code version: N/A
+             * Availability: https://developers.google.com/places/android-api/autocomplete
+             */
 
-            List<String> countries = getCountriesName();
+/*
 
-            //sort the countries name in ascending order (This class Java 8 API Collection framework)
-            // to show countries name in spinner a-z
-            Collections.sort(countries);
+            Intent searchAutoCompleteIntent = null;
+            try {
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                    getActivity(),
-                    android.R.layout.simple_spinner_item,
-                    countries
-            );
+                searchAutoCompleteIntent = new PlaceAutocomplete.
+                        IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                        .build(getActivity());
 
-            counteryOfSpinner.setAdapter(adapter);
+                startActivityForResult(searchAutoCompleteIntent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
 
-            AlertDialog.Builder addAlert = new AlertDialog.Builder(getContext());
-            addAlert.setTitle("Add Alert");
-            addAlert.setView(view);
-            addAlert.setCancelable(false);
+            } catch (GooglePlayServicesRepairableException e) {
+                e.printStackTrace();
+            } catch (GooglePlayServicesNotAvailableException e) {
+                e.printStackTrace();
+            }
+*/
 
-            addAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            //autocompleteFragment.setOnPlaceSelectedListener(this);
+
+            /*autocompleteFragment.setHint("Mianwali, Punjab, Pakistan");
+            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                @Override
+                public void onPlaceSelected(Place place) {
+
+                    Log.i(TAG, "onPlaceSelected: place : " + place.getName());
+                    Log.i(TAG, "onPlaceSelected: latLag: " + place.getLatLng());
+                }
 
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-//                    Toast.makeText(getContext(),"Cancel",Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            addAlert.setPositiveButton("Done", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                    //TODO: make a list of favorit countery to get notificaiton
-                    //TODO: then CRUD operation will be necessery (Right Badi ! Yeah why not?)
-
-            SharedPreferences shPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-                    //the spinner return the object of selected index so its my duty to convert
-                    //There could another way to give spinner just double value I did this way
-                    selectedMinMagnitude = Double.valueOf(
-                            String.valueOf(minMagnitudeSpinner.getSelectedItem()));
-
-                    selectedCountery = String.valueOf(counteryOfSpinner.getSelectedItem());
-
-                    Log.i(TAG, "onClick: first: "+ selectedMinMagnitude);
-                    Log.i(TAG, "onClick: first: "+ selectedCountery);
-
-                    Log.i(TAG, "onClick: store values" + shPref.getString(FAVOURIT_LIST, "null"));
-
-                    int indexOfFavritList= 0;
-
-                    if (shPref.getString(FAVOURIT_LIST, "null").equals("null")) {
-
-                        favoriteCountries = new ArrayList<>();
-                        favoriteCountries.add(new FavoriteCountries(selectedCountery,selectedMinMagnitude));
-                        shPref.edit().remove(FAVOURIT_LIST).putString(FAVOURIT_LIST,new Gson().toJson(favoriteCountries).toString()).commit();
-
-                    } else {
-
-                        String favouritListString = shPref.getString(FAVOURIT_LIST, "null");
-
-                        favoriteCountries = ParseFavoritCountriesJsonUtils.parseJsonInToList(favouritListString);
-
-                        //check if already exist country then don't add country
-                        // if magnitude change then udpate index
-                        if ((indexOfFavritList = isExistInList(selectedCountery, favoriteCountries)) != -1) {
-                            if (favoriteCountries.get(indexOfFavritList).getMagnitude() != selectedMinMagnitude) {
-
-                                Log.i(TAG, "onClick: index: "+indexOfFavritList);
-                                Log.i(TAG, "onClick: Before Magnitude: "+favoriteCountries.get(indexOfFavritList).getMagnitude());
-
-                                favoriteCountries.get(indexOfFavritList).setMagnitude(selectedMinMagnitude);
-
-                                Log.i(TAG, "onClick: After Magnitude: "+favoriteCountries.get(indexOfFavritList).getMagnitude());
-                                Log.i(TAG, "onClick: size of list 1: " + favoriteCountries.size());
-                                shPref.edit().remove(FAVOURIT_LIST).putString(FAVOURIT_LIST,new Gson().toJson(favoriteCountries).toString()).apply();
-
-                            }
-                        } else {
-                            Log.i(TAG, "onClick: index: "+indexOfFavritList);
-
-                            favoriteCountries.add(new FavoriteCountries(selectedCountery, Double.valueOf(selectedMinMagnitude)));
-                            shPref.edit().remove(FAVOURIT_LIST).putString(FAVOURIT_LIST,new Gson().toJson(favoriteCountries).toString()).apply();
-                            Log.i(TAG, "onClick: size of list 1: " + favoriteCountries.size());
-
-                        }
-                    }
-
-                    // Log.i(TAG, "onClick: size of list"+favoriteCountries.size());
+                public void onError(Status status) {
 
                 }
-            });
+            });*/
 
-            AlertDialog dialog = addAlert.create();
-            dialog.show();
-            // NotificationsUtils.remindUser(getContext());
+          showAddAlertDialog(getLayoutInflater(),getActivity(),getContext());
         }
 
 
         return super.onOptionsItemSelected(item);
     }
 
+    public void showAddAlertDialog(LayoutInflater inflater2, Activity activity, final Context context) {
+
+
+
+       // LayoutInflater inflater2 = getLayoutInflater();
+        View addAlertView = inflater2.inflate(R.layout.fragment_add_alert, null,false);
+
+        ///Add the location fragment
+
+        final Spinner minMagnitudeSpinner = addAlertView.findViewById(R.id.minOfSpinner);
+        final Spinner counteryOfSpinner = addAlertView.findViewById(R.id.regionSelected);
+
+
+
+        List<String> countries = getCountriesName();
+
+        //sort the countries name in ascending order (This class Java 8 API Collection framework)
+        // to show countries name in spinner a-z
+        Collections.sort(countries);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                activity,
+                android.R.layout.simple_spinner_item,
+                countries
+        );
+
+        counteryOfSpinner.setAdapter(adapter);
+
+        AlertDialog.Builder addAlert = new AlertDialog.Builder(context);
+        addAlert.setTitle("Add Alert");
+        addAlert.setView(addAlertView);
+        addAlert.setCancelable(false);
+
+
+        addAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+//                    Toast.makeText(getContext(),"Cancel",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        addAlert.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                //TODO: make a list of favorit countery to get notificaiton
+                //TODO: then CRUD operation will be necessery (Right Badi ! Yeah why not?)
+
+                //this true will help me to update the adapter in favourite list actitivty
+
+                SharedPreferences shPref = PreferenceManager.getDefaultSharedPreferences(context);
+
+                //the spinner return the object of selected index so its my duty to convert
+                //There could another way to give spinner just double value I did this way
+                selectedMinMagnitude = Double.valueOf(
+                        String.valueOf(minMagnitudeSpinner.getSelectedItem()));
+
+
+                selectedCountery = String.valueOf(counteryOfSpinner.getSelectedItem());
+
+                Log.i(TAG, "onClick: first: "+ selectedMinMagnitude);
+                Log.i(TAG, "onClick: first: "+ selectedCountery);
+                Log.i(TAG, "onClick: store values" + shPref.getString(FAVOURIT_LIST, "null"));
+
+                if (selectedSearchPlaceLatLng != null || selectedSearchPlaceName != null) {
+                    selectedCountery = selectedSearchPlaceName;
+                    Log.i(TAG, "place selected entery: " + selectedCountery);
+                    Log.i(TAG, "select longitude: " + selectedSearchPlaceLatLng);
+                    Log.i(TAG, "select longitude: " + selectedSearchPlaceLatLng.latitude);
+                    Log.i(TAG, "select longitude: " + selectedSearchPlaceLatLng.longitude);
+                    try {
+                        Log.i(TAG, "get country name: " +
+                                getCountryName(context,
+                                        Double.valueOf(selectedSearchPlaceLatLng.latitude), Double.valueOf(selectedSearchPlaceLatLng.longitude)));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                int indexOfFavritList= 0;
+
+                List<FavoriteCountries> favoriteCountriesList;
+                //data stored as a json string in shared preferences
+                if (shPref.getString(FAVOURIT_LIST, "null").equals("null")) {
+
+                    //for the first time list create
+                    favoriteCountriesList = new ArrayList<>();
+                    //first entry add as it is
+                    favoriteCountriesList.add(new FavoriteCountries(selectedCountery,selectedMinMagnitude));
+                    //converted the object list into json and simply jugar to convert into string :D that's a way
+                    shPref.edit().remove(FAVOURIT_LIST).putString(FAVOURIT_LIST,new Gson().toJson(favoriteCountriesList).toString()).commit();
+
+                } else {
+
+                    //get the store string from default shared preferance document
+                    String favouritListString = shPref.getString(FAVOURIT_LIST, "null");
+                    //parse the string into json and return the list after parsing the string
+                    favoriteCountriesList = ParseFavoritCountriesJsonUtils.parseJsonInToList(favouritListString);
+                    //check if already exist country then don't add country
+                    // if magnitude change then update index
+                    if ((indexOfFavritList = isExistInList(selectedCountery, favoriteCountriesList)) != -1) {
+                        if (favoriteCountriesList.get(indexOfFavritList).getMagnitude() != selectedMinMagnitude) {
+
+                            Log.i(TAG, "onClick: index: "+indexOfFavritList);
+                            Log.i(TAG, "onClick: Before Magnitude: "+favoriteCountriesList.get(indexOfFavritList).getMagnitude());
+
+                            favoriteCountriesList.get(indexOfFavritList).setMagnitude(selectedMinMagnitude);
+
+                            Log.i(TAG, "onClick: After Magnitude: "+favoriteCountriesList.get(indexOfFavritList).getMagnitude());
+                            Log.i(TAG, "onClick: size of list 1: " + favoriteCountriesList.size());
+                            shPref.edit().remove(FAVOURIT_LIST).putString(FAVOURIT_LIST,new Gson().toJson(favoriteCountriesList).toString()).apply();
+
+                        }
+                    } else {
+                        Log.i(TAG, "onClick: index: "+indexOfFavritList);
+
+                        favoriteCountriesList.add(new FavoriteCountries(selectedCountery, Double.valueOf(selectedMinMagnitude)));
+                        shPref.edit().remove(FAVOURIT_LIST).putString(FAVOURIT_LIST,new Gson().toJson(favoriteCountriesList).toString()).apply();
+                        Log.i(TAG, "onClick: size of list 1: " + favoriteCountriesList.size());
+
+                    }
+                }
+
+                // Log.i(TAG, "onClick: size of list"+favoriteCountries.size());
+
+
+            }
+        });
+
+        AlertDialog dialog = addAlert.create();
+        dialog.show();
+
+        // NotificationsUtils.remindUser(getContext());
+    }
 
 
     private int isExistInList(String selectedCountery, List<FavoriteCountries> country) {
@@ -366,6 +427,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         // Find a reference to the {@link ListView} in the layout
         // Inflate the layout for this fragment
         // To get the referance we don't have findviewbyId method in fragment so we use view
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
 
@@ -480,8 +542,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             }
         };
 
-        //Add listeners to the Circles and Textviews
+
+
+
         //TODO:If time allow me I will add some more information on click the circles
+        //Add listeners to the Circles and Textviews
 //        todayEarthquakes.setOnClickListener(showDataList);
 //        yesterdayEarthquakes.setOnClickListener(showDataList);
 //        thisWeekEarthquakes.setOnClickListener(showDataList);
@@ -667,14 +732,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         */
     }
 
-    private void sleep(int sleepSeconds) {
-        try {
-            Thread.sleep(1000*sleepSeconds);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     public Date getDate(int day) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, -day);
@@ -683,11 +740,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     //Life Cycle Methods
-
     @Override
     public void onStart() {
         super.onStart();
-
         Log.i(TAG, "onStart: ");
     }
 
@@ -737,4 +792,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
+    @Override
+    public void onPlaceSelected(Place place) {
+        Log.i(TAG, "onPlaceSelected: " + place.getName());
+    }
+
+    @Override
+    public void onError(Status status) {
+
+    }
 }

@@ -49,9 +49,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
         //Retrieve the content view theat renders the map
         setContentView(R.layout.map_activity);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         //Get the SupportMapFragment and request notification
-        // when the map is ready to be used
+        //When the map is ready to be used
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -64,9 +65,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         title = findViewById(R.id.title);
         magnitude = findViewById(R.id.magnitude);
         cardView = findViewById(R.id.cardForText);
-
 //        Log.i(TAG, "onCreate: ");
-
 
     }
 

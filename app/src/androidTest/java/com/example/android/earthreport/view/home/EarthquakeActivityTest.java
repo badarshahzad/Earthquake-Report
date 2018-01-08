@@ -177,7 +177,7 @@ public class EarthquakeActivityTest {
         bottomNavigationItemView.perform(click());
 
         ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.action_search),
+                allOf(withId(R.id.action_refresh),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.action_bar),
@@ -261,7 +261,7 @@ public class EarthquakeActivityTest {
         appCompatButton2.perform(click());
 
         ViewInteraction actionMenuItemView2 = onView(
-                allOf(withId(R.id.action_search),
+                allOf(withId(R.id.action_refresh),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.action_bar),
@@ -418,7 +418,7 @@ public class EarthquakeActivityTest {
 
         earthquakeListTest();
         ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.action_search),
+                allOf(withId(R.id.action_refresh),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.action_bar),
@@ -435,7 +435,7 @@ public class EarthquakeActivityTest {
     public void earthquakeListFilterTest() {
         earthquakeListTest();
         ViewInteraction actionMenuItemView2 = onView(
-                allOf(withId(R.id.action_filter),
+                allOf(withId(R.id.action_refresh),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.action_bar),

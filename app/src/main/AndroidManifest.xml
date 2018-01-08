@@ -39,14 +39,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".view.map.Map" />
-
         <activity
-            android:name=".view.search.SearchEarthquakeActivity"
+            android:name=".view.map.Map"
             android:parentActivityName=".view.main.EarthquakeActivity" />
 
-        <!--This is required for immediate syncs -->
+        <!-- This is required for immediate syncs -->
 
         <service
             android:name=".model.sync.EarthquakeReminderFirebaseJobService"
@@ -56,6 +53,10 @@
             </intent-filter>
         </service>
 
+        <activity
+            android:name=".FavouirtActivity"
+            android:label="@string/title_activity_favouirt"
+            android:parentActivityName=".view.main.EarthquakeActivity" />
     </application>
 
 </manifest>
