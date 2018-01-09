@@ -1,4 +1,4 @@
-package com.example.android.earthreport.view.adapters;
+package com.example.android.earthreport.controller.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;

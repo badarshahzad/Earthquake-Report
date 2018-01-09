@@ -1,4 +1,4 @@
-package com.example.android.earthreport.view.favourit;
+package com.example.android.earthreport.controller.favourit;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -22,15 +22,15 @@ import android.widget.Toast;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.pojos.FavoriteCountries;
 import com.example.android.earthreport.model.utilties.ParseFavoritCountriesJsonUtils;
-import com.example.android.earthreport.view.home.HomeFragment;
+import com.example.android.earthreport.controller.home.HomeFragment;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavouirtActivity extends AppCompatActivity {
+public class FavouriteActivity extends AppCompatActivity {
 
-    public static final String TAG = FavouirtActivity.class.getSimpleName();
+    public static final String TAG = FavouriteActivity.class.getSimpleName();
     private FloatingActionButton fab;
     private ListView favouritListView;
     private List<FavoriteCountries> favoriteCountriesList;
@@ -43,7 +43,7 @@ public class FavouirtActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favouirt);
+        setContentView(R.layout.activity_favourite);
 
         emptyListMessage = findViewById(R.id.emptyListMessage);
         emptyListMessageImage = findViewById(R.id.noFavoriteEntry);
@@ -58,7 +58,7 @@ public class FavouirtActivity extends AppCompatActivity {
 
                 //going to show the add alert dialog for user
                 homeObj.showAddAlertDialog(getLayoutInflater(),
-                        FavouirtActivity.this, FavouirtActivity.this);
+                        FavouriteActivity.this, FavouriteActivity.this);
             }
         });
 
@@ -70,7 +70,7 @@ public class FavouirtActivity extends AppCompatActivity {
                 favouritListAdapter.addAll(favoriteCountriesList);
 
 
-                Toast.makeText(FavouirtActivity.this,"Change preferance",Toast.LENGTH_SHORT).show();
+                Toast.makeText(FavouriteActivity.this,"Change preferance",Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -90,7 +90,7 @@ public class FavouirtActivity extends AppCompatActivity {
     private List<FavoriteCountries> getTheStoreStringAsList() {
 
         List<FavoriteCountries> favoriteCountriesList = new ArrayList<>();
-        shPref = PreferenceManager.getDefaultSharedPreferences(FavouirtActivity.this);
+        shPref = PreferenceManager.getDefaultSharedPreferences(FavouriteActivity.this);
         String favouritString = shPref.getString(HomeFragment.FAVOURIT_LIST, "NoValue");
         favoriteCountriesList = ParseFavoritCountriesJsonUtils.parseJsonInToList(favouritString);
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.earthreport.view.main;
+package com.example.android.earthreport.controller.main;
 
 
 import android.content.Context;
@@ -27,24 +27,18 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.android.earthreport.R;
-import com.example.android.earthreport.model.sync.EarthquakeReminderFirebaseJobService;
 import com.example.android.earthreport.model.utilties.ReminderUtilities;
-import com.example.android.earthreport.view.adapters.ViewPagerAdapter;
-import com.example.android.earthreport.view.home.HomeFragment;
-import com.example.android.earthreport.view.setting.SettingFragment;
-import com.example.android.earthreport.view.timeline.TimelineFragment;
-import com.firebase.jobdispatcher.Constraint;
+import com.example.android.earthreport.controller.adapters.ViewPagerAdapter;
+import com.example.android.earthreport.controller.home.HomeFragment;
+import com.example.android.earthreport.controller.setting.SettingFragment;
+import com.example.android.earthreport.controller.timeline.TimelineFragment;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
-import com.firebase.jobdispatcher.Lifetime;
-import com.firebase.jobdispatcher.RetryStrategy;
-import com.firebase.jobdispatcher.Trigger;
 
-//what is context This is an abstract class whose implementation is provided by
-// the Android system. It allows access to application-specific resources and
-//  classes, as well as up-calls for application-level
-// operations such as launching activities, broadcasting and receiving intents
+/**what is context This is an abstract class whose implementation is provided by the
+ *  Android system. It allows access to application-specific resources and classes,
+ *  as well as up-calls for application-level operations such as launching activities,
+ *  broadcasting and receiving intents*/
 
 public class EarthquakeActivity extends AppCompatActivity {
 
@@ -78,10 +72,11 @@ public class EarthquakeActivity extends AppCompatActivity {
         //get the root referance
         root = findViewById(R.id.root);
 
-        //The purpose of using viewpager is to mantain the instance of fragment
-        // I figure it our the viewpage don't throw away the instance whent the
-        // view change as it mantain it in memory so I don't have to add extra code for
-        // fragment mantain on each time menu click and load the fragment ag&ag& (again and again)
+        /**The purpose of using viewpager is to mantain the instance of fragment
+         * I figure it the viewpage don't throw away the instance when the
+         * view change as it mantain it in memory so I don't have to add extra code for
+         * fragment mantain on each time menu click and load the fragment ag&ag& (again and again)*/
+
         viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         setTitle("Home");
@@ -93,7 +88,7 @@ public class EarthquakeActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
 
                     //CheckedTODO:whenever the menu item click the fragment replace again and
-                    // life cycle its not good try to check befor going to replace the fragment
+                    // life cycle its not good try to check before going to replace the fragment
                     //CheckedTODO:Add viewpager to navigate with swap
                     case R.id.home:
                         setTitle("Home");

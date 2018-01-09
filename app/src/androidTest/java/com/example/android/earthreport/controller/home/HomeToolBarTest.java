@@ -1,4 +1,4 @@
-package com.example.android.earthreport.view.home;
+package com.example.android.earthreport.controller.home;
 
 
 import android.support.test.espresso.ViewInteraction;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.example.android.earthreport.R;
-import com.example.android.earthreport.view.main.EarthquakeActivity;
+import com.example.android.earthreport.controller.main.EarthquakeActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

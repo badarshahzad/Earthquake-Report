@@ -31,7 +31,7 @@
 
         <!-- if activity already running I don't need to relunch app : singleTop -->
         <activity
-            android:name=".view.main.EarthquakeActivity"
+            android:name=".controller.main.EarthquakeActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,8 +40,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.map.Map"
-            android:parentActivityName=".view.main.EarthquakeActivity" />
+            android:name=".controller.map.Map"
+            android:parentActivityName=".controller.main.EarthquakeActivity" />
 
         <!-- This is required for immediate syncs -->
 
@@ -54,9 +54,9 @@
         </service>
 
         <activity
-            android:name=".view.favourit.FavouirtActivity"
+            android:name=".controller.favourit.FavouriteActivity"
             android:label="@string/title_activity_favouirt"
-            android:parentActivityName=".view.main.EarthquakeActivity" />
+            android:parentActivityName=".controller.main.EarthquakeActivity" />
     </application>
 
 </manifest>

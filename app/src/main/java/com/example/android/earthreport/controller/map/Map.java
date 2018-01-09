@@ -1,4 +1,4 @@
-package com.example.android.earthreport.view.map;
+package com.example.android.earthreport.controller.map;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.pojos.EarthQuakes;
 import com.example.android.earthreport.model.utilties.DataProviderFormat;
-import com.example.android.earthreport.view.adapters.EarthQuakeAdapter;
-import com.example.android.earthreport.view.timeline.TimelineFragment;
+import com.example.android.earthreport.controller.adapters.EarthQuakeAdapter;
+import com.example.android.earthreport.controller.timeline.TimelineFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

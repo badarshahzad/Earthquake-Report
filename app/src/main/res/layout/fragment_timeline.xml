@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.main.EarthquakeActivity"
+    tools:context=".controller.main.EarthquakeActivity"
     tools:layout_editor_absoluteY="81dp">
 
     <!--Swap layout to refresh-->

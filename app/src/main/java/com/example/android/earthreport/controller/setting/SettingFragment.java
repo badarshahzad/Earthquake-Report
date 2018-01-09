@@ -1,11 +1,8 @@
-package com.example.android.earthreport.view.setting;
+package com.example.android.earthreport.controller.setting;
 
 
 import android.os.Bundle;
-import android.preference.Preference;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.example.android.earthreport.R;
 import com.github.machinarius.preferencefragment.PreferenceFragment;

@@ -1,4 +1,4 @@
-package com.example.android.earthreport.view.home;
+package com.example.android.earthreport.controller.home;
 
 
 import android.annotation.SuppressLint;
@@ -30,7 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.android.earthreport.view.favourit.FavouirtActivity;
+import com.example.android.earthreport.controller.favourit.FavouriteActivity;
 import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.api.EarthquakeLoader;
 import com.example.android.earthreport.model.pojos.EarthQuakes;
@@ -38,7 +38,7 @@ import com.example.android.earthreport.model.pojos.FavoriteCountries;
 import com.example.android.earthreport.model.utilties.DataProviderFormat;
 import com.example.android.earthreport.model.utilties.ParseFavoritCountriesJsonUtils;
 import com.example.android.earthreport.model.utilties.ParseUSGSJsonUtils;
-import com.example.android.earthreport.view.timeline.TimelineFragment;
+import com.example.android.earthreport.controller.timeline.TimelineFragment;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.places.Place;
@@ -194,68 +194,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, PlaceS
         int itemId = item.getItemId();
 
         if (itemId == R.id.action_bookmark) {
-             Intent intent = new Intent(getContext(), FavouirtActivity.class);
+             Intent intent = new Intent(getContext(), FavouriteActivity.class);
              startActivity(intent);
 
 
         }
 
-
         //Reference:https://materialdoc.com/components/dialogs/
         if (itemId == R.id.action_add_alert) {
-
-            //TODO:Countery name with longitude and latitude have be doen more
-            // have to do with service and data comparison and give notification
-/*
-            if(isCounteryExist(getContext(), -4.3777,101.9364)){
-                Log.i(TAG, "onCreate: Now you are ready!");
-            }
-*/
-
-
-            /**
-             * Title: Override the onActivityResult callback
-             * Author: developers.google.com
-             * Date: 2018-01-05
-             * Code version: N/A
-             * Availability: https://developers.google.com/places/android-api/autocomplete
-             */
-
-/*
-
-            Intent searchAutoCompleteIntent = null;
-            try {
-
-                searchAutoCompleteIntent = new PlaceAutocomplete.
-                        IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                        .build(getActivity());
-
-                startActivityForResult(searchAutoCompleteIntent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-
-            } catch (GooglePlayServicesRepairableException e) {
-                e.printStackTrace();
-            } catch (GooglePlayServicesNotAvailableException e) {
-                e.printStackTrace();
-            }
-*/
-
-
-            //autocompleteFragment.setOnPlaceSelectedListener(this);
-
-            /*autocompleteFragment.setHint("Mianwali, Punjab, Pakistan");
-            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                @Override
-                public void onPlaceSelected(Place place) {
-
-                    Log.i(TAG, "onPlaceSelected: place : " + place.getName());
-                    Log.i(TAG, "onPlaceSelected: latLag: " + place.getLatLng());
-                }
-
-                @Override
-                public void onError(Status status) {
-
-                }
-            });*/
 
           showAddAlertDialog(getLayoutInflater(),getActivity(),getContext());
         }

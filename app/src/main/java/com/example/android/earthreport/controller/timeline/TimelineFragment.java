@@ -1,4 +1,4 @@
-package com.example.android.earthreport.view.timeline;
+package com.example.android.earthreport.controller.timeline;
 
 
 import android.app.AlertDialog;
@@ -41,9 +41,9 @@ import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.api.EarthquakeLoader;
 import com.example.android.earthreport.model.pojos.EarthQuakes;
 import com.example.android.earthreport.model.utilties.DataProviderFormat;
-import com.example.android.earthreport.view.adapters.EarthQuakeAdapter;
-import com.example.android.earthreport.view.main.EarthquakeActivity;
-import com.example.android.earthreport.view.map.Map;
+import com.example.android.earthreport.controller.adapters.EarthQuakeAdapter;
+import com.example.android.earthreport.controller.main.EarthquakeActivity;
+import com.example.android.earthreport.controller.map.Map;
 
 import java.io.Serializable;
 import java.util.ArrayList;
