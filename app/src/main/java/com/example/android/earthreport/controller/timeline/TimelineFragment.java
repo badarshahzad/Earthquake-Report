@@ -249,7 +249,7 @@ public class TimelineFragment extends Fragment implements LoaderManager.LoaderCa
         );
 
         earthQuakesArrayList = new ArrayList<>();
-        earthListAdapter = new EarthQuakeAdapter(getContext(), R.layout.earthquake_item, earthQuakesArrayList);
+        earthListAdapter = new EarthQuakeAdapter(getContext(), R.layout.listview_item, earthQuakesArrayList);
         earthquakeListView.setAdapter(earthListAdapter);
 
         //I can startEndDateGuard the load data from here with just forceLoad at the end but

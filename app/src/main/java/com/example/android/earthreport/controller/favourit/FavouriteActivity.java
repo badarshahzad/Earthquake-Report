@@ -81,7 +81,7 @@ public class FavouriteActivity extends AppCompatActivity {
 
         Log.i(TAG, " size: " + favoriteCountriesList.size());
         favouritListView = findViewById(R.id.favouritList);
-        favouritListAdapter = new FavouritListAdapter(this, R.layout.earthquake_item, favoriteCountriesList);
+        favouritListAdapter = new FavouritListAdapter(this, R.layout.listview_item, favoriteCountriesList);
         favouritListView.setAdapter(favouritListAdapter);
 
 
