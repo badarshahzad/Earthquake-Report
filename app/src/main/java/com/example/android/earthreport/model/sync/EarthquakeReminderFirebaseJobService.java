@@ -95,8 +95,7 @@ public class EarthquakeReminderFirebaseJobService extends JobService {
                     //EarthQuakes earthquake = new Gson().fromJson(earthQuakesListString, EarthQuakes.class);
 
                     //list as string store after converting list->json->string
-                    shPref.edit().remove(PreferenceUtils.KEY_EARTHQUAKES).putString(PreferenceUtils.KEY_EARTHQUAKES,
-                            new Gson().toJson(newEarthquake).toString()).apply();
+                    shPref.edit().remove(PreferenceUtils.KEY_EARTHQUAKES).putString(PreferenceUtils.KEY_EARTHQUAKES,new Gson().toJson(newEarthquake).toString()).apply();
                     EarthquakeReminderTask.executeTask(context, EarthquakeReminderTask.ACTION_EARTHQUAKE_REMINDER, newEarthquake);
 
                     Log.i(TAG, "Store the list: " + new Gson().toJson(earthQuakesList.get(0)).toString());
