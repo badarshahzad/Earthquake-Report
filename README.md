@@ -1,6 +1,8 @@
 Eartquake Report
 ===================================
 
+[**Demo Application:** ](https://www.youtube.com/watch?v=bLBj1ZuSh84&t=19s)
+
 This app displays a list of recent earthquakes in the world
 from the U.S. Geological Survey (USGS) organization.
 
@@ -34,7 +36,7 @@ submitting a pull request through GitHub. Please see CONTRIBUTING.md for more de
 License
 -------
 
-Copyright 2016 The Android Open Source Project, Inc.
+Copyright 2017 The Android Open Source Project, Inc.
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for
