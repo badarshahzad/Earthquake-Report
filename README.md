@@ -1,5 +1,7 @@
 Eartquake Report
 ===================================
+[![HitCount](http://hits.dwyl.io/badarshahzad/Earthquake-Report.svg)](http://hits.dwyl.io/badarshahzad/Earthquake-Report)
+[![GitHub forks](https://img.shields.io/github/forks/badarshahzad/Earthquake-Report.svg)](https://github.com/badarshahzad/Earthquake-Report/network)
 
 [**Demo Application:** ](https://www.youtube.com/watch?v=bLBj1ZuSh84&t=19s)
 
