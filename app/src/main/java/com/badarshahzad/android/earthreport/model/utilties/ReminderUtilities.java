@@ -1,8 +1,8 @@
-package com.example.android.earthreport.model.utilties;
+package com.badarshahzad.android.earthreport.model.utilties;
 
 import android.content.Context;
 
-import com.example.android.earthreport.model.sync.EarthquakeReminderFirebaseJobService;
+import com.badarshahzad.android.earthreport.model.sync.EarthquakeReminderFirebaseJobService;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.Driver;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.earthreport.controller.main;
+package com.badarshahzad.android.earthreport.controller.main;
 
 
 import android.content.Context;
@@ -26,12 +26,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.example.android.earthreport.R;
-import com.example.android.earthreport.model.utilties.ReminderUtilities;
-import com.example.android.earthreport.controller.adapters.ViewPagerAdapter;
-import com.example.android.earthreport.controller.home.HomeFragment;
-import com.example.android.earthreport.controller.setting.SettingFragment;
-import com.example.android.earthreport.controller.timeline.TimelineFragment;
+import com.badarshahzad.android.earthreport.R;
+import com.badarshahzad.android.earthreport.model.utilties.ReminderUtilities;
+import com.badarshahzad.android.earthreport.controller.adapters.ViewPagerAdapter;
+import com.badarshahzad.android.earthreport.controller.home.HomeFragment;
+import com.badarshahzad.android.earthreport.controller.setting.SettingFragment;
+import com.badarshahzad.android.earthreport.controller.timeline.TimelineFragment;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.google.android.gms.ads.AdRequest;

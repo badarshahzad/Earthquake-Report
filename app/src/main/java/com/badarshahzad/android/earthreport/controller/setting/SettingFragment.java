@@ -1,10 +1,10 @@
-package com.example.android.earthreport.controller.setting;
+package com.badarshahzad.android.earthreport.controller.setting;
 
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.example.android.earthreport.R;
+import com.badarshahzad.android.earthreport.R;
 import com.github.machinarius.preferencefragment.PreferenceFragment;
 
 

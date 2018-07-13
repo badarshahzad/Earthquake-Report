@@ -1,4 +1,4 @@
-package com.example.android.earthreport.controller.home;
+package com.badarshahzad.android.earthreport.controller.home;
 
 
 import android.support.test.espresso.DataInteraction;
@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.example.android.earthreport.R;
-import com.example.android.earthreport.controller.main.EarthquakeActivity;
+import com.badarshahzad.android.earthreport.R;
+import com.badarshahzad.android.earthreport.controller.main.EarthquakeActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

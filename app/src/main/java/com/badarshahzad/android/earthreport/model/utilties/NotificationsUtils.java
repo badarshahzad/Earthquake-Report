@@ -1,4 +1,4 @@
-package com.example.android.earthreport.model.utilties;
+package com.badarshahzad.android.earthreport.model.utilties;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -14,10 +14,10 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.example.android.earthreport.R;
-import com.example.android.earthreport.model.pojos.EarthQuakes;
-import com.example.android.earthreport.controller.map.Map;
-import com.example.android.earthreport.controller.timeline.TimelineFragment;
+import com.badarshahzad.android.earthreport.R;
+import com.badarshahzad.android.earthreport.model.pojos.EarthQuakes;
+import com.badarshahzad.android.earthreport.controller.map.Map;
+import com.badarshahzad.android.earthreport.controller.timeline.TimelineFragment;
 import com.google.gson.Gson;
 
 /**

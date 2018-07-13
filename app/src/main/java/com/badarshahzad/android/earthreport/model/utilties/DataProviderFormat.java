@@ -1,4 +1,4 @@
-package com.example.android.earthreport.model.utilties;
+package com.badarshahzad.android.earthreport.model.utilties;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

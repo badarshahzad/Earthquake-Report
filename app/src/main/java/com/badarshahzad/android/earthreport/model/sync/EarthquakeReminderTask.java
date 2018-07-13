@@ -1,10 +1,10 @@
-package com.example.android.earthreport.model.sync;
+package com.badarshahzad.android.earthreport.model.sync;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.example.android.earthreport.model.pojos.EarthQuakes;
-import com.example.android.earthreport.model.utilties.NotificationsUtils;
+import com.badarshahzad.android.earthreport.model.pojos.EarthQuakes;
+import com.badarshahzad.android.earthreport.model.utilties.NotificationsUtils;
 
 /**
  * Created by root on 12/25/17.

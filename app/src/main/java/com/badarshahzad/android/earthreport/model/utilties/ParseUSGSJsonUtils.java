@@ -1,11 +1,11 @@
-package com.example.android.earthreport.model.utilties;
+package com.badarshahzad.android.earthreport.model.utilties;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.example.android.earthreport.model.pojos.EarthQuakes;
+import com.badarshahzad.android.earthreport.model.pojos.EarthQuakes;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.example.android.earthreport.controller.map;
+package com.badarshahzad.android.earthreport.controller.map;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,11 +8,11 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.android.earthreport.R;
-import com.example.android.earthreport.model.pojos.EarthQuakes;
-import com.example.android.earthreport.model.utilties.DataProviderFormat;
-import com.example.android.earthreport.controller.adapters.EarthQuakeAdapter;
-import com.example.android.earthreport.controller.timeline.TimelineFragment;
+import com.badarshahzad.android.earthreport.R;
+import com.badarshahzad.android.earthreport.model.pojos.EarthQuakes;
+import com.badarshahzad.android.earthreport.model.utilties.DataProviderFormat;
+import com.badarshahzad.android.earthreport.controller.adapters.EarthQuakeAdapter;
+import com.badarshahzad.android.earthreport.controller.timeline.TimelineFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;

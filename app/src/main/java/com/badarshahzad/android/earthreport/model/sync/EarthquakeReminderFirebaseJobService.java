@@ -1,4 +1,4 @@
-package com.example.android.earthreport.model.sync;
+package com.badarshahzad.android.earthreport.model.sync;
 
 
 import android.content.Context;
@@ -7,18 +7,16 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.example.android.earthreport.model.api.EarthquakeLoader;
-import com.example.android.earthreport.model.pojos.EarthQuakes;
-import com.example.android.earthreport.model.utilties.ParseUSGSJsonUtils;
-import com.example.android.earthreport.model.utilties.PreferenceUtils;
+import com.badarshahzad.android.earthreport.model.api.EarthquakeLoader;
+import com.badarshahzad.android.earthreport.model.pojos.EarthQuakes;
+import com.badarshahzad.android.earthreport.model.utilties.ParseUSGSJsonUtils;
+import com.badarshahzad.android.earthreport.model.utilties.PreferenceUtils;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.security.auth.login.LoginException;
 
 /**
  * Created by root on 12/25/17.

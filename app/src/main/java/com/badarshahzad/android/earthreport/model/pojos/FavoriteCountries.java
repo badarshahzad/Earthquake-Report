@@ -1,4 +1,4 @@
-package com.example.android.earthreport.model.pojos;
+package com.badarshahzad.android.earthreport.model.pojos;
 
 /**
  * Created by root on 1/1/18.

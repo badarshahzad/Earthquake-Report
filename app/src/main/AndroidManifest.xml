@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android.earthreport">
+    package="com.badarshahzad.android.earthreport">
 
     <!-- To turn wifi off/on we need -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -31,7 +31,7 @@
 
         <!-- if activity already running I don't need to relunch app : singleTop -->
         <activity
-            android:name=".controller.main.EarthquakeActivity"
+            android:name="com.badarshahzad.android.earthreport.controller.main.EarthquakeActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,13 +40,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".controller.map.Map"
-            android:parentActivityName=".controller.main.EarthquakeActivity" />
+            android:name="com.badarshahzad.android.earthreport.controller.map.Map"
+            android:parentActivityName="com.badarshahzad.android.earthreport.controller.main.EarthquakeActivity" />
 
         <!-- This is required for immediate syncs -->
 
         <service
-            android:name=".model.sync.EarthquakeReminderFirebaseJobService"
+            android:name="com.badarshahzad.android.earthreport.model.sync.EarthquakeReminderFirebaseJobService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
@@ -54,9 +54,9 @@
         </service>
 
         <activity
-            android:name=".controller.favourit.FavouriteActivity"
+            android:name="com.badarshahzad.android.earthreport.controller.favourit.FavouriteActivity"
             android:label="@string/title_activity_favouirt"
-            android:parentActivityName=".controller.main.EarthquakeActivity" />
+            android:parentActivityName="com.badarshahzad.android.earthreport.controller.main.EarthquakeActivity" />
     </application>
 
 </manifest>

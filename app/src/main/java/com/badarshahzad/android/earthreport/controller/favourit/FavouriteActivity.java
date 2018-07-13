@@ -1,4 +1,4 @@
-package com.example.android.earthreport.controller.favourit;
+package com.badarshahzad.android.earthreport.controller.favourit;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,10 +19,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.earthreport.R;
-import com.example.android.earthreport.model.pojos.FavoriteCountries;
-import com.example.android.earthreport.model.utilties.ParseFavoritCountriesJsonUtils;
-import com.example.android.earthreport.controller.home.HomeFragment;
+import com.badarshahzad.android.earthreport.R;
+import com.badarshahzad.android.earthreport.model.pojos.FavoriteCountries;
+import com.badarshahzad.android.earthreport.model.utilties.ParseFavoritCountriesJsonUtils;
+import com.badarshahzad.android.earthreport.controller.home.HomeFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;

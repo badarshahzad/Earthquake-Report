@@ -9,7 +9,7 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_refresh"
+        android:id="@+id/action_refresh1"
         android:icon="@drawable/ic_filter_list_white_24dp"
         android:title="Refresh"
         app:showAsAction="always" />

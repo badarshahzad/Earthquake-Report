@@ -1,4 +1,4 @@
-package com.example.android.earthreport.controller.home;
+package com.badarshahzad.android.earthreport.controller.home;
 
 
 import android.annotation.SuppressLint;
@@ -30,16 +30,15 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.android.earthreport.controller.favourit.FavouriteActivity;
-import com.example.android.earthreport.R;
-import com.example.android.earthreport.model.api.EarthquakeLoader;
-import com.example.android.earthreport.model.pojos.EarthQuakes;
-import com.example.android.earthreport.model.pojos.FavoriteCountries;
-import com.example.android.earthreport.model.utilties.DataProviderFormat;
-import com.example.android.earthreport.model.utilties.ParseFavoritCountriesJsonUtils;
-import com.example.android.earthreport.model.utilties.ParseUSGSJsonUtils;
-import com.example.android.earthreport.controller.timeline.TimelineFragment;
-import com.google.android.gms.common.api.Status;
+import com.badarshahzad.android.earthreport.controller.favourit.FavouriteActivity;
+import com.badarshahzad.android.earthreport.R;
+import com.badarshahzad.android.earthreport.model.api.EarthquakeLoader;
+import com.badarshahzad.android.earthreport.model.pojos.EarthQuakes;
+import com.badarshahzad.android.earthreport.model.pojos.FavoriteCountries;
+import com.badarshahzad.android.earthreport.model.utilties.DataProviderFormat;
+import com.badarshahzad.android.earthreport.model.utilties.ParseFavoritCountriesJsonUtils;
+import com.badarshahzad.android.earthreport.model.utilties.ParseUSGSJsonUtils;
+import com.badarshahzad.android.earthreport.controller.timeline.TimelineFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

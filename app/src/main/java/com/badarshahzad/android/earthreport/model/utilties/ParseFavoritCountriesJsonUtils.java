@@ -1,6 +1,6 @@
-package com.example.android.earthreport.model.utilties;
+package com.badarshahzad.android.earthreport.model.utilties;
 
-import com.example.android.earthreport.model.pojos.FavoriteCountries;
+import com.badarshahzad.android.earthreport.model.pojos.FavoriteCountries;
 
 import org.json.JSONArray;
 import org.json.JSONException;

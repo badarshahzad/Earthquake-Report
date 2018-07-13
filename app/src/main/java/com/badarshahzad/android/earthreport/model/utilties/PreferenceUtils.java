@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.earthreport.model.utilties;
+package com.badarshahzad.android.earthreport.model.utilties;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.example.android.earthreport.model.pojos.EarthQuakes;
+import com.badarshahzad.android.earthreport.model.pojos.EarthQuakes;
 import com.google.gson.Gson;
 
 /**

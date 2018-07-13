@@ -1,11 +1,11 @@
-package com.example.android.earthreport.model.api;
+package com.badarshahzad.android.earthreport.model.api;
 
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.example.android.earthreport.model.pojos.EarthQuakes;
-import com.example.android.earthreport.model.utilties.ParseUSGSJsonUtils;
+import com.badarshahzad.android.earthreport.model.pojos.EarthQuakes;
+import com.badarshahzad.android.earthreport.model.utilties.ParseUSGSJsonUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
