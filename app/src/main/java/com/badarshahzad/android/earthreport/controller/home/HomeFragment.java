@@ -41,8 +41,6 @@ import com.example.android.earthreport.model.utilties.ParseUSGSJsonUtils;
 import com.example.android.earthreport.controller.timeline.TimelineFragment;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -65,7 +63,7 @@ import java.util.Locale;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements OnMapReadyCallback, PlaceSelectionListener {
+public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     public static final String FAVOURIT_LIST = "favouritList";
     private static final String TAG = HomeFragment.class.getSimpleName();
@@ -453,6 +451,22 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, PlaceS
 
 
 
+      createHandlerMessage();
+
+
+
+
+        //TODO:If time allow me I will add some more information on click the circles
+        //Add listeners to the Circles and Textviews
+//        todayEarthquakes.setOnClickListener(showDataList);
+//        yesterdayEarthquakes.setOnClickListener(showDataList);
+//        thisWeekEarthquakes.setOnClickListener(showDataList);
+//        thisMonthEarthquakes.setOnClickListener(showDataList);
+
+        return view;
+    }
+
+    private void createHandlerMessage() {
         // After fetching the number of earthquakes set in the views
         handler = new Handler(Looper.getMainLooper()) {
             @Override
@@ -480,18 +494,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, PlaceS
                 displayProgressBar(false);
             }
         };
-
-
-
-
-        //TODO:If time allow me I will add some more information on click the circles
-        //Add listeners to the Circles and Textviews
-//        todayEarthquakes.setOnClickListener(showDataList);
-//        yesterdayEarthquakes.setOnClickListener(showDataList);
-//        thisWeekEarthquakes.setOnClickListener(showDataList);
-//        thisMonthEarthquakes.setOnClickListener(showDataList);
-
-        return view;
     }
 
     //TODO: Data fetch time out then hide progress bar and show notificaiton
@@ -545,12 +547,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, PlaceS
                 if (count[0] == 0 && count[1] == 0) {
                     //TODO:previoud sharedpreference data
                 }
+
                 //set the text of quakes count
                 Message message = new Message();
                 Bundle bundle = new Bundle();
                 bundle.putIntArray(COUNT_KEY, count);
                 message.setData(bundle);
-                handler.sendMessage(message);
+
+                if(handler!=null){
+                    handler.sendMessage(message);
+                }else{
+                    createHandlerMessage();
+                    handler.sendMessage(message);
+                }
 
 //                Log.i(TAG, "dataFetch: send back");
 
@@ -709,13 +718,4 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, PlaceS
         Log.i(TAG, "onDetach: ");
     }
 
-    @Override
-    public void onPlaceSelected(Place place) {
-        Log.i(TAG, "onPlaceSelected: " + place.getName());
-    }
-
-    @Override
-    public void onError(Status status) {
-
-    }
 }

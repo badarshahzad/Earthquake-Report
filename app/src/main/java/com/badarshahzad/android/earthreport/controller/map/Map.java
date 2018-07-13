@@ -13,6 +13,9 @@ import com.example.android.earthreport.model.pojos.EarthQuakes;
 import com.example.android.earthreport.model.utilties.DataProviderFormat;
 import com.example.android.earthreport.controller.adapters.EarthQuakeAdapter;
 import com.example.android.earthreport.controller.timeline.TimelineFragment;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,6 +44,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private TextView magnitude;
     private CardView cardView;
 
+    private AdView adView;
+
 
 
     @Override
@@ -49,6 +54,16 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
         //Retrieve the content view theat renders the map
         setContentView(R.layout.map_activity);
+
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-4583713636574908~2197491969");//id
+
+        adView = findViewById(R.id.adView);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+
         getSupportActionBar().setHomeButtonEnabled(true);
 
         //Get the SupportMapFragment and request notification

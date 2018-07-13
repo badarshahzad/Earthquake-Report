@@ -35,6 +35,25 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuakes> {
         earthQuakesQuakesValues = objects;
     }
 
+
+    /**
+     * @param dateObject Take a Date type object
+     * @return return the date in human readable format e.g "Nov 11, 2017"
+     */
+    public static String formateDate(Date dateObject) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
+        return dateFormat.format(dateObject);
+    }
+
+    /**
+     * @param timeObjet Take a Date type object
+     * @return return the time in human readable format e.g "04:00 pm"
+     */
+    public static String formateTime(Date timeObjet) {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        return timeFormat.format(timeObjet);
+    }
+
     /**
      * Returns  a list item view that displays information  about the earthquakes at the
      * given position in the list of earthquakes.

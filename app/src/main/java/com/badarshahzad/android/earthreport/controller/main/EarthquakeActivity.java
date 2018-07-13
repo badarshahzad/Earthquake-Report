@@ -34,6 +34,9 @@ import com.example.android.earthreport.controller.setting.SettingFragment;
 import com.example.android.earthreport.controller.timeline.TimelineFragment;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 /**what is context This is an abstract class whose implementation is provided by the
  *  Android system. It allows access to application-specific resources and classes,
@@ -48,6 +51,8 @@ public class EarthquakeActivity extends AppCompatActivity {
     private HomeFragment homeFragment;
     private TimelineFragment timelineFragment;
     private SettingFragment settingFragment;
+
+    private AdView adView;
 
     private ViewPager viewPager;
 
@@ -69,6 +74,15 @@ public class EarthquakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_earthquake_activity);
 
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+
+        MobileAds.initialize(this, "ca-app-pub-4583713636574908~2197491969");//id
+
+        adView = findViewById(R.id.adView);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
         //get the root referance
         root = findViewById(R.id.root);
 
@@ -78,6 +92,7 @@ public class EarthquakeActivity extends AppCompatActivity {
          * fragment mantain on each time menu click and load the fragment ag&ag& (again and again)*/
 
         viewPager = findViewById(R.id.viewpager);
+        viewPager.setOffscreenPageLimit(3);
         setupViewPager(viewPager);
         setTitle("Home");
 

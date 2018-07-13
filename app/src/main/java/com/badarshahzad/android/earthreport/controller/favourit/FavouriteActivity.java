@@ -23,6 +23,9 @@ import com.example.android.earthreport.R;
 import com.example.android.earthreport.model.pojos.FavoriteCountries;
 import com.example.android.earthreport.model.utilties.ParseFavoritCountriesJsonUtils;
 import com.example.android.earthreport.controller.home.HomeFragment;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -40,10 +43,22 @@ public class FavouriteActivity extends AppCompatActivity {
     private ImageView emptyListMessageImage;
     private SharedPreferences.OnSharedPreferenceChangeListener shPreflistener;
 
+    private AdView adView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite);
+
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-4583713636574908~2197491969");//id
+
+        adView = findViewById(R.id.adView);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+
 
         emptyListMessage = findViewById(R.id.emptyListMessage);
         emptyListMessageImage = findViewById(R.id.noFavoriteEntry);
