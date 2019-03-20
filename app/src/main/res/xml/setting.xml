@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    /**
+    * Title: Android Implementing Preferences Settings Screen
+    * Author: Ravi Tamada, developer.android
+    * Date: 2017/12/17
+    * Code version: N/A
+    * Availability:https://developer.android.com/reference/android/support/v14/preference/PreferenceFragment.html
+    *              https://www.androidhive.info/2017/07/android-implementing-preferences-settings-screen/
+    */
+
+    <PreferenceCategory android:title="@string/title_general">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:key="@string/key_alert_notification"
+            android:title="@string/title_alert_notification" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_filter_option">
+
+        <ListPreference
+            android:defaultValue="3"
+            android:entries="@array/period_entries"
+            android:entryValues="@array/period_entries_values"
+            android:icon="@drawable/ic_timelapse_black_24dp"
+            android:key="@string/key_period"
+            android:title="@string/title_period"/>
+
+        <ListPreference
+            android:defaultValue="2"
+            android:entries="@array/magnitude_entries"
+            android:entryValues="@array/magnitude_entries_values"
+            android:icon="@drawable/ic_filter_list_black_24dp"
+            android:key="@string/key_filter_magnitude"
+            android:title="@string/title_filter_magnitude" />
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/sort_array_entries"
+            android:entryValues="@array/sort_array_entries_values"
+            android:icon="@drawable/ic_sort_black_24dp"
+            android:key="@string/key_sort"
+            android:title="@string/title_sort" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/title_notification">
+
+        <RingtonePreference
+            android:defaultValue="content://settings/system/notification_sound"
+            android:dependency="notifications_new_message"
+            android:icon="@drawable/ic_audiotrack_black_24dp"
+            android:key="@string/key_notifications_new_message"
+            android:ringtoneType="notification"
+            android:summary="@string/summary_notification"
+            android:title="@string/title_ringtone" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:icon="@drawable/ic_vibration_black_24dp"
+            android:key="@string/key_vibrate"
+            android:summary="@string/summary_vibrate"
+            android:title="@string/title_vibrate" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/title_about">
+        <Preference
+            android:selectable="false"
+            android:summary="This is my 7th semester Android Application Project. Programming is my dream and my crush. I love to do programming." />
+
+        <Preference
+            android:summary="Hi, kindly support me sharing this application to your friends and family. I take initiative to earn money from ads to support myself and my education."
+            android:title="Message" />
+
+
+        <Preference
+            android:selectable="false"
+            android:summary="v2.4"
+            android:title="@string/title_version" />
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_contact">
+
+        <Preference
+            android:selectable="false"
+            android:summary="github.com/badarshahzad54"
+            android:title="GitHub" />
+
+
+        <Preference
+            android:selectable="false"
+            android:summary="badarshahzad54@"
+            android:title="Twitter" />
+
+
+        <Preference
+            android:selectable="false"
+            android:summary="badarshahzad54.uob@gmail.com"
+            android:title="Email" />
+
+        <!--I will add the feature that get feedback on firebase directly-->
+        <Preference
+            android:key="@string/key_send_feedback"
+            android:selectable="false"
+            android:summary="You can suggest or help me feedback on this email badarshahzad54.uob@gmail.com"
+            android:title="@string/title_send_feedback" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

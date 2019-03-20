@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "997332963941",
+    "firebase_url": "https://earthquake-report-542c1.firebaseio.com",
+    "project_id": "earthquake-report-542c1",
+    "storage_bucket": "earthquake-report-542c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997332963941:android:42eac94736429537",
+        "android_client_info": {
+          "package_name": "com.badarshahzad.android.earthreport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997332963941-80ht9bg4vfs1hqacpgen8d3a70l2jdu5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.badarshahzad.android.earthreport",
+            "certificate_hash": "7b28909f419cd4c51e7cc960cf6f889310bfb2fa"
+          }
+        },
+        {
+          "client_id": "997332963941-543u10gjt30jm68hu8i2q5j8e0klmpch.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOmgMQagIzdd21avCpylo_TiUyrN7EjFw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997332963941-543u10gjt30jm68hu8i2q5j8e0klmpch.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      },
+      "admob_app_id": "ca-app-pub-4583713636574908~2197491969"
+    }
+  ],
+  "configuration_version": "1"
+}

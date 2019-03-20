@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.badarshahzad.android.earthreport">
+
+    <!-- To turn wifi off/on we need -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <!--Access the internet state-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+
+    <!-- To add the vibration on notification -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- To access the internet we need -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- My location access permission -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".controller.main.EarthquakeActivity"
+            android:launchMode="singleTop" />
+
+        <!-- if activity already running I don't need to relunch app : singleTop -->
+        <activity
+            android:name=".controller.main.SplashActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".controller.map.Map"
+            android:parentActivityName=".controller.main.EarthquakeActivity" />
+
+        <!-- This is required for immediate syncs -->
+
+        <service
+            android:name=".model.sync.EarthquakeReminderFirebaseJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".model.utilties.FirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
+        <service android:name=".model.utilties.FirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+
+        <activity
+            android:name=".controller.favourit.FavouriteActivity"
+            android:label="@string/title_activity_favouirt"
+            android:parentActivityName=".controller.main.EarthquakeActivity" />
+    </application>
+
+</manifest>

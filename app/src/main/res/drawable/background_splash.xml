@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/textColorEarthquakeDetails" />
+
+    <item
+        android:width="232dp"
+        android:height="232dp"
+        android:drawable="@drawable/earthquake2"
+        android:gravity="center" />
+</layer-list>

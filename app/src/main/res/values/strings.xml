@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2016 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <string name="app_name">Earthquake Report</string>
+    <string name="google_maps_key">PUT_HERE_YOUR_KEY</string>
+    <string name="google_maps_geocoding_key">PUT_HERE_YOUR_KEY</string>
+    <string name="google_maps_autocomplete_key">PUT_HERE_YOUR_KEY</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="title_activity_settings">Settings</string>
+
+    <!--Filter Spinners Arrays-->
+
+    <!--Strings of Period :Today,Yesterday,Week,Month-->
+    <string-array name="period">
+
+        <item>Today</item>
+        <item>Yesterday</item>
+        <item>Week</item>
+        <item>Month</item>
+
+    </string-array>
+
+
+    <string-array name="min_earthquakes">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+
+
+    <!--String of Max-->
+    <string-array name="max_earthquakes">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+
+    <string-array name="sort_array">
+        <item>Time</item>
+        <item>Magnitude</item>
+    </string-array>
+
+    <!--String of Min Entries-->
+    <string-array name="min_earthquakes_entries">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+
+    <!--String of Min Entries Values-->
+    <string-array name="min_earthquakes_entries_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+
+    <!--- Setting Preferences -->
+
+    <string-array name="magnitude_entries">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+    <string-array name="magnitude_entries_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+
+    <!--Sort By entries-->
+    <string-array name="sort_array_entries">
+        <item>Time</item>
+        <item>Magnitude</item>
+
+    </string-array>
+
+    <!--Sort By entries values-->
+    <string-array name="sort_array_entries_values">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <!--Period Entries-->
+    <string-array name="period_entries">
+        <item>1 Hour</item>
+        <item>1 Day</item>
+        <item>Yesterday</item>
+        <item>Week</item>
+        <item>Month</item>
+    </string-array>
+
+    <!--Period Entries Array-->
+    <string-array name="period_entries_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+
+    <!--Notification-->
+    <string name="key_notifications_new_message">notifications_new_message</string>
+    <string name="key_alert_notification">key_alert_notification</string>
+    <string name="key_vibrate">key_vibrate</string>
+    <string name="key_send_feedback">key_send_feedback</string>
+    <string name="key_min_magnitude">key_min_magnitude</string>
+    <string name="key_max_magnitude">key_max_magnitude</string>
+    <string name="key_sort">key_sort</string>
+    <string name="key_period">key_period</string>
+    <string name="key_filter_magnitude">key_filter_magnitude</string>
+
+    <string name="title_ringtone">Notifications Tone</string>
+    <string name="title_vibrate">Vibrate</string>
+    <string name="title_version">Version</string>
+    <string name="title_max_magnitude">Maxmimum Magnitude</string>
+    <string name="title_sort">Sort by</string>
+    <string name="title_alert_notification">Alert Notification</string>
+    <string name="title_min_magnitude">Minimum Magnitude</string>
+    <string name="title_notification">Notifications</string>
+    <string name="title_about">About</string>
+    <string name="title_contact">Contact</string>
+    <string name="title_send_feedback">Send Feedback</string>
+    <string name="title_period">Period</string>
+    <string name="title_filter_option">Filter Option</string>
+    <string name="title_general">General</string>
+    <string name="title_filter_magnitude">Filter Magnitude</string>
+
+    <string name="summary_vibrate">Vibrate on new notification</string>
+    <string name="summary_feedback">Give the feedback!</string>
+    <string name="summary_notification">Choose notification sound</string>
+    <string name="main_notification_channel">main_notification_channel</string>
+    <string name="notificaiton_title">Earthquake Notification</string>
+    <string name="notification_summary">Earthquake occur near your left and right side but the quake is never occur in the sky. Do you know why?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_search">search</string>
+    <string name="title_activity_favouirt">Inquisitive Countries</string>
+
+</resources>
